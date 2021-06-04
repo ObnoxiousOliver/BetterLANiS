@@ -1,0 +1,146 @@
+/* Modal */
+
+.modal-component {
+  .modal-mask {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: $background-modifier-unfocused;
+    backdrop-filter: blur(10px);
+  }
+
+  .modal {
+    z-index: 1;
+    display: flex;
+    flex-flow: column nowrap;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: $popup-background;
+    color: $popup-foreground;
+    border-radius: 5px;
+    box-shadow: $elevation-high;
+    max-width: 600px;
+    max-height: 1000px;
+    min-width: 400px;
+    min-height: 300px;
+    transform: translate(-50%, -50%);
+    padding: 20px 30px;
+    
+    .modal-header {
+      padding-right: 20px;
+      margin-bottom: 20px;
+      border-bottom: $muted-foreground solid 1px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .modal-content {
+      flex-grow: 1;
+    }
+
+    .modal-footer {
+      padding-top: 10px;
+      margin-top: 5px;
+      border-top: $muted-foreground solid 1px;
+
+      .modal-buttons {
+        text-align: right;
+
+        .btn {
+          margin-left: 5px;
+        }
+      }
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-top: 2px;
+      width: 20px;
+      height: 20px;
+      background: none;
+      border: none;
+      color: $popup-foreground;
+      font-size: 1rem;
+      border-radius: 50%;
+      opacity: 0.5;
+      cursor: pointer;
+      transition: background-color 0.2s, opacity 0.2s;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+      }
+
+      &:hover {
+        background: $background-modifier-hover;
+        opacity: 1;
+      }
+
+      &:active {
+        background: $error;
+        opacity: 1;
+      }
+    }
+
+    table {
+      width: 100%;
+
+      td {
+        padding: 2px 0;
+      }
+
+      td:first-child {
+        color: $secondary-foreground;
+        font-weight: 700;
+      }
+
+      td:last-child {
+        text-align: end;
+      }
+    }
+  }
+
+  &-enter-active, &-leave-active {
+    transition: none 0.2s;
+
+    .modal-mask {
+      transition: opacity 0.2s;
+    }
+    .modal {
+      transition: opacity 0.2s, transform 0.2s;
+    }
+  }
+
+  &-enter-from {
+    .modal-mask {
+      opacity: 0;
+    }
+    .modal {
+      opacity: 0;
+      transform: translate(-50%, calc(-50% - 20px));
+    }
+  }
+  &-leave-to {
+    .modal-mask {
+      opacity: 0;
+    }
+    .modal {
+      opacity: 0;
+      transform: translate(-50%, calc(-50% + 20px));
+    }
+  }
+}

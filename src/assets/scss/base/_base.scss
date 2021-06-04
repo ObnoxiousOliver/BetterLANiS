@@ -1,0 +1,200 @@
+/* Base */
+
+html,
+body {
+  height: 100%;
+  user-select: none;
+}
+
+body {
+  margin: 0;
+}
+
+*,
+::after,
+::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: $accent solid 2px;
+  outline-offset: -2px;
+}
+
+::selection {
+  background: $accent;
+  color: $accent-foreground;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $header-font;
+  font-weight: 400;
+}
+
+ul {
+  list-style: none;
+}
+
+#app-mount {
+  height: 100%;
+  background-color: $primary-background;
+  color: $primary-foreground;
+  font: 400 1rem $font;
+}
+
+.app {
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.app-container {
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+
+  & > * {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+  }
+
+  & > .notification-box {
+    pointer-events: none;
+    z-index: 2900;
+    top: 20px;
+    right: 20px;
+    height: auto;
+    width: auto;
+  }
+
+  .loading-page {
+    background-color: $background-modifier-unfocused;
+    position: fixed;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    text-align: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: $secondary-foreground;
+  }
+}
+
+.logo-better {
+  color: $primary-foreground;
+  font: 400 1rem $header-font;
+  font-weight: 500;
+}
+
+.logo-lanis {
+  font-family: $header-font;
+  color: $accent;
+  font-weight: 700;
+}
+
+.selectable {
+  user-select: text;
+}
+
+.muted {
+  color: $muted-foreground;
+}
+
+.secondary {
+  color: $secondary-foreground;
+}
+
+.small {
+  font-size: 0.8em;
+}
+
+.warning {
+  color: $warning;
+}
+.error {
+  color: $error;
+}
+
+.card {
+  display: flex;
+  flex-flow: column nowrap;
+  background: $secondary-background;
+  margin: 5px;
+  padding: 15px 20px;
+  border-radius: 5px;
+  box-shadow: $elevation-high;
+
+  &.warning {
+    background-color: $warning-background;
+    border: $warning solid 2px;
+  }
+  &.error {
+    background-color: $error-background;
+    border: $error solid 2px;
+  }
+
+  .card-header {
+    font-family: $header-font;
+    font-size: 2rem;
+    font-weight: 200;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    border-bottom: $background-modifier-hover solid 1px;
+  }
+
+  .card-body {
+    overflow: hidden;
+  }
+}
+
+fieldset {
+  border: none;
+}
+
+.viewer {
+  &-enter-active,
+  &-leave-active {
+    transition: opacity 0.1s ease-in-out;
+  }
+
+  &-leave-to,
+  &-enter-from {
+    opacity: 0;
+  }
+}
+
+.loader {
+  width: 50px;
+  height: 50px;
+  border: $primary-foreground solid 5px;
+  border-bottom-color: transparent;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: loaderRotate 1.5s infinite;
+
+  @keyframes loaderRotate {
+    0% {
+      transform: rotate(0);
+    }
+    50% {
+      transform: rotate(270deg);
+    }
+    100% {
+      transform: rotate(540deg);
+    }
+  }
+}

@@ -1,0 +1,21 @@
+:root {
+  --primary-background: #fff;
+  --secondary-background: #f5f5f5;
+  --tertiary-background: #fdfdfd;
+
+  --popup-background: #fff;
+  --popup-foreground: #000;
+
+  --primary-foreground: #000;
+  --secondary-foreground: #777;
+  --muted-foreground: #aaa;
+
+  --button: #f1f1f1;
+  --button-accent-foreground: #fff;
+  --button-highlight: #ddd;
+  --button-highlight-foreground: #000;
+}
+
+.theme-item-component:hover {
+  background: #0001;
+}

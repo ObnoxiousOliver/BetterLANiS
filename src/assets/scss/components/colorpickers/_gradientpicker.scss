@@ -1,0 +1,158 @@
+/* Gradient Picker */
+
+.gradient-picker-component {
+  margin: 50px;
+  padding: 10px;
+  width: min-content;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 10px;
+
+  .gradient-controls {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 10px;
+  }
+
+  .gradient-types {
+    display: flex;
+
+    .tooltip-activator {
+      width: 100%;
+    }
+
+    .btn {
+      width: 100%;
+      border-radius: 0;
+
+      &.first {
+        border-radius: 3px 0 0 3px;
+      }
+      &.last {
+        border-radius: 0 3px 3px 0;
+      }
+
+      .icon {
+        display: flex;
+        width: 20px;
+        height: 20px;
+        margin: 2px auto;
+        border: currentColor solid 2px;
+
+        div {
+          margin: -1px;
+          flex-grow: 1;
+          background: currentColor;
+        }
+      }
+
+      &.linear .icon div {
+        mask-image: linear-gradient(-90deg, #000, #0000);
+      }
+      &.radial .icon {
+        border-radius: 50%;
+
+        div {
+          border-radius: 50%;
+          mask-image: radial-gradient(#000, #0000);
+        }
+      }
+      &.repeating-linear .icon div {
+        mask-image: repeating-linear-gradient(-90deg,#000, #0000 50%);
+      }
+      &.repeating-radial .icon {
+        border-radius: 50%;
+
+        div {
+          border-radius: 50%;
+          mask-image: repeating-radial-gradient(#000, #0000 35%, #000 40%);
+        }
+      }
+    }
+  }
+
+  .preview {
+    height: 30px;
+    border-radius: 3px;
+    overflow: hidden;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAKElEQVQoU2NctWrVfwY0YGxsjC7EwDgUFN69exfDM2fPnsX0zBBQCADIhy/q9sipkAAAAABJRU5ErkJggg==);
+
+    div {
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .gradient {
+    display: flex;
+    flex-flow: column-reverse;
+
+    .keys {
+      position: relative;
+      height: 20px;
+      pointer-events: none;
+
+      .key {
+        pointer-events: all;
+        position: absolute;
+        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAKElEQVQoU2NctWrVfwY0YGxsjC7EwDgUFN69exfDM2fPnsX0zBBQCADIhy/q9sipkAAAAABJRU5ErkJggg==);
+        height: 16px;
+        width: 16px;
+        margin: 0 -8px;
+        border: #fff solid 3px;
+        box-shadow: #0008 0 2px 5px -2px, #0008 0 0 5px -3px inset;
+
+        div {
+          height: 100%;
+        }
+
+        .key-arrow {
+          position: absolute;
+          top: calc(100% + 3px);
+          left: -3px;
+          width: 16px;
+          border: transparent solid 8px;
+          border-top: #fff solid 8px;
+        }
+
+        &.active {
+          .key-arrow {
+            border-top-color: $accent;
+          }
+        }
+      }
+    }
+
+    .gradient-preview {
+      height: 15px;
+      border-radius: 3px;
+      overflow: hidden;
+      background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAKElEQVQoU2NctWrVfwY0YGxsjC7EwDgUFN69exfDM2fPnsX0zBBQCADIhy/q9sipkAAAAABJRU5ErkJggg==);
+
+      div {
+        height: 100%;
+        width: 100%;
+      }
+    }
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+
+    .input-field {
+      flex-grow: 1;
+      width: 0;
+      margin-right: 5px;
+    }
+
+    .btn {
+      &.add {
+        border-radius: 0 3px 3px 0;
+      }
+      &.remove {
+        border-radius: 3px 0 0 3px;
+      }
+    }
+  }
+}

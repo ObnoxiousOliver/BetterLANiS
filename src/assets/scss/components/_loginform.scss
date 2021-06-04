@@ -1,0 +1,231 @@
+/* Login Form */
+
+.loginform-component {
+  display: flex;
+  align-items: center;
+
+  .card {
+    height: 85vh;
+    width: 500px;
+    min-height: 570px;
+    max-height: 700px;
+
+    .card-header {
+      .loginHeader {
+        i {
+          transform: scale(0.7);
+        }
+      }
+
+      .schoolSelectHeader {
+        display: flex;
+
+        #returnToLoginBtn {
+          font-size: 1rem;
+          margin-right: 5px;
+        }
+      }
+    }
+
+    .card-body {
+      height: 100%;
+    }
+  }
+
+  .login {
+    height: 100%;
+    padding: 10px 0;
+
+    .selected-school {
+      height: 60px;
+      line-height: 30px;
+      margin: 30px 0 50px;
+      text-align: center;
+
+      .school-name {
+        font-size: 1.5rem;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      .school-location {
+        color: $secondary-foreground;
+        font-size: 1rem;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      .no-school {
+        font-size: 1.5rem;
+        line-height: 60px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        margin: 0 6px;
+      }
+    }
+
+    .no-credentials {
+      height: 20px;
+      line-height: 20px;
+      margin-bottom: 10px;
+
+      & > div {
+        margin: 0 6px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .input-field {
+      width: 100%;
+    }
+
+    .btn {
+      width: 100%;
+    }
+
+    .container {
+      margin-bottom: 40px;
+    }
+
+    #username {
+      margin-bottom: 10px;
+    }
+
+    #loginBtn {
+      margin-bottom: 10px;
+    }
+
+    .input-toggle {
+      margin-right: 10px;
+    }
+  }
+
+  .school-select {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+
+    .search-field {
+      margin-bottom: 10px;
+      padding: 0 14px;
+
+      .input-field {
+        width: 100%;
+      }
+    }
+
+    .nothing-found {
+      text-align: center;
+      margin: 20px 0;
+      color: $muted-foreground;
+    }
+
+    .district {
+      .district-header {
+        display: flex;
+        margin: 20px 0 10px;
+        user-select: none;
+        cursor: pointer;
+
+        .district-name {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          font-size: 1.2rem;
+        }
+
+        .toggle-btn {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 30px;
+          flex: 0 0 auto;
+
+          i {
+            transition: transform 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+          }
+
+          &:not(.open) i {
+            transform: rotate(-90deg);
+          }
+        }
+      }
+
+      .district-body {
+        margin-left: 14px;
+      }
+
+      .school {
+        width: 100%;
+        text-align: left;
+
+        .school-name {
+          font-size: 1em;
+        }
+
+        .school-location {
+          color: $muted-foreground;
+          font-size: 0.9em;
+        }
+      }
+    }
+  }
+
+  .body-fade {
+    &-enter-active,
+    &-leave-active {
+      transition: opacity 0.1s, transform 0.1s;
+    }
+
+    &-leave-to {
+      opacity: 0;
+      transform: translateX(10px);
+    }
+    &-enter-from {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+  }
+
+  .header-fade {
+    &-enter-active,
+    &-leave-active {
+      transition: opacity 0.1s;
+    }
+
+    &-enter-from,
+    &-leave-to {
+      opacity: 0;
+    }
+  }
+
+  .not-filled-warning {
+    &-enter-active {
+      animation: wiggle .5s;
+    }
+
+    @keyframes wiggle {
+      10% {
+        transform: translateX(-6px);
+        color: $error;
+      }
+      40% {
+        transform: translateX(4px);
+        color: inherit;
+      }
+      70% {
+        transform: translateX(-2px);
+        color: $error;
+      }
+      100% {
+        transform: translateX(0);
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "Light Mode",
+  "version": "1.0",
+  "author": "ObnoxiousOliver",
+  "description": "Eine helle Version von Better LANiS",
+  "css": "css/index.css"
+}

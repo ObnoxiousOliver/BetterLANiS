@@ -1,0 +1,174 @@
+/* Input */
+
+.input-field {
+  background: $button;
+  color: $primary-foreground;
+  position: relative;
+  border: 0;
+  border-bottom: $button solid 3px;
+  padding: 10px 20px 7px;
+  font: 400 1rem $font;
+  transition: all 0.2s ease-in-out;
+
+  &:focus {
+    outline: none;
+    background: $button-highlight;
+    color: $button-highlight-foreground;
+    border-bottom-color: $accent;
+    transition: all 0.1s ease-in-out;
+  }
+
+  &::placeholder {
+    color: $muted-foreground;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+
+  &.warning {
+    background-color: $warning-background;
+    color: $warning;
+    border-color: $warning;
+
+    &:focus {
+      background: $button-highlight;
+      color: $button-highlight-foreground;
+      border-color: $warning;
+    }
+  }
+
+  &.error {
+    background-color: $error-background;
+    color: $error;
+    border-color: $error;
+
+    &:focus {
+      background: $button-highlight;
+      color: $button-highlight-foreground;
+      border-color: $error;
+    }
+  }
+
+  &[type=number] {
+    text-align: center;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      appearance: none;
+      margin: 0;
+    }
+  }
+
+  &.input-small {
+    padding: 5px 5px 2px;
+  }
+}
+
+.input-toggle {
+  appearance: none;
+  background: $button;
+  position: relative;
+  border-radius: 11px;
+  border: 2px solid transparent;
+  margin: -4px 0;
+  width: 38px;
+  height: 20px;
+  transition: all 0.2s ease-in-out;
+
+  &:focus-visible {
+    outline: none;
+    border-color: $accent;
+  }
+
+  &::after {
+    content: '';
+    background: $primary-foreground;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+
+  &:active {
+    &::after {
+      width: 25px;
+    }
+  }
+
+  &:hover:not(:disabled) {
+    background-color: $button-highlight;
+    transition: all 0.1s ease-in-out;
+
+    &::after {
+      background: $button-highlight-foreground;
+    }
+  }
+
+  &:checked {
+    background-color: $accent;
+
+    &::after {
+      background-color: $button-highlight;
+      left: 100%;
+      transform: translateX(-100%);
+    }
+
+    &:hover:not(:disabled) {
+      background-color: $button-highlight;
+      &::after {
+        background-color: $accent;
+      }
+    }
+
+    &:focus-visible {
+      border-color: $button-highlight;
+    }
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+
+  &:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+.input-slider {
+  appearance: none;
+  background: none;
+  padding: 5px 0;
+  height: 15px;
+  border-radius: 3px;
+
+  &::-webkit-slider-runnable-track {
+    appearance: none;
+    background: $button;
+    border-radius: 5px;
+  }
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    background: $primary-foreground;
+    border-radius: 10px;
+    margin: -5px 0;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+  }
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .input-slider {
+    flex-grow: 1;
+  }
+}

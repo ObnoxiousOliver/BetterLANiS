@@ -1,0 +1,153 @@
+/* Titlebar */
+
+.titlebar-component {
+  z-index: 9999;
+  height: 32px;
+  position: relative;
+  flex: 0 0;
+
+  .dragable-window {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    right: 4px;
+    bottom: 0;
+    -webkit-app-region: drag;
+  }
+
+  .titlebar-controls {
+    z-index: 9999;
+    position: absolute;
+    right: 0;
+    height: 100%;
+    display: flex;
+    flex-flow: row-reverse nowrap;
+
+    .dev-warning {
+      display: flex;
+      background: none;
+      color: $muted-foreground;
+      justify-content: center;
+      align-items: center;
+      margin: 0 10px;
+      height: 100%;
+      -webkit-app-region: no-drag;
+      transition: color 0.15s;
+
+      &:hover {
+        color: $warning;
+      }
+    }
+
+    .control {
+      display: flex;
+      background: none;
+      color: $muted-foreground;
+      justify-content: center;
+      align-items: center;
+      width: 46px;
+      height: 100%;
+      -webkit-app-region: no-drag;
+      transition: background-color 0.2s, color 0.2s, opacity 0.2s;
+
+      &.active {
+        background: $background-modifier-selected;
+        color: $primary-foreground;
+
+        &::before {
+          height: 3px;
+        }
+      }
+
+      &:hover {
+        background: $background-modifier-hover;
+        color: $primary-foreground;
+      }
+
+      &:active {
+        background-color: $background-modifier-active;
+        color: $primary-foreground;
+      }
+
+      &.btn-close{
+        &:hover {
+          background: $error;
+        }
+        &:active {
+          background: $error;
+          opacity: 0.5;
+        }
+      }
+
+      // &.control-small {
+      //   width: 37px;
+      // }
+
+      &.btn-settings {
+        position: relative;
+
+        &::before {
+          content: "";
+          background-color: $accent;
+          height: 0;
+          position: absolute;
+          left: 20%;
+          right: 20%;
+          bottom: 0;
+          transition: all 0.3s;
+        }
+
+        &:hover::before {
+          transition: all 0.1s ease-in-out;
+          left: 10%;
+          right: 10%;
+        }
+
+        &.active::before {
+          height: 3px;
+        }
+      }
+    }
+
+    .settings-divider {
+      background-color: $muted-foreground;
+      width: 1px;
+      margin: 5px 1px;
+    }
+  }
+
+  .titlebar-content {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    margin-right: 46px * 4 + 3px + 38px;
+    white-space: nowrap;
+    overflow: hidden;
+
+    .currentUser {
+      font-size: 0.9rem;
+      font-family: $header-font;
+      color: $secondary-foreground;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-left: 10px;
+
+      &-enter-active,
+      &-leave-active {
+        transition: all 0.5s;
+      }
+
+      &-leave-to, &-enter-from {
+        margin-left: -5px;
+        opacity: 0;
+      }
+    }
+  }
+
+  &.windowstate-maximized .dragable-window {
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+}

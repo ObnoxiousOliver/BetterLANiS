@@ -1,0 +1,129 @@
+/* Button */
+
+.btn {
+  appearance: none;
+  background-color: $button;
+  color: $primary-foreground;
+  border: 2px solid transparent;
+  padding: 0.5rem 1rem;
+  border-radius: 3px;
+  font: 400 1rem $font;
+  text-decoration: none;
+  text-align: center;
+  letter-spacing: 0.1em;
+  transition: all 0.2s ease-in-out;
+
+  &.btn-primary {
+    background-color: $accent;
+    color: $button-accent-foreground;
+
+    &.btn-gloss {
+      box-shadow: 0 0 0 0 #0001 inset;
+      overflow: hidden;
+      position: relative;
+
+      &:hover:not(:disabled) {
+        box-shadow: 0 0 0 2px #0002 inset, 0 0 0 6px #0001 inset;
+      }
+
+      &::after {
+        content: "";
+        z-index: 1;
+        background: #fff;
+        border: 0px solid $accent;
+        height: 155px;
+        width: 50px;
+        position: absolute;
+        top: -50px;
+        left: -75px;
+        opacity: 0.8;
+        transform: rotate(35deg);
+        transition: all 0.75s;
+      }
+
+      &:hover:not(:disabled)::after {
+        background: #fff;
+        border: 20px solid $accent;
+        opacity: 0;
+        left: 120%;
+        transform: rotate(40deg);
+      }
+    }
+
+    &:hover:not(:disabled) {
+      color: $accent;
+    }
+
+    &:not(.btn-no-caps) {
+      text-transform: uppercase;
+    }
+
+    &:focus-visible {
+      border-color: $button-highlight;
+    }
+  }
+
+  &.btn-transparent {
+    background: none;
+  }
+
+  &.btn-warning {
+    color: $warning;
+
+    &:hover:not(:disabled) {
+      color: $warning-foreground;
+      background-color: $warning;
+    }
+  }
+  &.btn-error {
+    color: $error;
+
+    &:hover:not(:disabled) {
+      color: $error-foreground;
+      background-color: $error;
+    }
+  }
+
+  &.btn-small {
+    padding: 0 0.5rem;
+  }
+
+  &:hover:not(:disabled) {
+    color: $button-highlight-foreground;
+    background-color: $button-highlight;
+    letter-spacing: 0.15em;
+    transition: all 0.1s ease-in-out;
+  }
+
+  &:hover:not(:disabled).btn-static {
+    letter-spacing: 0.1em;
+  }
+
+  &.btn-nospacing,
+  &.btn-nospacing:hover:not(:disabled) {
+    letter-spacing: 0;
+  }
+
+  & > .btn__content {
+    z-index: 2;
+    transition: all 0.2s;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+
+  &:not(:disabled) {
+    cursor: pointer;
+  }
+
+  &:active > .btn__content {
+    transform: scale(0.97);
+    transition: all 0.1s;
+  }
+
+  &:focus-visible {
+    outline: none;
+    border-color: $accent;
+  }
+}

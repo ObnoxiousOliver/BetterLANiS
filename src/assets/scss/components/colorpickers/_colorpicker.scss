@@ -1,0 +1,107 @@
+/* Color Picker */
+
+.color-picker-component {
+  width: 250px;
+  display: grid;
+  gap: 5px;
+
+  .preview {
+    height: 30px;
+    margin-bottom: 5px;
+    border-radius: 3px;
+    overflow: hidden;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAKElEQVQoU2NctWrVfwY0YGxsjC7EwDgUFN69exfDM2fPnsX0zBBQCADIhy/q9sipkAAAAABJRU5ErkJggg==);
+    
+    div {
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .palette {
+    position: relative;
+    height: 250px;
+    margin: 5px 5px 10px;
+
+    &:active {
+      cursor: pointer;
+    }
+
+    .fill {
+      border-radius: 3px;
+      position: absolute;
+      top:    -5px;
+      left:   -5px;
+      right:  -5px;
+      bottom: -5px;
+      overflow: hidden;
+
+      &::after, &::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+
+      &::before {
+        background: linear-gradient(90deg, #fff, #fff0);
+      }
+      &::after {
+        background: linear-gradient(#0000, #000);
+      }
+    }
+
+    .cursor {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      margin: -10px;
+      border: #fff solid 3px;
+      border-radius: 50%;
+      box-shadow: $elevation-medium, $elevation-low inset;
+      cursor: pointer;
+    }
+  }
+
+  .spectrum-slider {
+    appearance: none;
+    background: linear-gradient(90deg, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+    height: 26px;
+    border-radius: 3px;
+    margin-bottom: 5px;
+
+    &::-webkit-slider-thumb {
+      appearance: none;
+      width: 10px;
+      height: 30px;
+      border: #fff solid 3px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  }
+
+  .input-container .input-field {
+    width: 60px;
+  }
+
+  .input-field {
+    &.hex {
+      text-align: center;
+    }
+  }
+
+  .input-slider {
+    &.opacity::-webkit-slider-runnable-track {
+      background: linear-gradient(90deg, #000, #fff);
+    }
+    &.red::-webkit-slider-runnable-track {
+      background: linear-gradient(90deg, #000, #f00);
+    }
+    &.green::-webkit-slider-runnable-track {
+      background: linear-gradient(90deg, #000, #0f0);
+    }
+    &.blue::-webkit-slider-runnable-track {
+      background: linear-gradient(90deg, #000, #00f);
+    }
+  }
+}

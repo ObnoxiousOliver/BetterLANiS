@@ -1,0 +1,48 @@
+/* Page Settings */
+
+.settings-view-component {
+  background: $primary-background;
+  padding-right: 300px;
+
+  transition: padding 0.4s;
+
+  .settings-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 10px;
+
+    .setting-page-header {
+      border-bottom: $muted-foreground solid 1px;
+      margin-bottom: 10px;
+    }
+  }
+
+  &.settingswindow {
+    &-enter-active,
+    &-leave-active {
+      transition: all 0.3s;
+    }
+
+    &-enter-from,
+    &-leave-to {
+      transform: translate(300px);
+      opacity: 0;
+    }
+  }
+
+  @media screen and (max-width: 900px) {
+    padding-right: 50px;
+  }
+}
+
+.viewer-settings-transition {
+  &-enter-active,
+  &-leave-active {
+    transition: all 0.3s;
+  }
+
+  &-enter-from, &-leave-to  {
+    transform: translateX(-250px);
+    opacity: 0;
+  }
+}

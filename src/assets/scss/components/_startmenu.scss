@@ -1,0 +1,107 @@
+/* Startmenu */
+
+.startmenu-component {
+  display: flex;
+  flex-flow: column nowrap;
+
+  .user-info {
+    padding: 20px 10px 0 20px;
+    display: flex;
+    align-items: center;
+
+    .avatar {
+      flex-shrink: 0;
+      z-index: 1;
+      background-image: url(https://start.schulportal.hessen.de/benutzerverwaltung.php?a=userFoto&b=show);
+      background-size: cover;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      box-shadow: $elevation-medium;
+    }
+
+    .dropdown {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background: $popup-background;
+      flex-grow: 1;
+      margin-left: -10px;
+      padding: 5px 5px 5px 18px;
+      border-radius: 5px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      box-shadow: $elevation-medium;
+
+      .dropdown-head {
+        flex-grow: 1;
+      }
+
+      .arrow {
+        padding: 0 5px;
+      }
+
+      .dropdown-body {
+        margin-top: 5px;
+        padding: 5px;
+        position: absolute;
+        top: 100%;
+        left: 10px;
+        min-width: calc(100% - 10px);
+        background: $popup-background;
+        color: $popup-foreground;
+        border-radius: 3px;
+        box-shadow: $elevation-medium;
+
+        .btn {
+          display: block;
+          width: 100%;
+        }
+
+        &-enter-active,
+        &-leave-active {
+          clip-path: polygon(0 0, 0 100%, 100% 100%, 100% 0);
+          transition: all 0.15s cubic-bezier(0.19, 1, 0.22, 1);
+          transform: none;
+        }
+
+        &-leave-active {
+          transition: opacity 0.1s;
+        }
+
+        &-enter-from {
+          transform: translateY(-10px);
+          clip-path: polygon(
+            0 10px,
+            0 90%,
+            100% 90%,
+            100% 10px);
+        }
+        &-leave-to {
+          opacity: 0;
+        }
+      }
+    }
+  }
+
+  .scroll {
+    flex-grow: 1;
+    padding: 20px 10px 20px 20px;
+  }
+
+  .divider {
+    color: $muted-foreground;
+    margin: 5px;
+    padding: 0 5px;
+    border-bottom: currentColor solid 1px;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+
+  .app-button {
+    display: block;
+    width: 100%;
+    text-align: left;
+  }
+}

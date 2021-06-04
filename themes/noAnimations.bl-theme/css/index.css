@@ -1,0 +1,8 @@
+:root {
+  --primary-background: #222;
+}
+
+#app-mount *, #app-mount ::before, #app-mount ::after {
+  transition: none;
+  animation: none;
+}

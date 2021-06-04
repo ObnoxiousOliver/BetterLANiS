@@ -1,0 +1,75 @@
+/* Notification */
+
+.notification-component {
+  background: $accent;
+  color: $accent-foreground;
+  width: fit-content;
+  margin-left: auto;
+  padding: 0 20px;
+  line-height: 40px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  box-shadow: $elevation-medium;
+  white-space: nowrap;
+
+  .notification-title {
+    font-size: 1.1rem;
+  }
+
+  .notification-message {
+    font-weight: 700;
+  }
+
+  &.notification-error {
+    background: $error;
+    color: $error-foreground;
+  }
+
+  &.notification-warning {
+    background: $warning;
+    color: $warning-foreground;
+  }
+
+  &.notification-success {
+    background: $success;
+    color: $success-foreground;
+  }
+
+  &.notifications-list {
+    &-enter-active {
+      transition: all 0.2s;
+    }
+    &-leave-active {
+      transition: all 0.2s;
+      clip-path: inset(0);
+    }
+
+    &-enter-from {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    &-leave-to {
+      opacity: 0;
+      margin-top: -45px;
+      clip-path: inset(45px 0 0 0);
+    }
+  }
+  // &.notifications-all-list {
+  //   &-enter-active {
+  //     transition: all 0.2s;
+  //   }
+  //   &-leave-active {
+  //     transition: all 0.2s;
+  //     clip-path: inset(0);
+  //   }
+
+  //   &-enter-from {
+  //     opacity: 0;
+  //   }
+  //   &-leave-to {
+  //     opacity: 0;
+  //     margin-top: -40px;
+  //     clip-path: inset(40px 0 0 0);
+  //   }
+  // }
+}

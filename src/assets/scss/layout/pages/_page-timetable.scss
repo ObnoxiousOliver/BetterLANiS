@@ -1,0 +1,214 @@
+/* Page Timetable */
+
+.timetable-view-component {
+  height: 100%;
+  width: 100%;
+
+  .info {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 0 10px;
+
+    .date-of-today {
+      font-weight: 700;
+      flex-grow: 1;
+    }
+
+    .week {
+      margin-left: 10px;
+
+      .a {
+        background: $secondary-background;
+        border-radius: 3px 0 0 3px;
+        padding: 2px 10px;
+      }
+      .b {
+        background: $secondary-background;
+        border-radius: 0 3px 3px 0;
+        padding: 2px 10px;
+      }
+
+      .active {
+        background: $accent;
+      }
+    }
+  }
+
+  .date-panel {
+    margin-bottom: 10px;
+    border-bottom: $muted-foreground solid 1px;
+
+    .date-panel-buttons {
+      white-space: nowrap;
+      padding: 0 10px;
+    }
+
+    .btn {
+      border-radius: 5px 5px 0 0;
+      padding: 0.5rem 1rem;
+      
+      &.btn-primary {
+        padding: 0.5rem 1rem;
+      }
+    }
+  }
+
+  .timetable {
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+    cursor: default;
+    text-align: center;
+
+    .timetable-header {
+      font-family: $header-font;
+      font-size: 1.1rem;
+      font-weight: 700;
+      position: relative;
+      padding: 5px;
+
+      &.is-today::before {
+        content: "";
+        background: $accent;
+        position: absolute;
+        top: 0;
+        left: 10%;
+        right: 10%;
+        height: 4px;
+      }
+    }
+
+    .timetable-data {
+      width: percentage(1 / 6);
+      border: $muted-foreground solid 1px;
+      transition: background-color 0.1s;
+    }
+
+    .timetable-time {
+      .time-header {
+        display: block;
+        font-weight: 700;
+        font-size: 1.1rem;
+        white-space: nowrap;
+      }
+
+      .time-start-end {
+        color: $secondary-foreground;
+        font-size: 0.9rem;
+        white-space: nowrap;
+      }
+    }
+
+    .timetable-lession {
+      .timetable-subject {
+        border: transparent solid 2px;
+        border-radius: 5px;
+        margin: 2px;
+        transition: all 0.15s;
+
+        .subject-layout {
+          width: fit-content;
+          margin: 0 auto;
+          display: grid;
+          padding: 0 5px;
+          grid-template-areas:
+            "name room week"
+            "teacher teacher week";
+        }
+
+        &.active {
+          border-color: $accent;
+          background: $primary-background;
+          transition: all 0.5s 0.2s;
+        }
+        &:hover {
+          transition: all 0.1s;
+        }
+
+        .subject-name {
+          grid-area: name;
+          font-weight: 700;
+          font-size: 1.1rem;
+          margin-right: 5px;
+        }
+
+        .subject-room {
+          grid-area: room;
+          color: $secondary-foreground;
+        }
+
+        .subject-teacher {
+          grid-area: teacher;
+          font-size: 0.9rem;
+          color: $secondary-foreground;
+        }
+
+        .subject-week {
+          grid-area: week;
+          background: $secondary-background;
+          margin: auto 0 auto 5px;
+          padding: 0 4px;
+          border-radius: 3px;
+          font-family: $header-font;
+          font-weight: 700;
+
+          &.active {
+            background: $accent;
+          }
+        }
+      }
+
+      &.multiple-entrys {
+        .timetable-subject .subject-teacher {
+          display: none;
+        }
+      }
+
+      &:hover, &.hover {
+        background-color: $background-modifier-selected;
+      }
+    }
+
+    .timetable-row {
+      transition: background-color 0.1s;
+
+      &.hover {
+        background-color: $background-modifier-selected;
+      }
+
+      &.empty-row {
+        background: repeating-linear-gradient(
+          -45deg,
+          $muted-foreground,
+          $muted-foreground 3px,
+          #0000 3px,
+          #0000 10px
+        );
+
+        .timetable-time {
+          transition: box-shadow 0.1s;
+          background: $tertiary-background;
+          box-shadow: transparent 0 0 0 100px inset;
+        }
+
+        &.hover {
+          &.empty-row {
+            background: repeating-linear-gradient(
+              -45deg,
+              $error,
+              $error 3px,
+              $background-modifier-selected 3px,
+              $background-modifier-selected 10px
+            );
+          }
+
+          .timetable-time {
+            box-shadow: $background-modifier-selected 0 0 0 100px inset;
+          }
+        }
+      }
+    }
+  }
+}

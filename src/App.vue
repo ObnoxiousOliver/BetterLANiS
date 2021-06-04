@@ -1,30 +1,139 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div class="app">
+    <titlebar
+      @toggle-settings="showSettingsPanel = !showSettingsPanel; showSettings = false"
+      :is-settings-open="showSettingsPanel"
+    />
+    <div class="app-container">
+      <transition name="viewer-settings-transition">
+        <div
+          v-show="!showSettings"
+          class="viewer"
+          @click="showSettingsPanel = false"
+        >
+          <transition
+            name="viewer"
+            mode="out-in"
+          >
+            <component
+              :is="page"
+              @change-page="changePage"
+            />
+          </transition>
+        </div>
+      </transition>
+      <transition name="settingswindow">
+        <Settings
+          :page="settingsPage"
+          v-if="showSettings"
+        />
+      </transition>
+      <transition name="settingspanel">
+        <SettingsPanel
+          :class="showSettings ? 'settings-page-open' : ''"
+          v-if="showSettingsPanel"
+          @openSettings="openSettings"
+        />
+      </transition>
+      <transition-group
+        class="notification-box"
+        name="notifications-list"
+        tag="div"
+      >
+        <Notification
+          v-for="n in notification.current"
+          :key="n.id"
+          :notification="n"
+        />
+      </transition-group>
+    </div>
   </div>
-  <router-view/>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+// Views
+import Login from './views/Login'
+import Welcome from './views/Welcome'
+import Start from './views/Start'
 
-#nav {
-  padding: 30px;
+// Components
+import Titlebar from './components/Titlebar'
+import Settings from './views/Settings'
+import SettingsPanel from './components/settings/SettingsPanel'
+import Notification from './components/Notification.vue'
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+import { mapActions, mapState } from 'vuex'
+const { remote } = require('electron')
 
-    &.router-link-exact-active {
-      color: #42b983;
+// import manager from '@/manager'
+
+export default {
+  components: {
+    Titlebar,
+    SettingsPanel,
+    Settings,
+    Login,
+    Welcome,
+    Start,
+    Notification
+  },
+  data: () => ({
+    showSettingsPanel: false,
+    showSettings: false,
+    settingsPage: '',
+    page: 'Login'
+  }),
+  computed: {
+    ...mapState([
+      'notification'
+    ])
+  },
+  methods: {
+    ...mapActions([
+      'appStart'
+    ]),
+    changePage (page) {
+      this.page = page
+    },
+    openSettings (page) {
+      this.settingsPage = page
+      this.showSettings = true
+    },
+    devToolsWarning () {
+      console.log('%c!!!ACHTUNG!!!',
+        `
+        font-family: Poppins;
+        font-size: 4rem;
+        font-weight: 700;
+        background: #220808;
+        border: #f44 solid 0.2rem;
+        border-radius: 0.7rem;
+        padding: 0.5rem 1rem;
+        color: #f44;
+        text-shadow:
+          #bf2626 1px 1px,
+          #801919 2px 2px,
+          #400d0d 3px 3px,
+          #000 4px 4px;
+        `
+      )
+      console.log('%cWenn du nicht weißt mit was du es hier zu tun hast dann lass es einfach. Es können Daten freigegeben werden wenn du hier was einfügst.',
+        `
+        font-size: 1.25rem;
+        background: #221808;
+        border: #fc4 solid 0.2rem;
+        border-radius: 0.7rem;
+        padding: 0.5rem 1rem;
+        `
+      )
     }
+  },
+  mounted () {
+    this.appStart()
+    if (remote.getCurrentWebContents().isDevToolsOpened) { this.devToolsWarning() }
+    remote.getCurrentWebContents().on('devtools-focused', () => this.devToolsWarning())
   }
 }
-</style>
+</script>
+
+<style src="./assets/scss/main.scss" lang="scss"></style>

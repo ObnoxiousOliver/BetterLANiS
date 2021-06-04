@@ -1,0 +1,48 @@
+/* Page Start */
+
+.start-view-component {
+  height: 100%;
+  display: flex;
+
+  .startmenu-component {
+    z-index: 1;
+    flex: 0 0 auto;
+    width: 250px;
+    box-shadow: $elevation-high;
+    background: $secondary-background;
+  }
+
+  .router-view {
+    position: relative;
+    background-color: $tertiary-background;
+    flex: 1 1;
+    width: calc(100% - 250px);
+  }
+
+  .wrapper {
+    min-height: 100%;
+    max-width: 1200px;
+    min-width: 500px;
+    margin: 0 auto;
+    padding: 30px 10px;
+    // box-shadow: #0006 0 0 20px;
+  }
+
+  h1.app-header {
+    border-bottom: $muted-foreground solid 1px;
+    padding: 0 10px;
+    margin: 0 10px 15px;
+  }
+
+  .router {
+    &-enter-active,
+    &-leave-active {
+      transition: opacity 0.1s ease-in-out;
+    }
+  
+    &-leave-to,
+    &-enter-from {
+      opacity: 0;
+    }
+  }
+}

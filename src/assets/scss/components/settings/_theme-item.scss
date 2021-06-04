@@ -1,0 +1,96 @@
+/* Theme Item */
+
+.theme-item-component {
+  position: relative;
+  display: flex;
+  gap: 10px;
+  height: 100px;
+  margin-bottom: 5px;
+  border-radius: 3px;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background: $background-modifier-hover;
+    transition: background-color 0.1s;
+
+    .theme-icon {
+      .icon-placeholder {
+        transform: scale(1.2);
+      }
+    }
+
+    .arrow {
+      transform: translateX(3px);
+      color: $secondary-foreground;
+      transition: color 0.1s, transform 0.1s;
+    }
+  }
+
+  .theme-icon {
+    flex-shrink: 0;
+    border-radius: 3px 0 0 3px;
+    overflow: hidden;
+    background: $background-modifier-selected;
+    height: 100px;
+    width: 100px;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .icon-placeholder {
+      overflow: hidden;
+      display: flex;
+      color: $secondary-foreground;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      font-size: 2.5rem;
+      transition: transform 0.5s;
+    }
+  }
+
+  .theme-info {
+    flex-grow: 1;
+    display: flex;
+    flex-flow: column nowrap;
+
+    .theme-original {
+      position: absolute;
+      z-index: 1;
+      top: 5px;
+      right: 5px;
+      color: $secondary-foreground;
+      font-size: 0.7rem;
+      transition: color 0.1s;
+
+      &:hover {
+        color: $gold;
+      }
+    }
+
+    .theme-name {
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .theme-details {
+      white-space: nowrap;
+      overflow: hidden;
+      color: $muted-foreground;
+
+      .theme-description {
+        white-space: normal;
+        color: $secondary-foreground;
+      }
+    }
+  }
+
+  .arrow {
+    display: flex;
+    align-items: center;
+    padding-right: 10px;
+    color: $muted-foreground;
+    transition: color 0.2s, transform 0.2s;
+  }
+}

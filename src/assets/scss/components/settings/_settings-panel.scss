@@ -1,0 +1,56 @@
+/* Settings Panel */
+
+.settings-panel-component {
+  z-index: 1;
+  position: fixed;
+  width: auto;
+  right: 0;
+  top: 0;
+  width: 300px;
+  padding: (32px + 10px) 5px 10px;
+  background: $secondary-background;
+  box-shadow: $elevation-high;
+  transition: transform 0.4s;
+
+  .setting-link {
+    width: 100%;
+    text-align: left;
+  }
+
+  @media screen and (max-width: 900px) {
+    &.settings-page-open {
+      transform: translateX(calc(100% - 50px));
+
+      &:not(:hover) {
+        padding-left: 0;
+
+        .setting-link {
+          width: 100%;
+          text-align: left;
+          padding-left: 0;
+      
+          .setting-icon {
+            text-align: center;
+            width: 50px;
+          }
+        }
+      }
+    }
+
+    &:hover {
+      transform: translateX(0);
+    }
+  }
+
+  &.settingspanel {
+    &-enter-active,
+    &-leave-active  {
+      transition: transform 0.3s;
+    }
+  
+    &-enter-from,
+    &-leave-to {
+      transform: translateX(100%);
+    }
+  }
+}

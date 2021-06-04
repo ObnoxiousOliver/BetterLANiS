@@ -1,0 +1,104 @@
+/* Setting Appearance */
+
+.setting-appearance-view-component {
+  .theme-select {
+    display: flex;
+    gap: 3px;
+
+    .available-themes,
+    .current-themes {
+      background: $secondary-background;
+      min-height: calc(100vh - 250px);
+      flex-grow: 1;
+      flex-basis: 50%;
+      width: calc(50% - 3px);
+      padding: 5px;
+    }
+
+    .available-themes {
+      border-radius: 5px 0 0 5px;
+
+      .theme-list-leave-to,
+      .theme-list-enter-from {
+        transform: translateX(100%);
+        clip-path: inset(0 100% 0 0);
+      }
+    }
+    .current-themes {
+      border-radius: 0 5px 5px 0;
+
+      .theme-list-leave-to,
+      .theme-list-enter-from {
+        transform: translateX(-100%);
+        clip-path: inset(0 0 0 100%);
+      }
+
+      .theme-item-component {
+        &:hover .arrow {
+          transform: rotate(180deg) translateX(6px);
+        }
+
+        .arrow {
+          transform: rotate(180deg) translateX(3px);
+        }
+      }
+    }
+
+    .theme-list {
+      &-enter-active,
+      &-leave-active {
+        transition: all 0.2s;
+        clip-path: inset(0);
+      }
+      &-enter-from,
+      &-leave-to {
+        opacity: 0;
+        margin-bottom: -100px;
+      }
+      &-move {
+        transition: transform 0.2s;
+      }
+    }
+
+  //   @media screen and (max-width: 1200px) {
+  //     height: auto;
+  //     flex-flow: column nowrap;
+
+  //     .available-themes,
+  //     .current-themes {
+  //       min-height: 300px;
+  //     }
+
+  //     .available-themes {
+  //       border-radius: 5px 5px 0 0;
+
+  //       .theme-item-component {
+  //         &:hover .arrow {
+  //           transform: rotate(90deg) translateX(6px);
+  //         }
+
+  //         .arrow {
+  //           transform: rotate(90deg) translateX(3px);
+  //         }
+  //       }
+  //     }
+  //     .current-themes {
+  //       border-radius: 0 0 5px 5px;
+
+  //       .theme-item-component {
+  //         &:hover .arrow {
+  //           transform: rotate(-90deg) translateX(6px);
+  //         }
+
+  //         .arrow {
+  //           transform: rotate(-90deg) translateX(3px);
+  //         }
+  //       }
+  //     }
+  //   }
+  }
+
+  .refresh-btn {
+    margin-bottom: 5px;
+  }
+}
