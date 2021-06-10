@@ -100,9 +100,8 @@ export default {
       this.showSettings = true
     },
     devToolsWarning () {
-      console.log('%c!!!ACHTUNG!!!',
+      console.log('%c!!!WARNUNG!!!',
         `
-        font-family: Poppins;
         font-size: 4rem;
         font-weight: 700;
         background: #220808;
@@ -121,6 +120,7 @@ export default {
         `
         font-size: 1.25rem;
         background: #221808;
+        color: #fff;
         border: #fc4 solid 0.2rem;
         border-radius: 0.7rem;
         padding: 0.5rem 1rem;

@@ -195,10 +195,9 @@ export default createStore({
     logout (store) {
       remote.session.defaultSession.clearStorageData()
       if (fs.existsSync(ACTIVE_USER_PATH)) {
-        fs.unlinkSync(ACTIVE_USER_PATH, () => {
-          store.commit('resetAll')
-        })
+        fs.unlinkSync(ACTIVE_USER_PATH)
       }
+      store.commit('resetAll')
     },
     addTheme (store, payload) {
       var using = [...store.state.theme.using]

@@ -4,6 +4,34 @@
   height: 100%;
   width: 100%;
 
+  .calendar-controls {
+    margin-bottom: 10px;
+    display: flex;
+
+    .date-info {
+      flex-grow: 1;
+      text-align: center;
+
+      .date-current-month {
+        font-size: 2rem;
+      }
+
+      .date-today {
+        cursor: pointer;
+        width: fit-content;
+        margin: 0 auto;
+        color: $secondary-foreground;
+        transition: color 0.1s;
+
+        &:hover {
+          color: $primary-foreground;
+        }
+      }
+    }
+  }
+
+  // ### CALENDAR ### //
+  /* Month View */
   .calendar.month-view {
     $header-height: 40px;
 

@@ -2,8 +2,8 @@
   <div class="timetable-view-component scroll auto">
     <div class="wrapper">
       <h1 class="app-header"><i class="bi bi-clock" /> Stundenplan</h1>
-      <div class="info">
-        <div class="date-of-today">
+      <div class="date-info">
+        <div class="date-today">
           Heute: {{ dayOfWeekString }}, {{ today.format('DD.MM.YYYY') }}
         </div>
         <tooltip placement="bottom">

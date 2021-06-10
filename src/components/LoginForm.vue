@@ -177,11 +177,12 @@
             <div class="container">
               <input
                 id="stayLoggedIn"
+                name="stayLoggedIn"
                 v-model="rememberMe"
                 type="checkbox"
                 class="input-toggle"
               >
-              <span>Angemeldet bleiben</span>
+              <label for="stayLoggedIn">Angemeldet bleiben</label>
             </div>
             <div class="container">
               <div class="no-credentials">

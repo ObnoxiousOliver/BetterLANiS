@@ -1,15 +1,37 @@
 <template>
   <div class="calendar-view-component scroll auto">
     <div class="wrapper">
-      <h1 class="app-header"><i class="bi-calendar2-week" /> Kalender</h1>
-      <bl-button
-        @click="lastMonth"
-        variant="static small"
-      >Last</bl-button>
-      <bl-button
-        @click="nextMonth"
-        variant="static small"
-      >Next</bl-button>
+      <h1 class="app-header">
+        <i class="bi-calendar2-week" /> Kalender
+      </h1>
+      <div class="calendar-controls">
+        <bl-button class="last-month" @click="lastMonth" variant="static">
+          <i class="bi bi-chevron-left" />
+        </bl-button>
+
+        <div class="date-info">
+          <h2 class="date-current-month">
+            {{ monthToString(currentMonth.month()) }}
+            {{ currentMonth.year() }}
+          </h2>
+          <tooltip class="date-today" placement="bottom">
+            <template #activator>
+              <div>
+                Heute: {{ today.format('DD.MM.YYYY') }}
+              </div>
+            </template>
+            Gehe zum
+            {{ monthToString(today.month()) }}
+            {{ today.year() }}
+          </tooltip>
+        </div>
+
+        <bl-button class="next-month" @click="nextMonth" variant="static">
+          <i class="bi bi-chevron-right" />
+        </bl-button>
+      </div>
+
+      <!-- Calendar View -->
       <div
         v-if="monthData"
         class="calendar month-view"
@@ -24,6 +46,7 @@
           <div class="cell">Samstag</div>
           <div class="cell">Sonntag</div>
         </div>
+
         <div
           v-for="(week, weekIndex) in monthData.weeks"
           :key="weekIndex"
@@ -32,6 +55,7 @@
           <div class="row-week cell">
             <span>{{ monthData.weekNumbers[weekIndex] }}</span>
           </div>
+
           <div class="row-skeleton">
             <div
               v-for="(_, dayIndex) in 7"
@@ -41,6 +65,7 @@
               <div />
             </div>
           </div>
+
           <div class="row-header">
             <div
               v-for="(date, dayIndex) in week.dates"
@@ -54,6 +79,7 @@
               {{ date.date }}
             </div>
           </div>
+
           <div class="events">
             <div
               v-for="(event, eventIndex) in week.events"
@@ -74,10 +100,12 @@
         </div>
       </div>
     </div>
+
+    <!-- Popup Modal for selected Event -->
     <Modal :active="selectedEvent" @closemodal="selectedEvent = undefined">
       <template #header>{{ selectedEvent.name }}</template>
       <div class="event-details">
-        <div v-if="selectedEvent.raw.description" class="event-description">{{ selectedEvent.raw.description }}</div>
+        <div v-if="selectedEvent.raw.description" v-html="selectedEvent.raw.description" class="event-description" />
         <div v-else class="event-no-description">Keine Beschreibung</div>
         {{ formatDate(selectedEvent.raw.Anfang) }}
       </div>
@@ -97,7 +125,13 @@ export default {
   computed: {
     ...mapState([
       'apps'
-    ])
+    ]),
+    today () {
+      return moment()
+    },
+    currentMonth () {
+      return moment(this.month)
+    }
   },
   data: () => ({
     hoveringEvent: undefined,
@@ -107,22 +141,23 @@ export default {
   }),
   methods: {
     isToday (week, day) {
-      var today = moment()
       var target = moment(this.monthData.start)
       target.date(target.date() + week * 7 + day)
-      return today.format('YYYY-MM-DD') === target.format('YYYY-MM-DD')
+      return this.today.format('YYYY-MM-DD') === target.format('YYYY-MM-DD')
     },
     nextMonth () {
       this.month = moment(this.month).month(moment(this.month).month() + 1).format('YYYY-MM-01')
-
-      manager.apps.supported.kalender.getMonth(this.month, data => {
-        this.monthData = data
-        // console.log(data)
-      })
+      this.updateCalendar()
     },
     lastMonth () {
       this.month = moment(this.month).month(moment(this.month).month() - 1).format('YYYY-MM-01')
-
+      this.updateCalendar()
+    },
+    goToTodaysMonth () {
+      this.month = this.today.format('YYYY-MM-01')
+      this.updateCalendar()
+    },
+    updateCalendar () {
       manager.apps.supported.kalender.getMonth(this.month, data => {
         this.monthData = data
         // console.log(data)
@@ -130,6 +165,23 @@ export default {
     },
     formatDate (date) {
       return moment(date).format('DD.MM.YYYY')
+    },
+    monthToString (monthIndex) {
+      var monthArray = [
+        'Januar',
+        'Februar',
+        'März',
+        'April',
+        'Mai',
+        'Juni',
+        'July',
+        'August',
+        'September',
+        'Oktober',
+        'November',
+        'Dezember'
+      ]
+      return monthArray[monthIndex]
     }
   },
   mounted () {
