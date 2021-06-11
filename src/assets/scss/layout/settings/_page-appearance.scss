@@ -1,6 +1,176 @@
 /* Setting Appearance */
 
 .setting-appearance-view-component {
+
+  .accent-color-select {
+    display: flex;
+    flex-flow: row nowrap;
+    margin-bottom: 10px;
+
+    .custom-color {
+      flex: 0 0 auto;
+      background-color: $accent;
+      transition: background-color 0.3s;
+
+      .accent-foreground-preview {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        width: 20px;
+        height: 20px;
+        background: currentColor;
+        border-radius: 50%;
+        transition: 0.2s;
+        background-color: $accent-foreground;
+      }
+
+      .icon {
+        opacity: 0;
+      }
+
+      &:hover {
+        .accent-foreground-preview {
+          opacity: 0;
+        }
+
+        .icon {
+          opacity: 1;
+        }
+      }
+    }
+
+    .color-templates {
+      display: flex;
+      position: relative;
+      height: 50px;
+      border-left: $muted-foreground solid 1px;
+      flex-grow: 1;
+      overflow: hidden;
+      transition: 0.2s;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0 0 0 auto;
+        width: 20px;
+        background: linear-gradient(90deg,
+          transparent,
+          $primary-background
+        );
+      }
+    }
+
+    .show-all-colors-button {
+      height: 100%;
+    }
+  }
+
+  .modal-component {
+    position: absolute;
+    inset: 0 300px 0 0;
+    transition: right 0.4s;
+  }
+
+  @media screen and (max-width: 900px) {
+    .modal-component {
+      position: absolute;
+      inset: 0 50px 0 0;
+    }
+  }
+
+  .custom-colors-modal {
+    .modal {
+      min-width: unset;
+      max-width: unset;
+      min-height: unset;
+      max-height: unset;
+
+      .modal-content {
+        padding: 20px 30px;
+      }
+    }
+  }
+
+  .all-template-colors {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    max-height: 40vh;
+    padding: 0 10px;
+    margin: 0 -10px;
+
+    .template-color {
+      margin: 0;
+    }
+  }
+
+  .color-button {
+    flex: 0 0 auto;
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    margin: 0 5px;
+    border-radius: 50%;
+    border: none;
+    background: currentColor;
+    cursor: pointer;
+    overflow: hidden;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-color: transparent;
+      transition: 0.1s;
+    }
+
+    .icon {
+      display: inline-block;
+      color: $accent-foreground;
+      font-size: 1.3rem;
+      transition: 0.1s;
+    }
+
+    &:hover {
+      &::after {
+        background-color: $background-modifier-hover;
+      }
+    }
+    &:active {
+      &::after {
+        background-color: $background-modifier-active;
+      }
+    }
+
+    &.template-color {
+      .accent-foreground-preview {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        width: 20px;
+        height: 20px;
+        background: currentColor;
+        border-radius: 50%;
+        transition: 0.2s;
+      }
+
+      .icon {
+        opacity: 0;
+      }
+  
+      &.active {
+        .accent-foreground-preview {
+          opacity: 0;
+        }
+
+        .icon {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
   .theme-select {
     display: flex;
     gap: 3px;

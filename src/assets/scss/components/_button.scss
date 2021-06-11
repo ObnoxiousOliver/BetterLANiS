@@ -15,7 +15,7 @@
 
   &.btn-primary {
     background-color: $accent;
-    color: $button-accent-foreground;
+    color: $accent-foreground;
 
     &.btn-gloss {
       box-shadow: 0 0 0 0 #0001 inset;
@@ -52,6 +52,7 @@
 
     &:hover:not(:disabled) {
       color: $accent;
+      background-color: $accent-foreground;
     }
 
     &:not(.btn-no-caps) {

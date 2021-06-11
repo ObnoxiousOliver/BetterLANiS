@@ -30,7 +30,7 @@
     flex-shrink: 0;
     border-radius: 3px 0 0 3px;
     overflow: hidden;
-    background: $background-modifier-selected;
+    background: $accent;
     height: 100px;
     width: 100px;
 
@@ -42,7 +42,7 @@
     .icon-placeholder {
       overflow: hidden;
       display: flex;
-      color: $secondary-foreground;
+      color: $accent-foreground;
       justify-content: center;
       align-items: center;
       height: 100%;
@@ -53,8 +53,7 @@
 
   .theme-info {
     flex-grow: 1;
-    display: flex;
-    flex-flow: column nowrap;
+    overflow: hidden;
 
     .theme-original {
       position: absolute;
@@ -75,8 +74,10 @@
       overflow: hidden;
     }
     .theme-details {
+      width: 100%;
       white-space: nowrap;
       overflow: hidden;
+      text-overflow: ellipsis;
       color: $muted-foreground;
 
       .theme-description {

@@ -27,6 +27,7 @@ export default createStore({
       unsupported: []
     },
     theme: {
+      accent: '#39f',
       using: [],
       path: 'D:/PROJECTS/03. JS ELECTRON/BetterLANiS/betterlanis-vue/themes'
     },
@@ -89,6 +90,9 @@ export default createStore({
         state.theme.using.splice(to, 0, theme)
       }
     },
+    setAccentColor (state, payload) {
+      state.theme.accent = payload
+    },
     addNotification (state, payload) {
       state.notification.all.push(payload)
       state.notification.current.push(payload)
@@ -99,6 +103,7 @@ export default createStore({
   },
   actions: {
     appStart (store) {
+      store.dispatch('setStyles')
       fetch('https://start.schulportal.hessen.de/exporteur.php?a=schoollist')
         .then(response => response.json())
         .then(data => store.commit('setSchoolList', data))
@@ -214,6 +219,10 @@ export default createStore({
       store.commit('moveTheme', payload)
       store.dispatch('setStyles')
     },
+    setAccentColor (store, payload) {
+      store.commit('setAccentColor', payload)
+      store.dispatch('setStyles')
+    },
     setStyles (store) {
       var el = document.querySelector('#themes')
       if (!el) {
@@ -229,6 +238,39 @@ export default createStore({
           el.innerHTML += `/* ${theme.name} */\n${css}\n`
         }
       })
+
+      function getContrastYIQ (hexcolor) {
+        function hexToRGB (h) {
+          let r = 0
+          let g = 0
+          let b = 0
+
+          // 3 digits
+          if (h.length === 4) {
+            r = '0x' + h[1] + h[1]
+            g = '0x' + h[2] + h[2]
+            b = '0x' + h[3] + h[3]
+
+          // 6 digits
+          } else if (h.length === 7) {
+            r = '0x' + h[1] + h[2]
+            g = '0x' + h[3] + h[4]
+            b = '0x' + h[5] + h[6]
+          }
+
+          return {
+            r: parseInt(r),
+            g: parseInt(g),
+            b: parseInt(b)
+          }
+        }
+
+        var rgb = hexToRGB(hexcolor)
+        var yiq = ((rgb.r * 240) + (rgb.g * 450) + (rgb.b * 60)) / 1000
+        return (yiq >= 128) ? '#000000' : '#ffffff'
+      }
+
+      el.innerHTML += `:root { --accent: ${store.state.theme.accent}; --accent-foreground: ${getContrastYIQ(store.state.theme.accent)}; }`
     },
     notify ({ commit, state }, payload) {
       payload.id = state.notification.all.length

@@ -16,7 +16,7 @@
           </h2>
           <tooltip class="date-today" placement="bottom">
             <template #activator>
-              <div>
+              <div tabindex="0" @click="goToTodaysMonth">
                 Heute: {{ today.format('DD.MM.YYYY') }}
               </div>
             </template>
@@ -91,6 +91,7 @@
               @mouseenter="hoveringEvent = event.id"
               @mouseleave="hoveringEvent = undefined"
               @click="selectedEvent = event"
+              tabindex="0"
             >
               <div>
                 {{ event.name }}
