@@ -6,34 +6,25 @@
   align-items: center;
   height: 100%;
   position: relative;
+  text-align: center;
 
-  .content {
-    text-align: center;
-    padding: 20px;
+  .user-avatar {
+    background-image: url(https://start.schulportal.hessen.de/benutzerverwaltung.php?a=userFoto&b=show);
+    background-size: cover;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 0 auto;
+    box-shadow: $accent-foreground 0 0 0 5px;
+    animation: breath 1.5s ease-in-out infinite;
 
-    .avatar {
-      background-image: url(https://start.schulportal.hessen.de/benutzerverwaltung.php?a=userFoto&b=show);
-      background-size: cover;
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      margin: 0 auto 30px;
-      box-shadow: $accent 0 0 0 5px;
-      animation: breath 2s ease-in-out infinite;
-
-      @keyframes breath {
-        0%, 100% {
-          box-shadow: $accent 0 0 0 2px;
-        }
-        50% {
-          box-shadow: $accent 0 0 0 4px;
-        }
+    @keyframes breath {
+      0%, 100% {
+        box-shadow: $accent-foreground 0 0 0 2px;
       }
-    }
-
-    h3 {
-      font-weight: 700;
-      border-bottom: $muted-foreground solid 2px;
+      50% {
+        box-shadow: $accent-foreground 0 0 0 4px;
+      }
     }
   }
 }

@@ -91,7 +91,7 @@
     width: 16px;
     height: 16px;
     border-radius: 8px;
-    transition: all 0.2s;
+    transition: 0.2s;
   }
 
   &:active {
@@ -102,7 +102,6 @@
 
   &:hover:not(:disabled) {
     background-color: $button-highlight;
-    transition: all 0.1s ease-in-out;
 
     &::after {
       background: $button-highlight-foreground;
@@ -113,20 +112,92 @@
     background-color: $accent;
 
     &::after {
-      background-color: $button-highlight;
+      background-color: $accent-foreground;
       left: 100%;
       transform: translateX(-100%);
     }
 
     &:hover:not(:disabled) {
-      background-color: $button-highlight;
+      background-color: $accent-foreground;
+
       &::after {
         background-color: $accent;
       }
     }
 
     &:focus-visible {
-      border-color: $button-highlight;
+      border-color: $accent-foreground;
+    }
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+
+  &:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+.input-checkbox {
+  appearance: none;
+  background: $button;
+  position: relative;
+  border-radius: 3px;
+  border: 2px solid transparent;
+  margin: -4px 0;
+  width: 20px;
+  height: 20px;
+  transition: all 0.2s ease-in-out;
+  text-align: center;
+
+  &:focus-visible {
+    outline: none;
+    border-color: $accent;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: $button-highlight;
+    transition: all 0.1s ease-in-out;
+
+  }
+
+  &::after {
+    content: "\f00c";
+    font-family: "Font Awesome 5 Free";
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    line-height: 16px;
+    transition: opacity 0.2s;
+  }
+
+  &:checked {
+    background-color: $accent;
+    color: $accent-foreground;
+
+    &::after {
+      opacity: 1;
+    }
+
+    &:hover:not(:disabled) {
+      background-color: $accent-foreground;
+
+      &::after {
+        color: $accent;
+      }
+    }
+
+    &:focus-visible {
+      border-color: $accent-foreground;
     }
   }
 

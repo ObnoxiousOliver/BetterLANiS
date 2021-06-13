@@ -2,7 +2,7 @@
   <div class="home-view-component scroll auto">
     <div class="wrapper">
       <h1 class="app-header"><i class="fas fa-home" /> Startseite</h1>
-      <div class="card warning">
+      <div class="card card-warning card-low">
         <div class="card-header">
           <i class="fas fa-exclamation-triangle"/> Achtung
         </div>
@@ -15,12 +15,15 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'Home',
   computed: {
     ...mapState(['apps'])
+  },
+  methods: {
+    ...mapActions(['notify'])
   }
 }
 </script>

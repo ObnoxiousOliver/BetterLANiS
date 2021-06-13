@@ -6,7 +6,7 @@
         variant="static transparent"
         :class="['setting-link', activePage === 'Appearance' ? 'page-active' : '']"
       >
-        <i class="setting-icon fas fa-palette" /> Appearance
+        <i class="setting-icon fas fa-swatchbook" /> Appearance
       </bl-button>
     </div>
   </div>

@@ -5,25 +5,24 @@
       @mouseleave="userDropdownOpen = false"
       class="user-info"
     >
-      <div class="avatar" />
-      <div class="dropdown">
-        <h4 class="dropdown-head">
-          {{ loggedInUser.firstName }} {{ loggedInUser.lastName }}
-        </h4>
-        <i class="arrow bi bi-chevron-down" />
-        <transition name="dropdown-body">
-          <div
-            v-if="userDropdownOpen"
-            class="dropdown-body"
-          >
-            <bl-button @click="$emit('userinfo')" variant="transparent static"><i class="bi bi-person-fill"/> Benutzerinfo</bl-button>
-            <div class="divider"></div>
-            <bl-button @click="$emit('logout')" variant="transparent static error">Abmelden <i class="fas fa-sign-out-alt"/></bl-button>
-          </div>
-        </transition>
-      </div>
+      <!-- <div class="user-backdrop" /> -->
+      <div class="user-avatar" />
+      <h1 class="user-name">
+        {{ loggedInUser.firstName }} {{ loggedInUser.lastName }}
+      </h1>
+      <button
+        @click="$refs.userContextMenu.open()"
+        class="user-menu-button context-menu-button"
+      >
+        <i class="bi-chevron-down" />
+      </button>
+      <context-menu ref="userContextMenu">
+        <button @click="$emit('userinfo')"><i class="bi bi-person-fill"/> Benutzerinfo</button>
+        <div class="divider" />
+        <button @click="$emit('logout')" class="error">Abmelden <i class="fas fa-sign-out-alt"/></button>
+      </context-menu>
     </div>
-    <div class="scroll y auto thin">
+    <div class="app-list scroll y auto thin">
       <bl-button
         id="home"
         class="app-button"

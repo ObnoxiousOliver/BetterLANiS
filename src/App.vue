@@ -130,6 +130,8 @@ export default {
   },
   mounted () {
     this.appStart()
+
+    // Add Eventlisteners for DevTools Warnings
     if (remote.getCurrentWebContents().isDevToolsOpened) { this.devToolsWarning() }
     remote.getCurrentWebContents().on('devtools-focused', () => this.devToolsWarning())
   }

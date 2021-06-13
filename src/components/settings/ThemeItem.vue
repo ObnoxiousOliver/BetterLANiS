@@ -1,5 +1,5 @@
 <template>
-  <div tabindex="0" class="theme-item-component">
+  <div class="theme-item-component">
     <div class="theme-icon">
       <img
         v-if="theme.icon64"

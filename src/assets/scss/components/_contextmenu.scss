@@ -22,11 +22,12 @@
       padding: 0.2rem 1rem;
       font: 400 1rem $font;
       letter-spacing: 0.1em;
+      cursor: pointer;
       transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 
       &:hover:not(:disabled) {
         color: $button-highlight-foreground;
-        background-color: $button-highlight;
+        background: $button-highlight;
         transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
       }
 
@@ -39,6 +40,15 @@
         i.arrow {
           position: absolute;
           right: 5px;
+        }
+      }
+
+      &.error {
+        color: $error;
+
+        &:hover:not(:disabled) {
+          color: $error-foreground;
+          background: $error;
         }
       }
     }
@@ -90,5 +100,25 @@
   }
   &-leave-to {
     opacity: 0;
+  }
+}
+
+.context-menu-button {
+  background: none;
+  color: inherit;
+  width: 35px;
+  height: 35px;
+  border: none;
+  border-radius: 50%;
+  font-size: 1rem;
+  transition: 0.1s;
+
+  &:hover, &:focus-visible {
+    background-color: $background-modifier-hover;
+    outline: none;
+  }
+
+  &:active {
+    background-color: $background-modifier-active;
   }
 }

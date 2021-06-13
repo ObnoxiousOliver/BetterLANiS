@@ -70,7 +70,7 @@
       display: grid;
       grid-template-rows: auto auto 1fr;
       grid-template-columns: 50px 1fr;
-      min-height: 100px;
+      min-height: 98px;
       gap: 0 1px;
 
       .row-week {
@@ -154,9 +154,10 @@
         position: relative;
         pointer-events: all;
         background-color: $accent;
-        border: #fff solid 2px;
+        color: $accent-foreground;
         border-radius: 3px;
         height: 30px;
+        line-height: 30px;
         cursor: pointer;
         transition-property: background-color, border-color, color;
         transition-duration: 0.2s;
@@ -164,12 +165,8 @@
 
         div {
           padding: 0 10px;
-          line-height: 26px;
           position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
+          inset: 0;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -177,7 +174,6 @@
 
         &.active {
           background-color: $button-highlight;
-          border-color: $button-highlight;
           color: $button-highlight-foreground;
         }
 
@@ -191,11 +187,11 @@
           }
 
           &::before {
-            content: "";
+            content: '';
             position: absolute;
-            top: -2px;
-            bottom: -2px;
+            top: 0;
             left: 0;
+            bottom: 0;
             width: 30px;
             background: $tertiary-background;
             mask-image: linear-gradient(
@@ -229,11 +225,11 @@
           }
 
           &::after {
-            content: "";
+            content: '';
             position: absolute;
-            top: -2px;
-            bottom: -2px;
+            top: 0;
             right: 0;
+            bottom: 0;
             width: 30px;
             background: $tertiary-background;
             mask-image: linear-gradient(

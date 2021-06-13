@@ -15,7 +15,7 @@
               variant="transparent small static"
               @click="school.showMenu = false"
             >
-              <i class="fas fa-chevron-left" />
+              <i class="bi bi-chevron-left" />
             </bl-button>
             Schulauswahl
           </div>
@@ -79,7 +79,7 @@
                       school.openDistrict === district.Name ? 'open' : '',
                     ]"
                   >
-                    <i class="fas fa-chevron-down" />
+                    <i class="bi bi-chevron-down" />
                   </div>
                   <h2 class="district-name">
                     {{ district.Name }}
@@ -199,27 +199,9 @@
                 id="loginBtn"
                 variant="primary gloss"
                 @click="submit()"
-                @contextmenu.prevent="$refs.menu.open()"
               >
                 Einloggen <i class="fas fa-sign-in-alt" />
               </bl-button>
-              <context-menu ref="menu">
-                <context-submenu>Hello
-                  <template #menu>
-                    <button>Hello</button>
-                    <button>Hello</button>
-                    <button>Hello</button>
-                  </template>
-                </context-submenu>
-                <context-submenu>Hello
-                  <template #menu>
-                    <button>Hello</button>
-                    <button>Hello</button>
-                    <button>Hello</button>
-                  </template>
-                </context-submenu>
-                <button>Hello</button>
-              </context-menu>
               <div class="buttons">
                 <bl-button
                   id="schoolSelectBtn"

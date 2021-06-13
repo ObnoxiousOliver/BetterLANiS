@@ -9,7 +9,12 @@
   .settings-page {
     max-width: 1000px;
     margin: 0 auto;
-    padding: 10px;
+    height: 100%;
+
+    & > * {
+      padding: 10px;
+      height: 100%;
+    }
 
     .setting-page-header {
       border-bottom: $muted-foreground solid 1px;

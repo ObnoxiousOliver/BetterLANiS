@@ -134,30 +134,44 @@ ul {
   flex-flow: column nowrap;
   background: $secondary-background;
   margin: 5px;
-  padding: 15px 20px;
   border-radius: 5px;
   box-shadow: $elevation-high;
-
-  &.warning {
-    background-color: $warning-background;
-    border: $warning solid 2px;
-  }
-  &.error {
-    background-color: $error-background;
-    border: $error solid 2px;
-  }
+  overflow: hidden;
 
   .card-header {
     font-family: $header-font;
     font-size: 2rem;
     font-weight: 200;
-    padding-bottom: 5px;
+    padding: 15px 20px;
     margin-bottom: 15px;
-    border-bottom: $background-modifier-hover solid 1px;
+    background: $accent;
+    color: $accent-foreground;
+    box-shadow: $elevation-low;
+    border-bottom: $accent-foreground solid 2px;
   }
 
   .card-body {
+    padding: 0 20px 15px;
     overflow: hidden;
+  }
+
+  &.card-warning {
+    .card-header {
+      background-color: $warning-background;
+      color: $warning;
+      border-bottom: $warning solid 2px;
+    }
+  }
+  &.card-error {
+    .card-header {
+      background-color: $error-background;
+      color: $error;
+      border-bottom: $error solid 2px;
+    }
+  }
+
+  &.card-low {
+    box-shadow: $elevation-medium;
   }
 }
 

@@ -39,9 +39,9 @@ async function createWindow () {
     title: 'Better LANiS',
     frame: false,
     height: 850,
-    width: 700,
+    width: 900,
     minHeight: 700,
-    minWidth: 550,
+    minWidth: 900,
     backgroundColor: '#111',
     // transparent: true,
     webPreferences: {

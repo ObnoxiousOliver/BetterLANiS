@@ -6,7 +6,7 @@
       </h1>
       <div class="calendar-controls">
         <bl-button class="last-month" @click="lastMonth" variant="static">
-          <i class="bi bi-chevron-left" />
+          <i class="bi-chevron-left" />
         </bl-button>
 
         <div class="date-info">
@@ -27,7 +27,7 @@
         </div>
 
         <bl-button class="next-month" @click="nextMonth" variant="static">
-          <i class="bi bi-chevron-right" />
+          <i class="bi-chevron-right" />
         </bl-button>
       </div>
 
@@ -91,7 +91,7 @@
               @mouseenter="hoveringEvent = event.id"
               @mouseleave="hoveringEvent = undefined"
               @click="selectedEvent = event"
-              tabindex="0"
+              :tabindex="selectedEvent ? -1 : 0"
             >
               <div>
                 {{ event.name }}

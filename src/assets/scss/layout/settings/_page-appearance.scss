@@ -40,24 +40,11 @@
     }
 
     .color-templates {
-      display: flex;
+      flex-grow: 1;
       position: relative;
       height: 50px;
       border-left: $muted-foreground solid 1px;
-      flex-grow: 1;
       overflow: hidden;
-      transition: 0.2s;
-      
-      &::after {
-        content: '';
-        position: absolute;
-        inset: 0 0 0 auto;
-        width: 20px;
-        background: linear-gradient(90deg,
-          transparent,
-          $primary-background
-        );
-      }
     }
 
     .show-all-colors-button {
@@ -84,28 +71,67 @@
       max-width: unset;
       min-height: unset;
       max-height: unset;
+      width: 500px;
 
       .modal-content {
-        padding: 20px 30px;
+        display: flex;
+        gap: 10px;
+        padding: 20px 25px;
+      }
+    }
+
+    .color-picker-component {
+      flex: 0 0 auto;
+    }
+
+    .custom-color-templates {
+      flex-grow: 1;
+      display: flex;
+      flex-flow: column nowrap;
+
+      .add-color-button {
+        font-size: 1.3rem;
+        line-height: 26px;
+      }
+
+      .template-colors {
+        margin: 5px -5px 0;
+        height: 0;
+        flex-grow: 1;
+
+        .template-color {
+          margin: 5px;
+          border-radius: 3px;
+          width: calc(20% - 10px);
+          height: 25px;
+        }
+
+        .divider {
+          margin-bottom: 5px;
+        }
       }
     }
   }
 
+  .divider {
+    color: $secondary-foreground;
+    margin-bottom: 10px;
+    padding: 0 5px;
+    border-bottom: currentColor solid 1px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
   .all-template-colors {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
     max-height: 40vh;
-    padding: 0 10px;
-    margin: 0 -10px;
 
     .template-color {
-      margin: 0;
+      margin-bottom: 10px;
     }
+
   }
 
   .color-button {
-    flex: 0 0 auto;
     position: relative;
     display: inline-block;
     width: 50px;

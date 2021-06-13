@@ -1,12 +1,13 @@
 <template>
   <div class="welcome-view-component">
     <div class="card">
+      <div class="card-header">
+        <div class="user-backdrop" />
+        <div class="user-avatar" />
+      </div>
       <div class="card-body">
-        <div class="content">
-          <div class="avatar" />
-          <h3>Welcome</h3>
-          <h1>{{ loggedInUser.firstName }} {{ loggedInUser.lastName }}</h1>
-        </div>
+        <h3>Welcome</h3>
+        <h1>{{ loggedInUser.firstName }} {{ loggedInUser.lastName }}</h1>
       </div>
     </div>
   </div>
@@ -29,7 +30,7 @@ export default {
       'setApps'
     ])
   },
-  created () {
+  mounted () {
     manager.isLoggedIn((success) => {
       if (success) {
         this.setApps(() => {

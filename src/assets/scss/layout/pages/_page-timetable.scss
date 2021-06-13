@@ -32,6 +32,7 @@
 
       .active {
         background: $accent;
+        color: $accent-foreground;
       }
     }
   }
@@ -62,6 +63,12 @@
     cursor: default;
     text-align: center;
 
+    .timetable-data {
+      width: percentage(1 / 6);
+      border: $muted-foreground solid 1px;
+      transition: background-color 0.1s;
+    }
+
     .timetable-header {
       font-family: $header-font;
       font-size: 1.1rem;
@@ -78,12 +85,6 @@
         right: 10%;
         height: 4px;
       }
-    }
-
-    .timetable-data {
-      width: percentage(1 / 6);
-      border: $muted-foreground solid 1px;
-      transition: background-color 0.1s;
     }
 
     .timetable-time {
@@ -120,7 +121,7 @@
 
         &.active {
           border-color: $accent;
-          background: $primary-background;
+          background: $secondary-background;
           transition: all 0.5s 0.2s;
         }
         &:hover {
@@ -156,6 +157,7 @@
 
           &.active {
             background: $accent;
+            color: $accent-foreground;
           }
         }
       }

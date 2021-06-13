@@ -71,6 +71,7 @@
       height: 20px;
       line-height: 20px;
       margin-bottom: 10px;
+      color: $error;
 
       & > div {
         margin: 0 6px;
@@ -118,6 +119,10 @@
       .input-field {
         width: 100%;
       }
+    }
+
+    .scroll {
+      height: 100%;
     }
 
     .nothing-found {
@@ -207,24 +212,25 @@
 
   .not-filled-warning {
     &-enter-active {
-      animation: wiggle .5s;
+      animation: wiggle .6s forwards;
     }
 
     @keyframes wiggle {
       10% {
         transform: translateX(-6px);
+        color: $primary-foreground;
+      }
+      30% {
+        transform: translateX(4px);
         color: $error;
       }
-      40% {
-        transform: translateX(4px);
-        color: inherit;
+      50% {
+        transform: translateX(-2px);
+        color: $primary-foreground;
       }
       70% {
-        transform: translateX(-2px);
-        color: $error;
-      }
-      100% {
         transform: translateX(0);
+        color: $error;
       }
     }
   }

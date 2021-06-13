@@ -34,6 +34,7 @@ $success-background: var(--success-background);
 $success-foreground: var(--success-foreground);
 
 $button: var(--button);
+$button-foreground: var(--button-foreground);
 $button-highlight: var(--button-highlight);
 $button-highlight-foreground: var(--button-highlight-foreground);
 
@@ -66,8 +67,8 @@ $header-font: var(--header-font);
   --popup-foreground: #fff;
 
   --primary-foreground: #fff;
-  --secondary-foreground: #777;
-  --muted-foreground: #444;
+  --secondary-foreground: #757575;
+  --muted-foreground: #626262;
 
   --warning: #fc4;
   --warning-background: #221808;
@@ -82,6 +83,7 @@ $header-font: var(--header-font);
   --success-foreground: #fff;
 
   --button: #000;
+  --button-foreground: #fff;
   --button-highlight: #fff;
   --button-highlight-foreground: #000;
 

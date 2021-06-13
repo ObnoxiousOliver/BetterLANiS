@@ -20,8 +20,8 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    background: $popup-background;
-    color: $popup-foreground;
+    background: $primary-background;
+    color: $primary-foreground;
     border-radius: 5px;
     box-shadow: $elevation-high;
     max-width: 600px;
@@ -36,6 +36,7 @@
       padding: 15px 20px 15px 30px;
       margin-bottom: 0;
       box-shadow: $elevation-low;
+      border-bottom: $accent-foreground solid 2px;
     }
 
     .modal-content {
@@ -74,7 +75,7 @@
       border-radius: 50%;
       opacity: 1;
       cursor: pointer;
-      transition: background-color 0.2s, opacity 0.2s;
+      transition: 0.2s;
 
       &::before {
         content: '';
@@ -85,9 +86,12 @@
         bottom: -10px;
       }
 
-      &:hover {
+      &:hover, &:focus-within {
         background: $error;
+        color: $error-foreground;
         opacity: 1;
+
+        outline: none;
       }
     }
 
@@ -106,6 +110,30 @@
       td:last-child {
         text-align: end;
       }
+    }
+  }
+
+  &.modal-error {
+    .modal-header {
+      background: $error-background;
+      color: $error;
+      border-bottom: $error solid 2px;
+    }
+
+    .modal-close-btn {
+      color: $error;
+    }
+  }
+
+  &.modal-warning {
+    .modal-header {
+      background: $warning-background;
+      color: $warning;
+      border-bottom: $warning solid 2px;
+    }
+
+    .modal-close-btn {
+      color: $warning;
     }
   }
 

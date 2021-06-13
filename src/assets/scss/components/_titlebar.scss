@@ -143,6 +143,32 @@
         opacity: 0;
       }
     }
+
+    // .title {
+    //   text-shadow: black 0 0 5px, black 0 0 15px;
+    // }
+
+    // &::before {
+    //   z-index: -1;
+    //   content: '';
+    //   position: absolute;
+    //   left: -25px;
+    //   width: 140px;
+    //   height: 100%;
+    //   background: linear-gradient(90deg,
+    //   #ffffff percentage(2/13), #ffffff percentage(3/13),
+    //   #ffafc8 percentage(3/13) + 1, #ffafc8 percentage(4/13),
+    //   #74d7ee percentage(4/13) + 1, #74d7ee percentage(5/13),
+    //   #744822 percentage(5/13) + 1, #744822 percentage(6/13),
+    //   #353535 percentage(6/13) + 1, #353535 percentage(7/13),
+    //   #e64b4b percentage(7/13) + 1, #e64b4b percentage(8/13),
+    //   #ffaa42 percentage(8/13) + 1, #ffaa42 percentage(9/13),
+    //   #fff459 percentage(9/13) + 1, #fff459 percentage(10/13),
+    //   #31c55e percentage(10/13) + 1, #31c55e percentage(11/13),
+    //   #6090ff percentage(11/13) + 1, #6090ff percentage(12/13),
+    //   #c44cda percentage(12/13) + 1);
+    //   transform: skewX(-20deg);
+    // }
   }
 
   &.windowstate-maximized .dragable-window {

@@ -8,7 +8,10 @@
         </transition>
       </router-view>
     </div>
-    <Modal :active="userinfoOpen" @closemodal="userinfoOpen = false">
+    <Modal
+      :active="userinfoOpen"
+      @closemodal="userinfoOpen = false"
+    >
       <template #header><i class="bi bi-person-fill"/> Benuterinfo</template>
       <div class="user-info-panel">
         <table>
@@ -51,7 +54,11 @@
         </table>
       </div>
     </Modal>
-    <Modal :active="logoutConfirmOpen" @closemodal="logoutConfirmOpen = false">
+    <Modal
+      :active="logoutConfirmOpen"
+      @closemodal="logoutConfirmOpen = false"
+      variant="error"
+    >
       <template #header>Abmelden <i class="fas fa-sign-out-alt"/></template>
       <div class="logout-confirm">
         Bist du sicher, dass du dich abmelden möchtest?<br>
