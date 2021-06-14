@@ -10,6 +10,7 @@
           Diese Version steht noch unter starker Entwickelung.
         </div>
       </div>
+      <!-- {{ $t('message') }} -->
     </div>
   </div>
 </template>

@@ -12,24 +12,31 @@
     color: $accent-foreground;
     padding: 20px 15px;
     box-shadow: $elevation-low;
-    border-bottom: $accent-foreground solid 2px;
 
-    // .user-backdrop {
+    // &::before {
     //   z-index: -1;
+    //   content: '';
     //   position: absolute;
-    //   inset: 0;
-    //   opacity: 0.2;
-    //   overflow: hidden;
-      
-    //   &::after {
-    //     content: '';
-    //     position: absolute;
-    //     inset: -100px;
-    //     background-image: url(https://start.schulportal.hessen.de/benutzerverwaltung.php?a=userFoto&b=show);
-    //     background-size: cover;
-    //     background-position: center;
-    //     filter: blur(10px);
-    //   }
+    //   top: 0;
+    //   left: -10px;
+    //   width: 125px;
+    //   height: 100%;
+    //   background: $accent;
+    //   transform-origin: center 0;
+    //   transform: skewX(-15deg);
+    // }
+
+    // &::after {
+    //   z-index: -1;
+    //   content: '';
+    //   position: absolute;
+    //   top: 0;
+    //   left: -10px;
+    //   width: 126px;
+    //   height: 100%;
+    //   background: linear-gradient(#0000, $primary-background);
+    //   transform-origin: center 0;
+    //   transform: skewX(-15deg);
     // }
 
     .user-avatar {

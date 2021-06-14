@@ -1,6 +1,6 @@
 <template>
   <div class="login-view-component">
-    <div class="login-backdrop">
+    <!-- <div class="login-backdrop">
       <div class="backdrop-element"></div>
       <div class="backdrop-element"></div>
       <div class="backdrop-element"></div>
@@ -11,13 +11,15 @@
       <div class="backdrop-element"></div>
       <div class="backdrop-element"></div>
       <div class="backdrop-element"></div>
-    </div>
+    </div> -->
     <fieldset :disabled="disableForm">
       <LoginForm
         ref="loginForm"
         @submit="formSubmitted"
       />
     </fieldset>
+
+    {{ $t('message') }}
   </div>
 </template>
 
@@ -110,6 +112,9 @@ export default {
         } else {
           this.disableForm = false
           this.$refs.loginForm.wrongPassword()
+          if (fs.existsSync(ACTIVE_USER_PATH)) {
+            fs.unlinkSync(ACTIVE_USER_PATH)
+          }
         }
       })
     }

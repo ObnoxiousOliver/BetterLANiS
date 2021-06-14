@@ -19,9 +19,4 @@ module.exports = {
     'no-debugger': 'off',
     'vue/no-multiple-template-root': 'off'
   },
-
-  extends: [
-    'plugin:vue/essential',
-    '@vue/standard'
-  ]
 }
