@@ -29,12 +29,14 @@ export default {
     open () {
       this.contextOpen = true
       document.addEventListener('mousedown', this.close)
+      document.addEventListener('keydown', this.close)
 
       const x = window.event.clientX
       const y = window.event.clientY
 
       setTimeout(() => {
         var contextMenu = this.$refs.contextMenu
+
         this.contextShow = true
         createPopper(this.target || {
           getBoundingClientRect: () => ({
@@ -46,6 +48,10 @@ export default {
             bottom: y
           })
         }, contextMenu, { placement: this.target ? 'right-start' : 'bottom-start' })
+
+        setTimeout(() => {
+          this.$refs.contextMenu.querySelector('.menu-content > button:not([disabled]), .menu-content > a:not([disabled])').focus()
+        })
       })
     },
     close (e) {

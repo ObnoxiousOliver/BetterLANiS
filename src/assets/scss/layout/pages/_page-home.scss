@@ -2,4 +2,55 @@
 
 .home-view-component {
   height: 100%;
+
+  .card {
+    margin: 20px 5px;
+  }
+
+  .section-header {
+    padding: 10px 10px 5px;
+    margin-bottom: 10px;
+    color: $muted-foreground;
+    border-bottom: currentColor solid 1px;
+  }
+
+  .app-card-list {
+    padding: 5px 10px;
+
+    & > div {
+      display: flex;
+      width: min-content;
+    }
+
+    .app-card-component {
+      margin-right: 10px;
+    }
+
+    .app {
+      &-enter-active,
+      &-leave-active {
+        transition: margin 0.3s, opacity 0.2s;
+      }
+      &-enter-from,
+      &-leave-to {
+        opacity: 0;
+        margin: 0 -160px 0 0;
+      }
+      &-move {
+        transition: transform 0.2s;
+      }
+    }
+  }
+
+  .no-favorites {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    color: $secondary-foreground;
+    text-align: center;
+    width: 100%;
+    height: 208px;
+    line-height: 2.5rem;
+  }
 }

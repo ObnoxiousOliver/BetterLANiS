@@ -68,5 +68,13 @@ export default {
   },
   removeNotificationFromCurrent (state, payload) {
     state.notification.current.splice(payload, 1)
+  },
+  addFavoriteApp (state, payload) {
+    if (!state.apps.favorites.includes(payload)) {
+      state.apps.favorites.push(payload)
+    }
+  },
+  removeFavoriteApp (state, payload) {
+    state.apps.favorites.splice(state.apps.favorites.indexOf(payload), 1)
   }
 }

@@ -1,133 +1,135 @@
 <template>
   <div class="setting-appearance-view-component scroll y auto">
-    <fieldset :disabled="accentColorsOpen || customColorOpen">
-      <h1 class="setting-page-header">Aussehen</h1>
-      <div class="accent-color-select">
-        <tooltip placement="bottom">
-          <template #activator>
-            <button @click="openCustomColor" class="color-button custom-color">
-              <i class="icon bi-eyedropper" />
-              <div class="accent-foreground-preview" />
-            </button>
-          </template>
-          <span class="custom-color-tooltip">
-            Eigene Farbe wählen
-          </span>
-        </tooltip>
-        <div class="color-templates">
-          <button
-            @click="setAccentColor(template)"
-            v-for="template in allAccentColors"
-            :key="template"
-            :class="['color-button', 'template-color', theme.accent === template ? 'active' : '']"
-            :style="{ color: template }"
-          >
-            <i class="icon bi-check2" />
-            <div class="accent-foreground-preview" :style="{ color: getContrastYIQ(template) }" />
-          </button>
-        </div>
-        <tooltip placement="bottom">
-          <template #activator>
-            <bl-button
-              @click="accentColorsOpen = true"
-              class="show-all-colors-button"
-              variant="static transparent"
+    <div class="wrapper">
+      <fieldset :disabled="accentColorsOpen || customColorOpen">
+        <h1 class="setting-page-header">Aussehen</h1>
+        <div class="accent-color-select">
+          <tooltip placement="bottom">
+            <template #activator>
+              <button @click="openCustomColor" class="color-button custom-color">
+                <i class="icon bi-eyedropper" />
+                <div class="accent-foreground-preview" />
+              </button>
+            </template>
+            <span class="custom-color-tooltip">
+              Eigene Farbe wählen
+            </span>
+          </tooltip>
+          <div class="color-templates">
+            <button
+              @click="setAccentColor(template)"
+              v-for="template in allAccentColors"
+              :key="template"
+              :class="['color-button', 'template-color', theme.accent === template ? 'active' : '']"
+              :style="{ color: template }"
             >
-              <i class="bi-chevron-down" />
-            </bl-button>
-          </template>
-          Mehr Farben anzeigen
-        </tooltip>
-      </div>
-
-      <div class="theme-select">
-        <div class="available-themes">
-          <transition-group
-            name="theme-list"
-            tag="div"
-            class="list-animator"
-          >
-            <ThemeItem
-              v-for="theme in availableThemes"
-              @click="addThemeClick(theme)"
-              @contextmenu="selectedAvailableTheme = theme; $refs.availableThemeContextMenu.open()"
-              :key="theme.path"
-              :theme="theme"
-              :original="theme.author === 'ObnoxiousOliver'"
-              :tabindex="accentColorsOpen || customColorOpen ? -1 : 0"
-            />
-          </transition-group>
-          <context-menu ref="availableThemeContextMenu">
-            <button @click="addThemeClick(selectedAvailableTheme)"><i class="bi bi-plus" /> Hinzufügen</button>
-            <div class="divider" />
-            <button @click="openInFolder(selectedAvailableTheme)"><i class="far fa-folder" /> Themes-Ordner öffnen</button>
-          </context-menu>
+              <i class="icon bi-check2" />
+              <div class="accent-foreground-preview" :style="{ color: color.getContrastYIQ(template) }" />
+            </button>
+          </div>
+          <tooltip placement="bottom">
+            <template #activator>
+              <bl-button
+                @click="accentColorsOpen = true"
+                class="show-all-colors-button"
+                variant="transparent"
+              >
+                <i class="bi-chevron-down" />
+              </bl-button>
+            </template>
+            Mehr Farben anzeigen
+          </tooltip>
         </div>
 
-        <div class="current-themes">
-          <transition-group
-            name="theme-list"
-            tag="div"
-            class="list-animator"
-          >
+        <div class="theme-select">
+          <div class="available-themes">
+            <transition-group
+              name="theme-list"
+              tag="div"
+              class="list-animator"
+            >
+              <ThemeItem
+                v-for="theme in availableThemes"
+                @click="addThemeClick(theme)"
+                @contextmenu="selectedAvailableTheme = theme; $refs.availableThemeContextMenu.open()"
+                :key="theme.path"
+                :theme="theme"
+                :original="theme.author === 'ObnoxiousOliver'"
+                :tabindex="accentColorsOpen || customColorOpen ? -1 : 0"
+              />
+            </transition-group>
+            <context-menu ref="availableThemeContextMenu">
+              <button @click="addThemeClick(selectedAvailableTheme)"><i class="bi bi-plus" /> Hinzufügen</button>
+              <div class="divider" />
+              <button @click="openInFolder(selectedAvailableTheme)"><i class="far fa-folder" /> Themes-Ordner öffnen</button>
+            </context-menu>
+          </div>
+
+          <div class="current-themes">
+            <transition-group
+              name="theme-list"
+              tag="div"
+              class="list-animator"
+            >
+              <ThemeItem
+                v-for="theme in currentThemes"
+                @click="removeThemeClick(theme)"
+                @contextmenu="selectedCurrentTheme = theme; $refs.currentThemeContextMenu.open()"
+                :key="theme.path"
+                :theme="theme"
+                :original="theme.author === 'ObnoxiousOliver'"
+                :draggable="currentThemes.length > 1"
+                :tabindex="accentColorsOpen || customColorOpen ? -1 : 0"
+              />
+            </transition-group>
+            <context-menu ref="currentThemeContextMenu">
+              <button
+                v-if="selectedCurrentTheme"
+                @click="moveThemeUp(selectedCurrentTheme)"
+                :disabled="theme.using.indexOf(selectedCurrentTheme) >= theme.using.length - 1"
+              >
+                <i class="bi-chevron-up" /> Nach Oben
+              </button>
+              <button
+                v-if="selectedCurrentTheme"
+                @click="moveThemeDown(selectedCurrentTheme)"
+                :disabled="theme.using.indexOf(selectedCurrentTheme) <= 0"
+              >
+                <i class="bi-chevron-down" /> Nach Unten
+              </button>
+              <button
+                v-if="selectedCurrentTheme"
+                @click="removeThemeClick(selectedCurrentTheme)"
+              >
+                <i class="bi-x" /> Entfernen
+              </button>
+              <div
+                v-if="selectedCurrentTheme"
+                class="divider"
+              />
+              <button @click="openInFolder(selectedCurrentTheme)">
+                <i class="far fa-folder" /> Themes-Ordner öffnen
+              </button>
+            </context-menu>
             <ThemeItem
-              v-for="theme in currentThemes"
-              @click="removeThemeClick(theme)"
-              @contextmenu="selectedCurrentTheme = theme; $refs.currentThemeContextMenu.open()"
-              :key="theme.path"
-              :theme="theme"
-              :original="theme.author === 'ObnoxiousOliver'"
-              :draggable="currentThemes.length > 1"
-              :tabindex="accentColorsOpen || customColorOpen ? -1 : 0"
+              :theme="{
+                name: 'Default',
+                description: 'Das dunkle Thema von Better LANiS'
+              }"
+              :original="true"
+              :noArrow="true"
             />
-          </transition-group>
-          <context-menu ref="currentThemeContextMenu">
-            <button
-              v-if="selectedCurrentTheme"
-              @click="moveThemeUp(selectedCurrentTheme)"
-              :disabled="theme.using.indexOf(selectedCurrentTheme) >= theme.using.length - 1"
-            >
-              <i class="bi-chevron-up" /> Nach Oben
-            </button>
-            <button
-              v-if="selectedCurrentTheme"
-              @click="moveThemeDown(selectedCurrentTheme)"
-              :disabled="theme.using.indexOf(selectedCurrentTheme) <= 0"
-            >
-              <i class="bi-chevron-down" /> Nach Unten
-            </button>
-            <button
-              v-if="selectedCurrentTheme"
-              @click="removeThemeClick(selectedCurrentTheme)"
-            >
-              <i class="bi-x" /> Entfernen
-            </button>
-            <div
-              v-if="selectedCurrentTheme"
-              class="divider"
-            />
-            <button @click="openInFolder(selectedCurrentTheme)">
-              <i class="far fa-folder" /> Themes-Ordner öffnen
-            </button>
-          </context-menu>
-          <ThemeItem
-            :theme="{
-              name: 'Default',
-              description: 'Das dunkle Thema von Better LANiS'
-            }"
-            :original="true"
-            :noArrow="true"
-          />
+          </div>
         </div>
-      </div>
-      <bl-button
-        @click="getThemes"
-        class="refresh-btn"
-        variant="static small"
-      >
-        <i class="fa fa-sync" /> Neu laden
-      </bl-button>
-    </fieldset>
+        <bl-button
+          @click="getThemes"
+          class="refresh-btn"
+          variant="small"
+        >
+          <i class="fa fa-sync" /> Neu laden
+        </bl-button>
+      </fieldset>
+    </div>
 
     <Modal
       class="all-accent-colors-modal"
@@ -145,7 +147,7 @@
             :style="{ color: template }"
           >
             <i class="icon bi-check2" />
-            <div class="accent-foreground-preview" :style="{ color: getContrastYIQ(template) }" />
+            <div class="accent-foreground-preview" :style="{ color: color.getContrastYIQ(template) }" />
           </button>
           <div v-if="theme.saved.length" class="divider">Gespeichert</div>
           <button
@@ -157,7 +159,7 @@
             :style="{ color: template }"
           >
             <i class="icon bi-check2" />
-            <div class="accent-foreground-preview" :style="{ color: getContrastYIQ(template) }" />
+            <div class="accent-foreground-preview" :style="{ color: color.getContrastYIQ(template) }" />
           </button>
         </div>
       </div>
@@ -177,7 +179,7 @@
               <bl-button
                 class="add-color-button"
               @click="saveAccentColorClick"
-                variant="static transparent small"
+                variant="transparent small"
               >
                 <i class="bi-plus" />
               </bl-button>
@@ -207,8 +209,8 @@
       <template #footer>
         <div class="modal-footer">
           <div class="modal-buttons">
-            <bl-button @click="customColorOpen = false" variant="static small transparent">Abbrechen</bl-button>
-            <bl-button @click="applyAccentColor" variant="primary static">Ok</bl-button>
+            <bl-button @click="customColorOpen = false" variant="small transparent">Abbrechen</bl-button>
+            <bl-button @click="applyAccentColor" variant="primary">Ok</bl-button>
           </div>
         </div>
       </template>
@@ -221,6 +223,8 @@
 </template>
 
 <script>
+import color from '@/color'
+
 import { mapActions, mapState } from 'vuex'
 import Modal from '../../components/Modal.vue'
 import ColorPicker from '../../components/input/colorpickers/ColorPicker.vue'
@@ -258,16 +262,20 @@ export default {
     accentColorTemplates () {
       return [
         '#3399ff',
-        '#99ffdd',
+        '#66ffcc',
         '#ffdd44',
-        '#ff9730',
+        '#ff9922',
         '#ff5555',
-        '#ff66aa',
-        '#bb66ff'
+        '#ff6688',
+        '#ff66ee',
+        '#8866ff'
       ]
     },
     allAccentColors () {
       return [...this.accentColorTemplates, ...this.theme.saved]
+    },
+    color () {
+      return color
     }
   },
   mounted () {
@@ -362,36 +370,6 @@ export default {
 
       this.setAccentColor(hex)
       this.customColorOpen = false
-    },
-    getContrastYIQ (hexcolor) {
-      function hexToRGB (h) {
-        let r = 0
-        let g = 0
-        let b = 0
-
-        // 3 digits
-        if (h.length === 4) {
-          r = '0x' + h[1] + h[1]
-          g = '0x' + h[2] + h[2]
-          b = '0x' + h[3] + h[3]
-
-        // 6 digits
-        } else if (h.length === 7) {
-          r = '0x' + h[1] + h[2]
-          g = '0x' + h[3] + h[4]
-          b = '0x' + h[5] + h[6]
-        }
-
-        return {
-          r: parseInt(r),
-          g: parseInt(g),
-          b: parseInt(b)
-        }
-      }
-
-      var rgb = hexToRGB(hexcolor)
-      var yiq = ((rgb.r * 190) + (rgb.g * 500) + (rgb.b * 60)) / 1000
-      return (yiq >= 128) ? '#000000' : '#ffffff'
     }
   }
 }

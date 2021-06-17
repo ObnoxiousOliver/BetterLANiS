@@ -71,7 +71,7 @@
 
     .timetable-header {
       font-family: $header-font;
-      font-size: 1.1rem;
+      font-size: 1.1em;
       font-weight: 700;
       position: relative;
       padding: 5px;
@@ -91,13 +91,13 @@
       .time-header {
         display: block;
         font-weight: 700;
-        font-size: 1.1rem;
+        font-size: 1.1em;
         white-space: nowrap;
       }
 
       .time-start-end {
         color: $secondary-foreground;
-        font-size: 0.9rem;
+        font-size: 0.9em;
         white-space: nowrap;
       }
     }
@@ -131,7 +131,7 @@
         .subject-name {
           grid-area: name;
           font-weight: 700;
-          font-size: 1.1rem;
+          font-size: 1.1em;
           margin-right: 5px;
         }
 
@@ -142,7 +142,7 @@
 
         .subject-teacher {
           grid-area: teacher;
-          font-size: 0.9rem;
+          font-size: 0.9em;
           color: $secondary-foreground;
         }
 
@@ -211,6 +211,14 @@
           }
         }
       }
+    }
+
+    @media screen and (max-width: 1300px) {
+      font-size: 0.8rem;
+    }
+
+    @media screen and (max-width: 1000px) {
+      font-size: 0.6rem;
     }
   }
 }

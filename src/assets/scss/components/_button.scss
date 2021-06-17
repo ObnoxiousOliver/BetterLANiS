@@ -11,7 +11,7 @@
   text-decoration: none;
   text-align: center;
   letter-spacing: 0.1em;
-  transition: 0.2s ease-in-out;
+  transition: 0.1s ease-in-out;
 
   &.btn-primary {
     background-color: $accent;
@@ -36,13 +36,17 @@
         transition: 0.75s, background-color 0.2s, border 0.2s;
       }
 
-      &:hover:not(:disabled)::after {
-        background-color: none;
-        border-left: 10px solid $accent;
-        border-right: 30px solid $accent;
-        opacity: 0.2;
-        left: 120%;
-        transform: rotate(40deg);
+      &:hover:not(:disabled) {
+        letter-spacing: 0.15em;
+
+        &::after {
+          background-color: none;
+          border-left: 10px solid $accent;
+          border-right: 30px solid $accent;
+          opacity: 0.2;
+          left: 120%;
+          transform: rotate(40deg);
+        }
       }
     }
 
@@ -73,6 +77,7 @@
       background-color: $warning;
     }
   }
+
   &.btn-error {
     color: $error;
 
@@ -89,13 +94,11 @@
   &:hover:not(:disabled) {
     color: $button-highlight-foreground;
     background-color: $button-highlight;
-    letter-spacing: 0.15em;
-    transition: all 0.1s ease-in-out;
   }
 
-  &:hover:not(:disabled).btn-static {
-    letter-spacing: 0.1em;
-  }
+  // &:hover:not(:disabled).btn-static {
+  //   letter-spacing: 0.1em;
+  // }
 
   &.btn-nospacing,
   &.btn-nospacing:hover:not(:disabled) {
@@ -104,7 +107,7 @@
 
   & > .btn__content {
     // z-index: 2;
-    transition: all 0.2s;
+    transition: 0.1s;
   }
 
   &:disabled {
@@ -117,7 +120,6 @@
 
   &:active > .btn__content {
     transform: scale(0.97);
-    transition: all 0.1s;
   }
 
   &:focus-visible {

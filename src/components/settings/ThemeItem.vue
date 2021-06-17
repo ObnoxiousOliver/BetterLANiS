@@ -16,7 +16,7 @@
         placement="bottom"
       >
         <template #activator>
-          <i class="fas fa-star" />
+          <i class="bi-star-fill" />
         </template>
         Originales Theme-Pack
       </tooltip>

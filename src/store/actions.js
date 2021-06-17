@@ -1,4 +1,5 @@
 import manager from '@/manager'
+import color from '@/color'
 
 const { remote } = require('electron')
 const fs = require('fs')
@@ -78,10 +79,10 @@ export default {
           if (manager.apps.supported[appName]) {
             mappedSupported[manager.apps.supported[appName].name] = {
               name: app.Name,
-              html: manager.apps.supported[appName].html,
               route: manager.apps.supported[appName].route,
               data: undefined,
-              link: app.link
+              link: app.link,
+              icon: manager.apps.supported[appName].icon
             }
             manager.apps.supported[appName].getData(app.link, data => {
               console.log(data)
@@ -99,12 +100,19 @@ export default {
 
       store.commit('setApps', {
         supported: mappedSupported,
-        unsupported: mappedUnsupported
+        unsupported: mappedUnsupported,
+        favorites: []
       })
       if (callback) {
         callback()
       }
     })
+  },
+  addFavoriteApp (store, payload) {
+    store.commit('addFavoriteApp', payload)
+  },
+  removeFavoriteApp (store, payload) {
+    store.commit('removeFavoriteApp', payload)
   },
   logout (store) {
     remote.session.defaultSession.clearStorageData()
@@ -156,38 +164,9 @@ export default {
       }
     })
 
-    function getContrastYIQ (hexcolor) {
-      function hexToRGB (h) {
-        let r = 0
-        let g = 0
-        let b = 0
+    var contrast = color.getContrastYIQ(store.state.theme.accent)
 
-        // 3 digits
-        if (h.length === 4) {
-          r = '0x' + h[1] + h[1]
-          g = '0x' + h[2] + h[2]
-          b = '0x' + h[3] + h[3]
-
-        // 6 digits
-        } else if (h.length === 7) {
-          r = '0x' + h[1] + h[2]
-          g = '0x' + h[3] + h[4]
-          b = '0x' + h[5] + h[6]
-        }
-
-        return {
-          r: parseInt(r),
-          g: parseInt(g),
-          b: parseInt(b)
-        }
-      }
-
-      var rgb = hexToRGB(hexcolor)
-      var yiq = ((rgb.r * 190) + (rgb.g * 500) + (rgb.b * 60)) / 1000
-      return (yiq >= 128) ? '#000000' : '#ffffff'
-    }
-
-    el.innerHTML += `:root { --accent: ${store.state.theme.accent}; --accent-foreground: ${getContrastYIQ(store.state.theme.accent)}; }`
+    el.innerHTML += `:root { --accent: ${store.state.theme.accent}; --accent-foreground: ${contrast}; }`
     store.dispatch('saveStyles')
   },
   saveStyles (store) {

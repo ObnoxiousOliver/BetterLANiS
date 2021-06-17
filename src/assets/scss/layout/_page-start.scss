@@ -3,6 +3,7 @@
 .start-view-component {
   height: 100%;
   display: flex;
+  flex-flow: row-reverse nowrap;
 
   .startmenu-component {
     z-index: 1;

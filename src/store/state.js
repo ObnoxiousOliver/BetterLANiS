@@ -12,7 +12,8 @@ export default {
   },
   apps: {
     supported: [],
-    unsupported: []
+    unsupported: [],
+    favorites: []
   },
   theme: {
     accent: '#3399ff',

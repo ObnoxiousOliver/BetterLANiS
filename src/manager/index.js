@@ -14,7 +14,7 @@ export default {
       stundenplan: {
         name: 'timetable',
         route: '/timetable',
-        html: '<i class="fas fa-clock"></i> Stundenplan',
+        icon: 'fas fa-clock',
         getData (link, callback) {
           fetch(BASE_ADDRESS + link, {
             headers: {
@@ -107,7 +107,7 @@ export default {
       kalender: {
         name: 'calendar',
         route: '/calendar',
-        html: '<i class="bi bi-calendar2-week-fill"></i> Kalender',
+        icon: 'bi-calendar2-week-fill',
         getData (link, callback) {
           // fetch(BASE_ADDRESS + link)
           //   .then(res => res.text())

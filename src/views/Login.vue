@@ -1,25 +1,11 @@
 <template>
   <div class="login-view-component">
-    <!-- <div class="login-backdrop">
-      <div class="backdrop-element"></div>
-      <div class="backdrop-element"></div>
-      <div class="backdrop-element"></div>
-      <div class="backdrop-element"></div>
-      <div class="backdrop-element"></div>
-      <div class="backdrop-element"></div>
-      <div class="backdrop-element"></div>
-      <div class="backdrop-element"></div>
-      <div class="backdrop-element"></div>
-      <div class="backdrop-element"></div>
-    </div> -->
     <fieldset :disabled="disableForm">
       <LoginForm
         ref="loginForm"
         @submit="formSubmitted"
       />
     </fieldset>
-
-    {{ $t('message') }}
   </div>
 </template>
 
@@ -52,6 +38,7 @@ export default {
     open: false
   }),
   mounted () {
+    // this.$emit('changePage', 'Start')
     this.disableForm = true
     manager.isLoggedIn((success) => {
       if (success) {

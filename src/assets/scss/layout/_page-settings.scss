@@ -7,13 +7,17 @@
   transition: padding 0.4s;
 
   .settings-page {
-    max-width: 1000px;
-    margin: 0 auto;
+    margin: 0 10px;
     height: 100%;
 
     & > * {
-      padding: 10px;
       height: 100%;
+    }
+
+    .wrapper {
+      padding: 10px 0;
+      max-width: 1000px;
+      margin: 0 auto;
     }
 
     .setting-page-header {
@@ -35,7 +39,7 @@
     }
   }
 
-  @media screen and (max-width: 900px) {
+  @media screen and (max-width: 1000px) {
     padding-right: 50px;
   }
 }

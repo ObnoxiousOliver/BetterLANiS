@@ -1,7 +1,7 @@
 :root {
-  --primary-background: #fafafa;
-  --secondary-background: #fdfdfd;
-  --tertiary-background: #fff;
+  --primary-background: #e1e1e1;
+  --secondary-background: #f1f1f1;
+  --tertiary-background: #e7e7e7;
   
   --background-modifier-unfocused: #0006;
   --background-modifier-selected: #0000000a;
@@ -12,8 +12,8 @@
   --popup-foreground: #000;
 
   --primary-foreground: #000;
-  --secondary-foreground: #777;
-  --muted-foreground: #aaa;
+  --secondary-foreground: #555;
+  --muted-foreground: #999;
 
   --warning: #fc4;
   --warning-background: #221808;
@@ -27,16 +27,11 @@
   --success-background: #10290a;
   --success-foreground: #fff;
 
-  --button: #f1f1f1;
+  --button: #d7d7d7;
   --button-foreground: #000;
   --button-highlight: #222;
   --button-highlight-foreground: #fff;
 
   --scrollbar-track: #eee;
   --scrollbar-thumb: #d1d1d1;
-}
-
-
-.theme-item-component:hover {
-  background: #0001;
 }

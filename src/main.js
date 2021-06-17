@@ -9,7 +9,7 @@ import ContextSubmenu from './components/input/ContextSubmenu'
 // import i18n from './i18n'
 
 createApp(App)
-  // .use(i18n)
+// .use(i18n)
   .use(store)
   .use(router)
   .component('bl-button', BlButton)

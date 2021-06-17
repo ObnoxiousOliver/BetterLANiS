@@ -1,7 +1,7 @@
 <template>
   <div class="timetable-view-component scroll auto">
     <div class="wrapper">
-      <h1 class="app-header"><i class="bi bi-clock" /> Stundenplan</h1>
+      <h1 class="app-header"><i class="fas fa-clock" /> Stundenplan</h1>
       <div class="date-info">
         <div class="date-today">
           Heute: {{ dayOfWeekString }}, {{ today.format('DD.MM.YYYY') }}
@@ -20,7 +20,7 @@
         <div class="date-panel-buttons">
           <bl-button
             v-for="(date, dateIndex) in timetables.map(x => x.date)" :key="dateIndex"
-            :variant="(date === timetable.date ? 'primary' : '') + ' static no-caps'"
+            :variant="(date === timetable.date ? 'primary' : '') + ' no-caps'"
             @click="timetable = timetables[timetables.map(x => x.date).indexOf(date)]"
           >
             ab {{ dateNames[dateIndex].from }}

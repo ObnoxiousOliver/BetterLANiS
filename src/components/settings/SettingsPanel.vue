@@ -3,7 +3,7 @@
     <div class="scroll auto">
       <bl-button
         @click="$emit('openSettings', 'Appearance')"
-        variant="static transparent"
+        variant="transparent"
         :class="['setting-link', activePage === 'Appearance' ? 'page-active' : '']"
       >
         <i class="setting-icon fas fa-swatchbook" /> Erscheinungsbild

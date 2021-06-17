@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <titlebar
+    <Titlebar
       @toggle-settings="showSettingsPanel = !showSettingsPanel; showSettings = false"
       :is-settings-open="showSettingsPanel"
     />

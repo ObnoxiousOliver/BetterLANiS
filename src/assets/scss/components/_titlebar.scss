@@ -72,9 +72,11 @@
       &.btn-close{
         &:hover {
           background: $error;
+          color: $error-foreground;
         }
         &:active {
           background: $error;
+          color: $error-foreground;
           opacity: 0.5;
         }
       }
@@ -158,13 +160,14 @@
     }
 
     &::before {
+      flex: 0 0 auto;
       z-index: -1;
       content: '';
-      position: absolute;
-      left: -10px;
-      width: 125px;
+      margin: 0 -105px 0 -25px;
+      width: 130px;
       height: 100%;
       background: $accent;
+      box-shadow: $elevation-medium;
       transform-origin: center 100%;
       transform: skewX(-15deg);
     }

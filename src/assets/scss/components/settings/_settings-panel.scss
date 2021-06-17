@@ -17,7 +17,7 @@
     text-align: left;
   }
 
-  @media screen and (max-width: 900px) {
+  @media screen and (max-width: 1000px) {
     &.settings-page-open {
       transform: translateX(calc(100% - 50px));
 

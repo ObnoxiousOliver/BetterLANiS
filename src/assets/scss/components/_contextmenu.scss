@@ -9,12 +9,14 @@
     box-shadow: $elevation-low;
     padding: 10px 0;
     max-width: 350px;
+    overflow: hidden;
 
-    & > button {
+    & > button, & > a  {
       appearance: none;
       display: block;
       background: none;
       color: $primary-foreground;
+      text-decoration: none;
       min-width: 150px;
       width: 100%;
       border: 2px solid transparent;
@@ -37,6 +39,7 @@
 
       &.context-submenu-button {
         position: relative;
+
         i.arrow {
           position: absolute;
           right: 5px;
@@ -53,15 +56,27 @@
       }
     }
     
-    & > div {
-      padding: 0 10px;
+    .divider {
+      color: $muted-foreground;
+      border-bottom: currentColor solid 1px;
+      padding: 0 5px;
+      margin: 3px 10px;
+      font-size: 0.8rem;
+    }
+    .header {
+      background: $accent;
+      color: $accent-foreground;
+      padding: 7px 15px;
+      margin: -10px 0 5px;
+      font-family: $header-font;
+      font-size: 1rem;
+      box-shadow: $elevation-low;
     }
 
-    & > div.divider {
-      background: $muted-foreground;
-      height: 1px;
-      margin: 3px 10px;
+    .context-menu {
+      padding: 0 5px;
     }
+
   }
 
   &.warning .menu-content {
@@ -111,6 +126,7 @@
   border: none;
   border-radius: 50%;
   font-size: 1rem;
+  cursor: pointer;
   transition: 0.1s;
 
   &:hover, &:focus-visible {

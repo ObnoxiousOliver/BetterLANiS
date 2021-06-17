@@ -12,7 +12,7 @@
           >
             <bl-button
               id="returnToLoginBtn"
-              variant="transparent small static"
+              variant="transparent small"
               @click="school.showMenu = false"
             >
               <i class="bi bi-chevron-left" />
@@ -101,7 +101,7 @@
                       "
                       class="school"
                       :variant="
-                        'small nospacing static ' +
+                        'small nospacing ' +
                           (school.id === schoolInList.Id ? 'primary no-caps' : 'transparent')
                       "
                       @click="schoolSelected(schoolInList, district)"

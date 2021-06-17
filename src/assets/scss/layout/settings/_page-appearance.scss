@@ -1,7 +1,6 @@
 /* Setting Appearance */
 
 .setting-appearance-view-component {
-
   .accent-color-select {
     display: flex;
     flex-flow: row nowrap;
@@ -45,6 +44,7 @@
       height: 50px;
       border-left: $muted-foreground solid 1px;
       overflow: hidden;
+      // white-space: nowrap;
     }
 
     .show-all-colors-button {
@@ -58,7 +58,7 @@
     transition: right 0.4s;
   }
 
-  @media screen and (max-width: 900px) {
+  @media screen and (max-width: 1000px) {
     .modal-component {
       position: absolute;
       inset: 0 50px 0 0;
@@ -104,6 +104,7 @@
           border-radius: 3px;
           width: calc(20% - 10px);
           height: 25px;
+          box-shadow: $elevation-low;
         }
 
         .divider {

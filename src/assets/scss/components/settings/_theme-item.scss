@@ -8,6 +8,7 @@
   margin-bottom: 5px;
   border-radius: 3px;
   transition: background-color 0.2s;
+  cursor: pointer;
 
   &:hover {
     background: $background-modifier-hover;

@@ -1,6 +1,5 @@
 <template>
   <div class="start-view-component">
-    <StartMenu @logout="logoutConfirmOpen = true" @userinfo="userinfoOpen = true" />
     <div class="router-view">
       <router-view v-slot="{ Component }">
         <transition name="router" mode="out-in">
@@ -8,6 +7,7 @@
         </transition>
       </router-view>
     </div>
+    <StartMenu @logout="logoutConfirmOpen = true" @userinfo="userinfoOpen = true" />
     <Modal
       :active="userinfoOpen"
       @closemodal="userinfoOpen = false"
@@ -66,8 +66,8 @@
       <template #footer>
         <div class="modal-footer">
           <div class="modal-buttons">
-            <bl-button @click="logoutConfirmOpen = false" variant="static small transparent">Abbrechen</bl-button>
-            <bl-button @click="logoutClick" variant="error static">Abmelden <i class="fas fa-sign-out-alt"/></bl-button>
+            <bl-button @click="logoutConfirmOpen = false" variant="small transparent">Abbrechen</bl-button>
+            <bl-button @click="logoutClick" variant="error">Abmelden <i class="fas fa-sign-out-alt"/></bl-button>
           </div>
         </div>
       </template>
@@ -121,6 +121,9 @@ export default {
     logoutClick () {
       this.logout()
       this.$emit('changePage', 'Login')
+    },
+    appMenuOpen (app) {
+      this.$refs.appMenu.open()
     }
   }
 }

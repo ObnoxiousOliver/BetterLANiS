@@ -2,10 +2,10 @@
   <div class="calendar-view-component scroll auto">
     <div class="wrapper">
       <h1 class="app-header">
-        <i class="bi-calendar2-week" /> Kalender
+        <i class="bi-calendar2-week-fill" /> Kalender
       </h1>
       <div class="calendar-controls">
-        <bl-button class="last-month" @click="lastMonth" variant="static">
+        <bl-button class="last-month" @click="lastMonth">
           <i class="bi-chevron-left" />
         </bl-button>
 
@@ -26,7 +26,7 @@
           </tooltip>
         </div>
 
-        <bl-button class="next-month" @click="nextMonth" variant="static">
+        <bl-button class="next-month" @click="nextMonth">
           <i class="bi-chevron-right" />
         </bl-button>
       </div>
@@ -108,7 +108,8 @@
       <div class="event-details">
         <div v-if="selectedEvent.raw.description" v-html="selectedEvent.raw.description" class="event-description" />
         <div v-else class="event-no-description">Keine Beschreibung</div>
-        {{ formatDate(selectedEvent.raw.Anfang) }}
+        vom {{ formatDate(selectedEvent.raw.Anfang) }}
+        bis {{ formatDate(selectedEvent.raw.Ende) }}
       </div>
     </Modal>
   </div>

@@ -7,7 +7,7 @@
     >
       <bl-button
         v-if="setting.divider === undefined"
-        variant="transparent nospacing static"
+        variant="transparent nospacing"
         @click="onNavButtonClick(setting)"
       >
         <span v-html="setting.html" />
@@ -22,20 +22,20 @@
       <i class="fas fa-external-link-alt" />&nbsp;&nbsp;Kontakte
     </h3>
     <div class="contact">
-      <bl-button variant="transparent small nospacing static">
+      <bl-button variant="transparent small nospacing">
         <i class="fab fa-youtube" />
       </bl-button>
-      <bl-button variant="transparent small nospacing static">
+      <bl-button variant="transparent small nospacing">
         <i class="fab fa-github" />
       </bl-button>
-      <bl-button variant="transparent small nospacing static">
+      <bl-button variant="transparent small nospacing">
         <i class="fab fa-discord" />
       </bl-button>
-      <bl-button variant="transparent small nospacing static">
+      <bl-button variant="transparent small nospacing">
         <i class="fas fa-globe-europe" />
       </bl-button>
     </div>
-    <bl-button variant="transparent nospacing static">
+    <bl-button variant="transparent nospacing">
       <i class="fas fa-bug" /> Bug melden?
     </bl-button>
   </div>

@@ -5,7 +5,7 @@
         <template #activator>
           <bl-button
             class="solid first"
-            :variant="'small static' + (gradientType === 'solid' ? ' primary' : '')"
+            :variant="'small' + (gradientType === 'solid' ? ' primary' : '')"
             @click="gradientType = 'solid'"
           >
             <div class="icon"><div /></div>
@@ -17,7 +17,7 @@
         <template #activator>
           <bl-button
             class="linear"
-            :variant="'small static' + (gradientType === 'linear' ? ' primary' : '')"
+            :variant="'small' + (gradientType === 'linear' ? ' primary' : '')"
             @click="gradientType = 'linear'"
           >
             <div class="icon"><div /></div>
@@ -29,7 +29,7 @@
         <template #activator>
           <bl-button
             class="radial"
-            :variant="'small static' + (gradientType === 'radial' ? ' primary' : '')"
+            :variant="'small' + (gradientType === 'radial' ? ' primary' : '')"
             @click="gradientType = 'radial'"
           >
             <div class="icon"><div /></div>
@@ -41,7 +41,7 @@
         <template #activator>
           <bl-button
             class="repeating-linear"
-            :variant="'small static' + (gradientType === 'repeating-linear' ? ' primary' : '')"
+            :variant="'small' + (gradientType === 'repeating-linear' ? ' primary' : '')"
             @click="gradientType = 'repeating-linear'"
           >
             <div class="icon"><div /></div>
@@ -53,7 +53,7 @@
         <template #activator>
           <bl-button
             class="repeating-radial last"
-            :variant="'small static' + (gradientType === 'repeating-radial' ? ' primary' : '')"
+            :variant="'small' + (gradientType === 'repeating-radial' ? ' primary' : '')"
             @click="gradientType = 'repeating-radial'"
           >
             <div class="icon"><div /></div>
@@ -105,7 +105,7 @@
         <bl-button
           @click="removeKey"
           class="remove"
-          variant="small static"
+          variant="small"
           :disabled="keys.length <= 2"
         >
           <i class="fas fa-minus" />
@@ -113,7 +113,7 @@
         <bl-button
           @click="addKey"
           class="add"
-          variant="small static"
+          variant="small"
         >
           <i class="fas fa-plus" />
         </bl-button>
