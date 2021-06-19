@@ -6,6 +6,7 @@
         <button
           @click="$emit('closemodal')"
           class="modal-close-btn"
+          ref="closeBtn"
         >
           <i class="bi bi-x" />
         </button>
@@ -27,6 +28,15 @@ export default {
   props: {
     active: Boolean,
     variant: { type: String, default: '' }
+  },
+  watch: {
+    active (value) {
+      setTimeout(() => {
+        if (value) {
+          this.$refs.closeBtn.focus()
+        }
+      })
+    }
   }
 }
 </script>

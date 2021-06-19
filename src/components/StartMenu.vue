@@ -43,6 +43,7 @@
         >
           <bl-button
             @contextmenu="openAppMenu(app)"
+            @click="addHistoryApp(app.name)"
             :id="app.name.toLowerCase().replaceAll(' ', '')"
             :class="['app-button', app.route === $route.fullPath || `/unsupported/${app.link.replaceAll('?', '&query:')}` === $route.fullPath ? 'btn-primary btn-no-caps' : 'btn-transparent']"
             :to="app.route"
@@ -65,6 +66,7 @@
         >
           <bl-button
             @contextmenu="openAppMenu(app)"
+            @click="addHistoryApp(app.name)"
             :id="app.name.toLowerCase().replaceAll(' ', '')"
             :class="['app-button', `/unsupported/${app.link.replaceAll('?', '&query:')}` === $route.fullPath ? 'btn-primary btn-no-caps' : 'btn-transparent']"
             :to="`/unsupported/${app.link.replaceAll('?', '&query:')}`"
@@ -112,7 +114,8 @@ export default {
   methods: {
     ...mapActions([
       'addFavoriteApp',
-      'removeFavoriteApp'
+      'removeFavoriteApp',
+      'addHistoryApp'
     ]),
     openAppMenu (app) {
       this.currentApp = app

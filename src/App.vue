@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="app" @keydown.esc="showSettingsPanel = false; showSettings = false">
     <Titlebar
       @toggle-settings="showSettingsPanel = !showSettingsPanel; showSettings = false"
       :is-settings-open="showSettingsPanel"
@@ -33,6 +33,7 @@
           :class="showSettings ? 'settings-page-open' : ''"
           v-if="showSettingsPanel"
           @openSettings="openSettings"
+          :activePage="showSettings ? settingsPage : ''"
         />
       </transition>
       <transition-group
@@ -41,7 +42,7 @@
         tag="div"
       >
         <Notification
-          v-for="n in notification.current"
+          v-for="n in currentNotifications"
           :key="n.id"
           :notification="n"
         />
@@ -86,7 +87,11 @@ export default {
   computed: {
     ...mapState([
       'notification'
-    ])
+    ]),
+    currentNotifications () {
+      var ret = [...this.notification.current]
+      return ret.reverse()
+    }
   },
   methods: {
     ...mapActions([

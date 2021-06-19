@@ -13,20 +13,21 @@ export default {
   apps: {
     supported: [],
     unsupported: [],
-    favorites: []
+    favorites: [],
+    history: []
   },
   theme: {
     accent: '#3399ff',
     saved: [],
     using: [],
-    path: 'D:/PROJECTS/03. JS ELECTRON/BetterLANiS/betterlanis-vue/themes'
+    path: ''
   },
   notification: {
     all: [],
     current: []
   },
   savedUser: {
-    data: undefined,
+    data: {},
     path: undefined
   }
 }

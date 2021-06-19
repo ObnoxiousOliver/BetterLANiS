@@ -71,6 +71,8 @@ ul {
   }
 
   & > .notification-box {
+    display: flex;
+    flex-flow: column nowrap;
     pointer-events: none;
     z-index: 2900;
     top: 20px;
@@ -179,9 +181,12 @@ fieldset {
 }
 
 .loader {
-  width: 50px;
-  height: 50px;
-  border: $primary-foreground solid 5px;
+  display: inline-block;
+  vertical-align: -0.1em;
+  width: 1em;
+  height: 1em;
+  color: inherit;
+  border: currentColor solid 0.15em;
   border-bottom-color: transparent;
   border-top-color: transparent;
   border-radius: 50%;

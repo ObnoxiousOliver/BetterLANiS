@@ -66,8 +66,11 @@
       <div class="settings-divider" />
       <div
         @click="toggleSettings()"
+        @keydown.space="toggleSettings()"
+        @keydown.enter="toggleSettings()"
         @contextmenu="$refs.settingsContextMenu.open()"
         :class="['control', 'btn-settings', isSettingsOpen ? 'active' : '']"
+        tabindex="0"
       >
         <i class="fas fa-cog" />
       </div>
@@ -143,6 +146,10 @@ export default {
     },
     toggleSettings () {
       this.$emit('toggleSettings')
+
+      setTimeout(() => {
+        document.querySelector('.settings-panel-component .panel-content > button').focus()
+      })
     },
     updateWindowState () {
       this.isNormal = currentWindow.isNormal()

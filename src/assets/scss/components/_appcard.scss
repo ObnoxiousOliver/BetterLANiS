@@ -16,7 +16,7 @@
     box-shadow: $elevation-medium;
     cursor: pointer;
     text-decoration: none;
-    transition: 0.2s;
+    transition: 0.3s;
 
     &::after {
       content: '';
@@ -55,7 +55,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
       margin: 0 -15px;
-      transition: 0.1s 0.2s;
+      transition: inherit;
     }
 
     &:hover, &:focus-visible {
@@ -74,12 +74,10 @@
   
       .app-card-name {
         color: $accent-foreground;
-        transition: 0.1s;
       }
   
       &+.context-menu-button {
         color: $accent-foreground;
-        transition: 0.1s, color 0.2s 0.1s;
       }
     }
     &:active {
@@ -92,6 +90,6 @@
     position: absolute;
     top: 3px;
     right: 3px;
-    transition: 0.1s, color 0.2s;
+    transition: 0.3s;
   }
 }

@@ -8,10 +8,15 @@ const path = require('path')
 const CONFIG_PATH = path.join(remote.process.env.APPDATA, 'betterlanis', 'Config')
 const USERS_PATH = path.join(remote.process.env.APPDATA, 'betterlanis', 'Users')
 const ACTIVE_USER_PATH = path.join(CONFIG_PATH, 'active')
-const THEME_PATH = path.join(CONFIG_PATH, 'theme.json')
+const THEME_CONFIG_PATH = path.join(CONFIG_PATH, 'theme.json')
+const THEMES_PATH = path.join(remote.process.env.APPDATA, 'betterlanis', 'Themes')
 
 export default {
   appStart (store) {
+    store.commit('setThemesPath', THEMES_PATH)
+    if (!fs.existsSync(THEMES_PATH)) {
+      fs.mkdirSync(THEMES_PATH)
+    }
     store.dispatch('loadStyles')
 
     fetch('https://start.schulportal.hessen.de/exporteur.php?a=schoollist')
@@ -43,19 +48,27 @@ export default {
 
         store.commit('setSavedUserPath', `${btoa(userData.schoolId + userData.username).split('/').join(' ')}.bluser`)
 
-        if (payload) {
-          var userPath = path.join(USERS_PATH, store.state.savedUser.path)
-          var jsonString = JSON.stringify({
-            user: {
-              username: payload.username,
-              password: payload.password,
-              schoolId: payload.schoolId
-            }
-          })
-          var encodedString = btoa(jsonString)
-          fs.writeFileSync(userPath, encodedString)
+        // SYNC USERDATA WITH VUEX
+        var userPath = path.join(USERS_PATH, store.state.savedUser.path)
+
+        if (fs.existsSync(userPath)) {
+          var encodedString = fs.readFileSync(userPath).toString()
+          store.commit('setSavedUserData', JSON.parse(atob(encodedString)))
+          // console.log(JSON.parse(atob(encodedString)))
         }
 
+        // SAVE PASSWORD
+        if (payload) {
+          var savedUser = store.state.savedUser.data
+          savedUser.user = {
+            username: payload.username,
+            password: payload.password,
+            schoolId: payload.schoolId
+          }
+          store.commit('setSavedUserData', savedUser)
+        }
+
+        // GET E-MAIL
         fetch(manager.urls.BASE_ADDRESS + 'benutzerverwaltung.php?a=userMail')
           .then((response) => response.text())
           .then((data) => {
@@ -66,6 +79,16 @@ export default {
             }
           })
       })
+  },
+  setSavedUserData (store, payload) {
+    var userPath = path.join(USERS_PATH, store.state.savedUser.path)
+
+    store.commit('setSavedUserData', payload)
+
+    var jsonString = JSON.stringify(payload)
+    var encodedString = btoa(jsonString)
+
+    fs.writeFileSync(userPath, encodedString)
   },
   setApps (store, callback) {
     manager.getApps((apps) => {
@@ -82,27 +105,47 @@ export default {
               route: manager.apps.supported[appName].route,
               data: undefined,
               link: app.link,
-              icon: manager.apps.supported[appName].icon
+              icon: manager.apps.supported[appName].icon,
+              folder: app.Ordner
             }
             manager.apps.supported[appName].getData(app.link, data => {
-              console.log(data)
+              // console.log(data)
               mappedSupported[manager.apps.supported[appName].name].data = data
             })
           } else {
             mappedUnsupported.push({
               name: app.Name,
               link: app.link,
-              icon: app.Logo
+              icon: app.Logo,
+              folder: app.Ordner
             })
           }
         }
       })
 
-      store.commit('setApps', {
+      var favorites = []
+      var history = []
+
+      try {
+        const savedUserDataApps = store.state.savedUser.data.apps
+        favorites = savedUserDataApps.favorites ? savedUserDataApps.favorites : []
+      } catch {}
+      try {
+        const savedUserDataApps = store.state.savedUser.data.apps
+        history = savedUserDataApps.history ? savedUserDataApps.history : []
+      } catch {}
+
+      var compiledApps = {
         supported: mappedSupported,
         unsupported: mappedUnsupported,
-        favorites: []
-      })
+        folders: apps.folders.map(x => ({ name: x.name, icon: x.logo })),
+        favorites,
+        history
+      }
+
+      store.commit('setApps', compiledApps)
+      // console.log(compiledApps)
+
       if (callback) {
         callback()
       }
@@ -110,9 +153,39 @@ export default {
   },
   addFavoriteApp (store, payload) {
     store.commit('addFavoriteApp', payload)
+    var savedUser = store.state.savedUser.data
+
+    if (!savedUser.apps) {
+      savedUser.apps = {}
+    }
+
+    savedUser.apps.favorites = store.state.apps.favorites
+    store.dispatch('setSavedUserData', savedUser)
+    // console.log(savedUser.apps)
   },
   removeFavoriteApp (store, payload) {
     store.commit('removeFavoriteApp', payload)
+    var savedUser = store.state.savedUser.data
+
+    if (!savedUser.apps) {
+      savedUser.apps = {}
+    }
+
+    savedUser.apps.favorites = store.state.apps.favorites
+    store.dispatch('setSavedUserData', savedUser)
+    // console.log(savedUser.apps)
+  },
+  addHistoryApp (store, payload) {
+    store.commit('addHistoryApp', payload)
+    var savedUser = store.state.savedUser.data
+
+    if (!savedUser.apps) {
+      savedUser.apps = {}
+    }
+
+    savedUser.apps.history = store.state.apps.history
+    store.dispatch('setSavedUserData', savedUser)
+    // console.log(savedUser.apps)
   },
   logout (store) {
     remote.session.defaultSession.clearStorageData()
@@ -176,17 +249,17 @@ export default {
       themes: store.state.theme.using.map(x => x.path)
     }
 
-    console.log(save)
+    // console.log(save)
 
     if (!fs.existsSync(CONFIG_PATH)) {
       fs.mkdirSync(CONFIG_PATH)
     }
 
-    fs.writeFileSync(THEME_PATH, JSON.stringify(save))
+    fs.writeFileSync(THEME_CONFIG_PATH, JSON.stringify(save))
   },
   loadStyles (store) {
-    if (fs.existsSync(THEME_PATH)) {
-      var data = JSON.parse(fs.readFileSync(THEME_PATH))
+    if (fs.existsSync(THEME_CONFIG_PATH)) {
+      var data = JSON.parse(fs.readFileSync(THEME_CONFIG_PATH))
 
       if (data.accent) {
         store.dispatch('setAccentColor', data.accent)

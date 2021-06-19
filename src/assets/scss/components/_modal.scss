@@ -85,9 +85,9 @@
         bottom: -10px;
       }
 
-      &:hover, &:focus-within {
-        background: $error;
+      &:hover, &:focus-visible {
         color: $error-foreground;
+        background: $error;
         opacity: 1;
 
         outline: none;

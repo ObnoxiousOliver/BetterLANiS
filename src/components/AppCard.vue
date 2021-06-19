@@ -8,9 +8,9 @@
         <slot/>
       </div>
     </router-link>
-    <button @click="$emit('menuopen')" class="context-menu-button">
+    <!-- <button @click="$emit('menuopen')" class="context-menu-button">
       <i class="fas fa-ellipsis-v" />
-    </button>
+    </button> -->
   </div>
 </template>
 

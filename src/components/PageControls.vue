@@ -4,7 +4,8 @@
       <i class="fas fa-arrow-left" />
     </button>
     <button @click="$emit('refresh')" id="refresh" class="page-control">
-      <i class="fas fa-sync" />
+      <div v-if="loading" class="loader" />
+      <i v-else class="fas fa-sync" />
     </button>
     <div class="url">
       <span v-if="location" class="url-protocol">
@@ -32,7 +33,8 @@
 export default {
   name: 'PageControls',
   props: {
-    location: Object
+    location: Object,
+    loading: Boolean
   }
 }
 </script>

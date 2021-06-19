@@ -10,11 +10,51 @@
   padding: (32px + 10px) 5px 10px;
   background: $secondary-background;
   box-shadow: $elevation-high;
-  transition: transform 0.4s;
+  transition: 0.4s;
+
+  .divider {
+    color: $muted-foreground;
+    margin: 5px;
+    padding: 0 5px;
+    border-bottom: currentColor solid 1px;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    font-weight: 700;
+    transition: 0.3s;
+  }
 
   .setting-link {
+    display: block;
     width: 100%;
     text-align: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .header {
+    margin: 0 0 10px;
+    padding: 0 10px;
+    transition: 0.3s;
+  }
+
+  .scroll {
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+
+    .panel-content {
+      flex: 1 0 auto;
+    }
+
+    .app-info {
+      user-select: text;
+      font-size: 0.8rem;
+      flex: 0 0 auto;
+      color: $muted-foreground;
+      padding: 10px;
+      transition: opacity 0.3s;
+    }
   }
 
   @media screen and (max-width: 1000px) {
@@ -24,21 +64,42 @@
       &:not(:hover) {
         padding-left: 0;
 
+        .icon {
+          text-align: center;
+          width: 50px;
+        }
+
         .setting-link {
-          width: 100%;
           text-align: left;
           padding-left: 0;
-      
-          .setting-icon {
-            text-align: center;
-            width: 50px;
-          }
+          border-radius: 0;
         }
+
+        .divider {
+          padding: 0;
+          margin: 5px 0;
+          border-color: transparent;
+          font-weight: 700;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+
+        .header {
+          opacity: 0;
+        }
+      }
+      
+      .app-info {
+        opacity: 0;
       }
     }
 
     &:hover {
       transform: translateX(0);
+
+      .app-info {
+        opacity: 1;
+      }
     }
   }
 

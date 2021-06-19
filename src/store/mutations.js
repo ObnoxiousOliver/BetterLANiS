@@ -2,6 +2,9 @@ export default {
   setSchoolList (state, payload) {
     state.schoolList = payload
   },
+  setThemesPath (state, payload) {
+    state.theme.path = payload
+  },
   setUserData (state, payload) {
     state.loggedInUser = payload
   },
@@ -76,5 +79,12 @@ export default {
   },
   removeFavoriteApp (state, payload) {
     state.apps.favorites.splice(state.apps.favorites.indexOf(payload), 1)
+  },
+  addHistoryApp (state, payload) {
+    state.apps.history = state.apps.history.filter(x => x !== payload)
+    state.apps.history.push(payload)
+    state.apps.history = state.apps.history.reverse()
+    state.apps.history = state.apps.history.slice(0, 7)
+    state.apps.history = state.apps.history.reverse()
   }
 }

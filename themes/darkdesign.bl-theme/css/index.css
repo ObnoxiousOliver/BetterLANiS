@@ -1,0 +1,25 @@
+:root {
+  --primary-background: #060606;
+  --secondary-background: #0f0f0f;
+  --tertiary-background: #000;
+  
+  --background-modifier-unfocused: #5553;
+  --background-modifier-selected: #fff1;
+  --background-modifier-hover: #fff2;
+  --background-modifier-active: #fff4;
+
+  --popup-background: #252525;
+  --popup-foreground: #fff;
+
+  --primary-foreground: #fff;
+  --secondary-foreground: #757575;
+  --muted-foreground: #626262;
+
+  --button: #141414;
+  --button-foreground: #fff;
+  --button-highlight: #222;
+  --button-highlight-foreground: #fff;
+
+  --scrollbar-track: #151515;
+  --scrollbar-thumb: #1f1f1f;
+}

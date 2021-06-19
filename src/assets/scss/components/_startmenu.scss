@@ -5,6 +5,7 @@
   flex-flow: column nowrap;
 
   .user-info {
+    user-select: text;
     z-index: 1;
     flex: 0 0 auto;
     position: relative;
@@ -92,10 +93,9 @@
       overflow: hidden;
       text-overflow: ellipsis;
 
-      i:not(.is-favorite) {
+      i {
         margin-right: 10px;
       }
-
     }
 
     .is-favorite {

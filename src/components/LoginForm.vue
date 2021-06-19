@@ -8,7 +8,7 @@
         >
           <div
             v-if="school.showMenu"
-            class="schoolSelectHeader"
+            class="school-select-header"
           >
             <bl-button
               id="returnToLoginBtn"
@@ -21,7 +21,7 @@
           </div>
           <div
             v-else
-            class="loginHeader"
+            class="login-header"
           >
             <i class="fas fa-unlock-alt" /> Anmeldung
           </div>
@@ -153,19 +153,14 @@
               </div>
             </div>
             <div class="container">
-              <tooltip placement="top-start">
-                <template #activator>
-                  <input
-                    id="username"
-                    v-model="username"
-                    class="input-field"
-                    type="text"
-                    placeholder="Benutzername"
-                    spellcheck="false"
-                  >
-                </template>
-                Vorname.Nachame (oder Kürzel bei Lehrenden)
-              </tooltip>
+              <input
+                id="username"
+                v-model="username"
+                class="input-field"
+                type="text"
+                placeholder="Benutzername"
+                spellcheck="false"
+              >
               <input
                 id="password"
                 v-model="password"

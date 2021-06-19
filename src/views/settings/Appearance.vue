@@ -59,7 +59,7 @@
               />
             </transition-group>
             <context-menu ref="availableThemeContextMenu">
-              <button @click="addThemeClick(selectedAvailableTheme)"><i class="bi bi-plus" /> Hinzufügen</button>
+              <button @click="addThemeClick(selectedAvailableTheme)"><i class="bi bi-plus-circle" /> Hinzufügen</button>
               <div class="divider" />
               <button @click="openInFolder(selectedAvailableTheme)"><i class="far fa-folder" /> Themes-Ordner öffnen</button>
             </context-menu>
@@ -108,26 +108,33 @@
                 class="divider"
               />
               <button @click="openInFolder(selectedCurrentTheme)">
-                <i class="far fa-folder" /> Themes-Ordner öffnen
+                <i class="far fa-folder" /> Im Themes-Ordner öffnen
               </button>
             </context-menu>
             <ThemeItem
               :theme="{
                 name: 'Default',
-                description: 'Das dunkle Thema von Better LANiS'
+                description: 'Das dunkle Design von Better LANiS'
               }"
               :original="true"
               :noArrow="true"
             />
           </div>
         </div>
-        <bl-button
-          @click="getThemes"
-          class="refresh-btn"
-          variant="small"
-        >
-          <i class="fa fa-sync" /> Neu laden
-        </bl-button>
+        <div class="control-buttons">
+          <bl-button
+            @click="getThemes"
+            class="refresh-btn"
+          >
+            <i class="fa fa-sync" /> Neu laden
+          </bl-button>
+          <bl-button
+            @click="openInFolder({ path: '' })"
+            class="open-folder-btn"
+          >
+            <i class="far fa-folder" /> Themes-Ordner öffnen
+          </bl-button>
+        </div>
       </fieldset>
     </div>
 
@@ -149,7 +156,9 @@
             <i class="icon bi-check2" />
             <div class="accent-foreground-preview" :style="{ color: color.getContrastYIQ(template) }" />
           </button>
-          <div v-if="theme.saved.length" class="divider">Gespeichert</div>
+          <div v-if="theme.saved.length" class="divider">
+            <i class="fas fa-save" /> Gespeichert
+          </div>
           <button
             @click="setAccentColor(template)"
             @contextmenu="selectedAccentColor = template; $refs.savedColorsContextMenu.open()"
@@ -181,13 +190,17 @@
               @click="saveAccentColorClick"
                 variant="transparent small"
               >
-                <i class="bi-plus" />
+                <i class="bi-plus-circle" />
               </bl-button>
             </template>
             Farbe speichern
           </tooltip>
         </div>
-        <div class="template-colors scroll y auto thin">
+        <transition-group
+          name="template-color"
+          class="template-colors scroll y auto thin"
+          tag="div"
+        >
           <button
             @click="$refs.accentColorPicker.setColor(template)"
             v-for="template in accentColorTemplates"
@@ -195,7 +208,9 @@
             class="color-button template-color"
             :style="{ color: template }"
           />
-          <div v-if="theme.saved.length" class="divider">Gespeichert</div>
+          <div v-if="theme.saved.length" class="divider">
+            <i class="fas fa-save" /> Gespeichert
+          </div>
           <button
             @click="$refs.accentColorPicker.setColor(template)"
             @contextmenu="selectedAccentColor = template; $refs.savedColorsContextMenu.open()"
@@ -204,13 +219,13 @@
             class="color-button template-color"
             :style="{ color: template }"
           />
-        </div>
+        </transition-group>
       </div>
       <template #footer>
         <div class="modal-footer">
           <div class="modal-buttons">
             <bl-button @click="customColorOpen = false" variant="small transparent">Abbrechen</bl-button>
-            <bl-button @click="applyAccentColor" variant="primary">Ok</bl-button>
+            <bl-button @click="applyAccentColor" variant="primary">Annehmen</bl-button>
           </div>
         </div>
       </template>
