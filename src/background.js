@@ -1,7 +1,12 @@
 'use strict'
 
-import { app, protocol, BrowserWindow, shell, dialog, clipboard } from 'electron'
+import { app, protocol, BrowserWindow, shell, dialog, clipboard, Menu, MenuItem, ipcMain } from 'electron'
+import path from 'path'
+import fetch from 'node-fetch'
+import fs from 'fs'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
+import semver from 'semver'
+import config from './config'
 // import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -20,20 +25,6 @@ protocol.registerSchemesAsPrivileged([
 app.commandLine.appendSwitch('disable-site-isolation-trials')
 
 async function createWindow () {
-  // #region Get Config File
-  var path = require('path')
-  var fs = require('fs')
-  var configDir = path.join(process.env.APPDATA, 'betterlanis', 'Config')
-  var configPath = path.join(configDir, 'config.json')
-  var config
-  try {
-    config = { ...JSON.parse(fs.readFileSync(configPath, 'utf8')) }
-    // console.log(config)
-  } catch (e) {
-    config = {}
-  }
-  // #endregion
-
   // Create the browser window.
   const win = new BrowserWindow({
     title: 'Better LANiS',
@@ -56,25 +47,49 @@ async function createWindow () {
 
   // win.hide()
 
-  if (config) {
-    win.setBounds(config.bounds)
-    if (config.maximized) {
-      win.maximize()
+  const menu = new Menu()
+  menu.append(new MenuItem({
+    label: 'Zoom',
+    submenu: [
+      { role: 'resetZoom', accelerator: 'CommandOrControl+0' },
+      { role: 'zoomIn', accelerator: 'CommandOrControl+=' },
+      { role: 'zoomOut', accelerator: 'CommandOrControl+-' }
+    ]
+  }))
+  menu.append(new MenuItem({
+    label: 'View',
+    submenu: [
+      { role: 'reload', accelerator: 'CommandOrControl+r' },
+      { role: 'reload', accelerator: 'f5' },
+      { role: 'toggleDevTools', accelerator: 'CommandOrControl+Shift+i' }
+    ]
+  }))
+
+  win.setMenu(menu)
+
+  // #region Get Config File
+  config.get(data => {
+    if (data) {
+      win.setBounds(data.bounds)
+      if (data.maximized) {
+        win.maximize()
+      }
     }
-  }
+  })
+  // #endregion
 
   // #region Save Window Bounds
-  win.on('close', () => {
-    config.maximized = win.isMaximized()
+  var configData = {}
 
-    fs.mkdirSync(configDir, { recursive: true })
-    fs.writeFileSync(configPath, JSON.stringify(config))
+  win.on('close', () => {
+    configData.maximized = win.isMaximized()
+    config.set(configData)
   })
 
   win.on('moved', () => {
-    config.maximized = win.isMaximized()
+    configData.maximized = win.isMaximized()
     if (!win.isMaximized()) {
-      config.bounds = win.getBounds()
+      configData.bounds = win.getBounds()
     }
   })
   // #endregion
@@ -106,13 +121,41 @@ async function createWindow () {
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
-    await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
+    win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
     // if (!process.env.IS_TEST) win.webContents.openDevTools()
   } else {
     createProtocol('app')
     // Load the index.html when not in development
     win.loadURL('app://./index.html')
   }
+
+  return win
+}
+
+function createUpdateWindow () {
+  const win = new BrowserWindow({
+    frame: false,
+    width: 300,
+    height: 350,
+    maximizable: false,
+    backgroundColor: '#222',
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: false
+    }
+  })
+
+  if (process.env.WEBPACK_DEV_SERVER_URL) {
+    win.loadURL(path.join(process.env.WEBPACK_DEV_SERVER_URL, 'update'))
+
+    // win.webContents.openDevTools()
+    win.setMenu(new Menu())
+  } else {
+    win.loadURL('app://./update')
+  }
+
+  return win
 }
 
 // Quit when all windows are closed.
@@ -136,14 +179,71 @@ app.on('activate', () => {
 app.on('ready', async () => {
   if (isDevelopment && !process.env.IS_TEST) {
     // Install Vue Devtools
-    // - Don't install because Vue Devtools don't support Vue3
+    // ===> Don't install because Vue Devtools don't support Vue3
     // try {
     //   await installExtension(VUEJS_DEVTOOLS)
     // } catch (e) {
     //   console.error('Vue Devtools failed to install:', e.toString())
     // }
   }
-  createWindow()
+
+  // === CHECK FOR UPDATES ===
+  // options: {
+  //   gitUser: String,
+  //   gitRepo: String
+  // }
+  const updateWindow = createUpdateWindow()
+
+  function startApp () {
+    createWindow()
+    setTimeout(() => updateWindow.close(), 500)
+  }
+
+  ipcMain.on('checkForUpdatesAndInstall', (e) => {
+    e.reply('setUpdateStatus', 'Checking for Updates...')
+
+    // if in Development don't update
+    if (isDevelopment && !process.env.IS_TEST) {
+      startApp()
+      return
+    }
+
+    // Fetch releases of repo
+    fetch(`https://api.github.com/repos/${process.env.BL_REPO_USERNAME}/${process.env.BL_REPO_NAME}/releases`)
+      .then(res => res.json())
+      .then(data => {
+        // Get Latest Version
+        const release = data.filter(x => semver.satisfies(x.tag_name, `> ${app.getVersion()}`))[0]
+
+        if (release) {
+          const asset = release.assets.filter(x => x.name.endsWith('.exe'))[0]
+
+          if (asset) {
+            const dest = path.join(process.env.TEMP, asset.name)
+
+            e.reply('setUpdateStatus', 'Downloading new Version (' + release.tag_name + ')...')
+
+            // Fetch installer file
+            fetch(asset.browser_download_url)
+              .then(res => res.arrayBuffer())
+              .then(data => {
+                e.reply('setUpdateStatus', 'Installing...')
+
+                // Write File and open it
+                fs.writeFileSync(dest, Buffer.from(data))
+                require('child_process').exec(dest)
+                setTimeout(() => { app.quit() }, 1000)
+              })
+          } else {
+            e.reply('setUpdateStatus', 'Starting...')
+            startApp()
+          }
+        } else {
+          e.reply('setUpdateStatus', 'Starting...')
+          startApp()
+        }
+      })
+  })
 })
 
 // Exit cleanly on request from parent process in development mode.

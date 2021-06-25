@@ -1,6 +1,6 @@
 {
   "name": "betterlanis",
-  "version": "1.0.0b",
+  "version": "1.0.0-b",
   "private": true,
   "author": "ObnoxiousOliver",
   "scripts": {
@@ -18,7 +18,9 @@
   "dependencies": {
     "@popperjs/core": "^2.9.1",
     "moment": "^2.29.1",
+    "node-fetch": "^2.6.1",
     "postcss": "^8.2.9",
+    "semver": "^7.3.5",
     "vue": "^3.0.10",
     "vue-i18n": "^9.1.0",
     "vue-router": "^4.0.5",

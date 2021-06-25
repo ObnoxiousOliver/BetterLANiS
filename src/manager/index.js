@@ -228,10 +228,14 @@ export default {
       body,
       method: 'POST'
     }).then(() => {
-      if (callback) this.isLoggedIn(success => callback(success))
+      if (callback) this.isLoggedIn((success, err) => callback(success, err))
+    }).catch(e => {
+      if (callback) this.isLoggedIn((success, err) => callback(success, err))
     })
   },
   isLoggedIn (callback) {
+    var ret = false
+
     fetch(BASE_ADDRESS + 'startseite.php?a=ajax&f=apps', {
       method: 'GET',
       headers: {
@@ -243,13 +247,13 @@ export default {
       .then(data => {
         try {
           var parsedData = JSON.parse(data)
-          var ret = parsedData.entrys !== undefined
+          ret = parsedData.entrys !== undefined
         } catch {
           ret = false
         }
-        if (callback) {
-          callback(ret)
-        }
+        if (callback) callback(ret)
+      }).catch((e) => {
+        if (callback) callback(ret, e)
       })
   },
   getApps (callback) {

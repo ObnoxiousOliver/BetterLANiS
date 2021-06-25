@@ -1,4 +1,6 @@
-#app-mount *, #app-mount ::before, #app-mount ::after {
+#app-mount *:not(.loader),
+#app-mount ::before:not(.loader),
+#app-mount ::after:not(.loader) {
   transition: none;
   animation: none;
 }

@@ -1,16 +1,23 @@
 <template>
   <div class="start-view-component">
-    <div class="router-view">
+    <div class="router-view" ref="routerView">
       <router-view v-slot="{ Component }">
         <transition name="router" mode="out-in">
           <component :is="Component" />
         </transition>
       </router-view>
     </div>
-    <StartMenu @logout="logoutConfirmOpen = true" @userinfo="userinfoOpen = true" />
+    <div class="start-menu-container" ref="startMenu">
+      <StartMenu
+        @logout="logoutConfirmOpen = true"
+        @userinfo="userinfoOpen = true"
+        ref="startMenu"
+      />
+    </div>
     <Modal
-      :active="userinfoOpen"
       @closemodal="userinfoOpen = false"
+      :active="userinfoOpen"
+      :nofocus="[$refs.routerView, $refs.startMenu]"
     >
       <template #header><i class="bi bi-person-fill"/> Benuterinfo</template>
       <div class="user-info-panel">
@@ -55,8 +62,9 @@
       </div>
     </Modal>
     <Modal
-      :active="logoutConfirmOpen"
       @closemodal="logoutConfirmOpen = false"
+      :active="logoutConfirmOpen"
+      :nofocus="[$refs.routerView, $refs.startMenu]"
       variant="error"
     >
       <template #header>Abmelden <i class="fas fa-sign-out-alt"/></template>
@@ -103,6 +111,19 @@ export default {
   mounted () {
     this.checkLoggedIn()
     window.addEventListener('focus', this.checkLoggedIn)
+
+    function keepLoggedIn (x) {
+      manager.isLoggedIn(success => {
+        if (success) {
+          // Wait 10 mins
+          setTimeout(() => { keepLoggedIn() }, 10 * 60 * 1000)
+        } else {
+          x.$emit('changePage', 'Login')
+        }
+      })
+    }
+
+    keepLoggedIn(this)
   },
   beforeUnmount () {
     window.removeEventListener('focus', this.checkLoggedIn)

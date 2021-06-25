@@ -1,7 +1,7 @@
 :root {
-  --primary-background: #efefef;
-  --secondary-background: #fff;
-  --tertiary-background: #f5f5f5;
+  --primary-background: #e5e5e5;
+  --secondary-background: #f5f5f5;
+  --tertiary-background: #efefef;
   
   --background-modifier-unfocused: #0006;
   --background-modifier-selected: #0000000a;
@@ -34,4 +34,8 @@
 
   --scrollbar-track: #e5e5e5;
   --scrollbar-thumb: #d1d1d1;
+
+  --elevation-high: #0002 0 5px 10px;
+  --elevation-medium: #0002 0 2px 5px;
+  --elevation-low: #0002 0 1px 2px;
 }

@@ -4,7 +4,7 @@
       @toggle-settings="showSettingsPanel = !showSettingsPanel; showSettings = false"
       :is-settings-open="showSettingsPanel"
     />
-    <div class="app-container">
+    <div class="app-container" ref="appContainer">
       <transition name="viewer-settings-transition">
         <div
           v-show="!showSettings"
@@ -33,6 +33,7 @@
           :class="showSettings ? 'settings-page-open' : ''"
           v-if="showSettingsPanel"
           @openSettings="openSettings"
+          @openNews="showNews = true"
           :activePage="showSettings ? settingsPage : ''"
         />
       </transition>
@@ -48,6 +49,17 @@
         />
       </transition-group>
     </div>
+    <Modal
+      @closemodal="showNews = false"
+      :active="showNews"
+      :nofocus="[$refs.appContainer]"
+      class="news-modal"
+    >
+      <template #header>
+        <i class="fas fa-scroll" /> Neuigkeiten (v{{ remote.app.getVersion() }})
+      </template>
+      <NewsRenderer :version="remote.app.getVersion()" :repo="repo" />
+    </Modal>
   </div>
 </template>
 
@@ -62,9 +74,12 @@ import Titlebar from './components/Titlebar'
 import Settings from './views/Settings'
 import SettingsPanel from './components/settings/SettingsPanel'
 import Notification from './components/Notification.vue'
+import Modal from './components/Modal.vue'
+import NewsRenderer from './components/NewsRenderer.vue'
 
 import { mapActions, mapState } from 'vuex'
 const { remote } = require('electron')
+const config = require('./config')
 
 // import manager from '@/manager'
 
@@ -76,13 +91,16 @@ export default {
     Login,
     Welcome,
     Start,
-    Notification
+    Notification,
+    Modal,
+    NewsRenderer
   },
   data: () => ({
     showSettingsPanel: false,
     showSettings: false,
     settingsPage: '',
-    page: 'Login'
+    page: 'Login',
+    showNews: false
   }),
   computed: {
     ...mapState([
@@ -91,6 +109,15 @@ export default {
     currentNotifications () {
       var ret = [...this.notification.current]
       return ret.reverse()
+    },
+    remote () {
+      return remote
+    },
+    repo () {
+      return {
+        gitUser: remote.process.env.BL_REPO_USERNAME,
+        gitRepo: remote.process.env.BL_REPO_NAME
+      }
     }
   },
   methods: {
@@ -136,9 +163,21 @@ export default {
   mounted () {
     this.appStart()
 
+    setTimeout(() => {
+      config.get(data => {
+        this.showNews = data.lastVersion !== remote.app.getVersion()
+
+        config.set({
+          lastVersion: remote.app.getVersion()
+        })
+      })
+    }, 1000)
+
     // Add Eventlisteners for DevTools Warnings
-    if (remote.getCurrentWebContents().isDevToolsOpened) { this.devToolsWarning() }
-    remote.getCurrentWebContents().on('devtools-focused', () => this.devToolsWarning())
+    if (process.env.NODE_ENV !== 'development') {
+      if (remote.getCurrentWebContents().isDevToolsOpened) { this.devToolsWarning() }
+      remote.getCurrentWebContents().on('devtools-focused', () => this.devToolsWarning())
+    }
   }
 }
 </script>

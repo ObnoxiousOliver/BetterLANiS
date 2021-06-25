@@ -1,6 +1,6 @@
 <template>
   <div class="home-view-component scroll auto">
-    <div class="wrapper">
+    <div class="wrapper" ref="wrapper">
       <h1 class="app-header"><i class="fas fa-home" /> Startseite</h1>
       <div class="card card-warning card-low">
         <div class="card-header">
@@ -63,9 +63,10 @@
       </div>
     </div>
     <Modal
-      class="favorite-app-modal"
       @closemodal="favoritesModalOpen = false"
       :active="favoritesModalOpen"
+      :nofocus="[$refs.wrapper]"
+      class="favorite-app-modal"
     >
       <template #header>
         <i class="bi-suit-heart" /> Favoriten

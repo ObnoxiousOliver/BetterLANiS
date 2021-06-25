@@ -4,7 +4,7 @@
   .accent-color-select {
     display: flex;
     flex-flow: row nowrap;
-    margin-bottom: 10px;
+    margin: 10px 0;
 
     .custom-color {
       flex: 0 0 auto;
@@ -231,7 +231,8 @@
     .available-themes,
     .current-themes {
       background: $secondary-background;
-      min-height: calc(100vh - 250px);
+      height: calc(100vh - 350px);
+      min-height: 500px;
       flex-grow: 1;
       flex-basis: 50%;
       width: calc(50% - 3px);
@@ -283,49 +284,17 @@
       }
     }
 
-  //   @media screen and (max-width: 1200px) {
-  //     height: auto;
-  //     flex-flow: column nowrap;
-
-  //     .available-themes,
-  //     .current-themes {
-  //       min-height: 300px;
-  //     }
-
-  //     .available-themes {
-  //       border-radius: 5px 5px 0 0;
-
-  //       .theme-item-component {
-  //         &:hover .arrow {
-  //           transform: rotate(90deg) translateX(6px);
-  //         }
-
-  //         .arrow {
-  //           transform: rotate(90deg) translateX(3px);
-  //         }
-  //       }
-  //     }
-  //     .current-themes {
-  //       border-radius: 0 0 5px 5px;
-
-  //       .theme-item-component {
-  //         &:hover .arrow {
-  //           transform: rotate(-90deg) translateX(6px);
-  //         }
-
-  //         .arrow {
-  //           transform: rotate(-90deg) translateX(3px);
-  //         }
-  //       }
-  //     }
-  //   }
+    .default-theme,
+    .available-themes .theme-item-component:last-child {
+      margin-bottom: 0;
+    }
   }
 
   .control-buttons {
-    margin-top: 5px;
+    text-align: right;
+    margin: -10px 0 10px;
 
     .btn {
-      float: right;
       margin-left: 5px;
     }
   }

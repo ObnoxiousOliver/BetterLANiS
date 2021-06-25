@@ -5,11 +5,11 @@ const { remote } = require('electron')
 const fs = require('fs')
 const path = require('path')
 
-const CONFIG_PATH = path.join(remote.process.env.APPDATA, 'betterlanis', 'Config')
-const USERS_PATH = path.join(remote.process.env.APPDATA, 'betterlanis', 'Users')
+const CONFIG_PATH = path.join(remote.process.env.APPDATA, remote.app.getName(), 'Config')
+const USERS_PATH = path.join(remote.process.env.APPDATA, remote.app.getName(), 'Users')
 const ACTIVE_USER_PATH = path.join(CONFIG_PATH, 'active')
 const THEME_CONFIG_PATH = path.join(CONFIG_PATH, 'theme.json')
-const THEMES_PATH = path.join(remote.process.env.APPDATA, 'betterlanis', 'Themes')
+const THEMES_PATH = path.join(remote.process.env.APPDATA, remote.app.getName(), 'Themes')
 
 export default {
   appStart (store) {

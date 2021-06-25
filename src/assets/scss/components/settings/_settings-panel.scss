@@ -10,7 +10,7 @@
   padding: (32px + 10px) 5px 10px;
   background: $secondary-background;
   box-shadow: $elevation-high;
-  transition: 0.4s;
+  transition: transform 0.4s;
 
   .divider {
     color: $muted-foreground;
@@ -54,6 +54,21 @@
       color: $muted-foreground;
       padding: 10px;
       transition: opacity 0.3s;
+
+    }
+
+    .app-links {
+      text-align: right;
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+
+      .tooltip-activator {
+        display: inline;
+      }
+
+      .tooltip {
+        text-align: center;
+      }
     }
   }
 
@@ -106,7 +121,7 @@
   &.settingspanel {
     &-enter-active,
     &-leave-active  {
-      transition: transform 0.3s;
+      transition: transform 0.25s;
     }
   
     &-enter-from,

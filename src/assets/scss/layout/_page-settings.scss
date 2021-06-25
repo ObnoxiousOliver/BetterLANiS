@@ -4,7 +4,7 @@
   background: $primary-background;
   padding-right: 300px;
 
-  transition: padding 0.4s;
+  transition: padding 0.3s;
 
   .settings-page {
     margin: 0 10px;
@@ -23,6 +23,51 @@
     .setting-page-header {
       border-bottom: $muted-foreground solid 1px;
       margin-bottom: 10px;
+    }
+
+    .option-container {
+      padding: 0 5px;
+      margin: 20px 0;
+
+      .option-name {
+        margin: 5px 0 20px;
+        padding: 0 10px;
+        border-bottom: $muted-foreground solid 1px;
+        font-size: 1.2rem;
+        font-family: $header-font;
+      }
+
+      // .option-body {
+      // }
+
+      .option-controls {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: flex-end;
+        align-items: center;
+        margin-top: 5px;
+        gap: 5px;
+      }
+    }
+
+    .option-divider {
+      color: $muted-foreground;
+      margin: 5px;
+      padding: 0 5px;
+      border-bottom: currentColor solid 1px;
+      text-transform: uppercase;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    &-enter-active,
+    &-leave-active {
+      transition: opacity 0.1s;
+    }
+
+    &-enter-from,
+    &-leave-to {
+      opacity: 0;
     }
   }
 

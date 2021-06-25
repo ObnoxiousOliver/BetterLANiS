@@ -1,147 +1,166 @@
 <template>
   <div class="setting-appearance-view-component scroll y auto">
-    <div class="wrapper">
-      <fieldset :disabled="accentColorsOpen || customColorOpen">
-        <h1 class="setting-page-header">Aussehen</h1>
-        <div class="accent-color-select">
-          <tooltip placement="bottom">
-            <template #activator>
-              <button @click="openCustomColor" class="color-button custom-color">
-                <i class="icon bi-eyedropper" />
-                <div class="accent-foreground-preview" />
-              </button>
-            </template>
-            <span class="custom-color-tooltip">
-              Eigene Farbe wählen
-            </span>
-          </tooltip>
-          <div class="color-templates">
-            <button
-              @click="setAccentColor(template)"
-              v-for="template in allAccentColors"
-              :key="template"
-              :class="['color-button', 'template-color', theme.accent === template ? 'active' : '']"
-              :style="{ color: template }"
-            >
-              <i class="icon bi-check2" />
-              <div class="accent-foreground-preview" :style="{ color: color.getContrastYIQ(template) }" />
-            </button>
-          </div>
-          <tooltip placement="bottom">
-            <template #activator>
-              <bl-button
-                @click="accentColorsOpen = true"
-                class="show-all-colors-button"
-                variant="transparent"
-              >
-                <i class="bi-chevron-down" />
-              </bl-button>
-            </template>
-            Mehr Farben anzeigen
-          </tooltip>
-        </div>
+    <div class="wrapper" ref="wrapper">
+      <h1 class="setting-page-header"><i class="fas fa-swatchbook" /> Erscheinungsbild</h1>
 
-        <div class="theme-select">
-          <div class="available-themes">
-            <transition-group
-              name="theme-list"
-              tag="div"
-              class="list-animator"
-            >
-              <ThemeItem
-                v-for="theme in availableThemes"
-                @click="addThemeClick(theme)"
-                @contextmenu="selectedAvailableTheme = theme; $refs.availableThemeContextMenu.open()"
-                :key="theme.path"
-                :theme="theme"
-                :original="theme.author === 'ObnoxiousOliver'"
-                :tabindex="accentColorsOpen || customColorOpen ? -1 : 0"
-              />
-            </transition-group>
-            <context-menu ref="availableThemeContextMenu">
-              <button @click="addThemeClick(selectedAvailableTheme)"><i class="bi bi-plus-circle" /> Hinzufügen</button>
-              <div class="divider" />
-              <button @click="openInFolder(selectedAvailableTheme)"><i class="far fa-folder" /> Themes-Ordner öffnen</button>
-            </context-menu>
+      <!-- Accent Color -->
+      <div class="option-container">
+        <div class="option-name">
+          <i class="fas fa-paint-brush" /> Akzent Farbe
+        </div>
+        <div class="options-body">
+          <div class="accent-color-select">
+            <tooltip placement="bottom">
+              <template #activator>
+                <button @click="openCustomColor" class="color-button custom-color">
+                  <i class="icon bi-eyedropper" />
+                  <div class="accent-foreground-preview" />
+                </button>
+              </template>
+              <span class="custom-color-tooltip">
+                Eigene Farbe wählen
+              </span>
+            </tooltip>
+            <div class="color-templates">
+              <button
+                @click="setAccentColor(template)"
+                v-for="template in allAccentColors"
+                :key="template"
+                :class="['color-button', 'template-color', theme.accent === template ? 'active' : '']"
+                :style="{ color: template }"
+              >
+                <i class="icon bi-check2" />
+                <div class="accent-foreground-preview" :style="{ color: color.getContrastYIQ(template) }" />
+              </button>
+            </div>
+            <tooltip placement="bottom">
+              <template #activator>
+                <bl-button
+                  @click="accentColorsOpen = true"
+                  class="show-all-colors-button"
+                  variant="transparent"
+                >
+                  <i class="bi-chevron-down" />
+                </bl-button>
+              </template>
+              Mehr Farben anzeigen
+            </tooltip>
           </div>
+        </div>
+      </div>
 
-          <div class="current-themes">
-            <transition-group
-              name="theme-list"
-              tag="div"
-              class="list-animator"
+      <!-- Themes -->
+      <div class="option-container">
+        <div class="option-name">
+          <i class="fas fa-swatchbook" /> App-Themen
+        </div>
+        <div class="option-body">
+          <div class="control-buttons">
+            <bl-button
+              @click="openInFolder({ path: '' })"
+              class="open-folder-btn"
+              variant="transparent small"
             >
+              <i class="far fa-folder" /> Themen-Ordner öffnen
+            </bl-button>
+            <bl-button
+              @click="getThemes"
+              class="refresh-btn"
+              variant="transparent small"
+            >
+              <i class="fa fa-sync" /> Neu laden
+            </bl-button>
+          </div>
+          <div class="theme-select">
+            <div class="available-themes scroll y auto thin">
+              <transition-group
+                name="theme-list"
+                tag="div"
+                class="list-animator"
+              >
+                <ThemeItem
+                  v-for="theme in availableThemes"
+                  @click="addThemeClick(theme)"
+                  @contextmenu="selectedAvailableTheme = theme; $refs.availableThemeContextMenu.open()"
+                  :key="theme.path"
+                  :theme="theme"
+                  :original="theme.author === 'ObnoxiousOliver'"
+                  tabindex="0"
+                />
+              </transition-group>
+              <context-menu ref="availableThemeContextMenu">
+                <button @click="addThemeClick(selectedAvailableTheme)"><i class="bi bi-plus-circle" /> Hinzufügen</button>
+                <div class="divider" />
+                <button @click="openInFolder(selectedAvailableTheme)"><i class="far fa-folder" /> Im Themen-Ordner öffnen</button>
+              </context-menu>
+            </div>
+
+            <div class="current-themes scroll y auto thin">
+              <transition-group
+                name="theme-list"
+                tag="div"
+                class="list-animator"
+              >
+                <ThemeItem
+                  v-for="theme in currentThemes"
+                  @click="removeThemeClick(theme)"
+                  @contextmenu="selectedCurrentTheme = theme; $refs.currentThemeContextMenu.open()"
+                  :key="theme.path"
+                  :theme="theme"
+                  :original="theme.author === 'ObnoxiousOliver'"
+                  :draggable="currentThemes.length > 1"
+                  tabindex="0"
+                />
+              </transition-group>
+              <context-menu ref="currentThemeContextMenu">
+                <button
+                  v-if="selectedCurrentTheme"
+                  @click="moveThemeUp(selectedCurrentTheme)"
+                  :disabled="theme.using.indexOf(selectedCurrentTheme) >= theme.using.length - 1"
+                >
+                  <i class="bi-chevron-up" /> Nach Oben
+                </button>
+                <button
+                  v-if="selectedCurrentTheme"
+                  @click="moveThemeDown(selectedCurrentTheme)"
+                  :disabled="theme.using.indexOf(selectedCurrentTheme) <= 0"
+                >
+                  <i class="bi-chevron-down" /> Nach Unten
+                </button>
+                <button
+                  v-if="selectedCurrentTheme"
+                  @click="removeThemeClick(selectedCurrentTheme)"
+                >
+                  <i class="bi-x" /> Entfernen
+                </button>
+                <div
+                  v-if="selectedCurrentTheme"
+                  class="divider"
+                />
+                <button @click="openInFolder(selectedCurrentTheme)">
+                  <i class="far fa-folder" /> Im Themen-Ordner öffnen
+                </button>
+              </context-menu>
               <ThemeItem
-                v-for="theme in currentThemes"
-                @click="removeThemeClick(theme)"
-                @contextmenu="selectedCurrentTheme = theme; $refs.currentThemeContextMenu.open()"
-                :key="theme.path"
-                :theme="theme"
-                :original="theme.author === 'ObnoxiousOliver'"
-                :draggable="currentThemes.length > 1"
-                :tabindex="accentColorsOpen || customColorOpen ? -1 : 0"
+                class="default-theme"
+                :theme="{
+                  name: 'Standart Thema',
+                  description: 'Das dunkle Design von Better LANiS'
+                }"
+                :original="true"
+                :noArrow="true"
               />
-            </transition-group>
-            <context-menu ref="currentThemeContextMenu">
-              <button
-                v-if="selectedCurrentTheme"
-                @click="moveThemeUp(selectedCurrentTheme)"
-                :disabled="theme.using.indexOf(selectedCurrentTheme) >= theme.using.length - 1"
-              >
-                <i class="bi-chevron-up" /> Nach Oben
-              </button>
-              <button
-                v-if="selectedCurrentTheme"
-                @click="moveThemeDown(selectedCurrentTheme)"
-                :disabled="theme.using.indexOf(selectedCurrentTheme) <= 0"
-              >
-                <i class="bi-chevron-down" /> Nach Unten
-              </button>
-              <button
-                v-if="selectedCurrentTheme"
-                @click="removeThemeClick(selectedCurrentTheme)"
-              >
-                <i class="bi-x" /> Entfernen
-              </button>
-              <div
-                v-if="selectedCurrentTheme"
-                class="divider"
-              />
-              <button @click="openInFolder(selectedCurrentTheme)">
-                <i class="far fa-folder" /> Im Themes-Ordner öffnen
-              </button>
-            </context-menu>
-            <ThemeItem
-              :theme="{
-                name: 'Default',
-                description: 'Das dunkle Design von Better LANiS'
-              }"
-              :original="true"
-              :noArrow="true"
-            />
+            </div>
           </div>
         </div>
-        <div class="control-buttons">
-          <bl-button
-            @click="getThemes"
-            class="refresh-btn"
-          >
-            <i class="fa fa-sync" /> Neu laden
-          </bl-button>
-          <bl-button
-            @click="openInFolder({ path: '' })"
-            class="open-folder-btn"
-          >
-            <i class="far fa-folder" /> Themes-Ordner öffnen
-          </bl-button>
-        </div>
-      </fieldset>
+      </div>
     </div>
 
     <Modal
-      class="all-accent-colors-modal"
       @closemodal="accentColorsOpen = false"
       :active="accentColorsOpen"
+      :nofocus="[$refs.wrapper]"
+      class="all-accent-colors-modal"
     >
       <template #header>Akzent Farben</template>
       <div class="">
@@ -175,9 +194,10 @@
     </Modal>
 
     <Modal
-      class="custom-colors-modal"
       @closemodal="customColorOpen = false"
       :active="customColorOpen"
+      :nofocus="[$refs.wrapper]"
+      class="custom-colors-modal"
     >
       <template #header>Eigene Farbe</template>
       <ColorPicker ref="accentColorPicker" />
@@ -277,9 +297,9 @@ export default {
     accentColorTemplates () {
       return [
         '#3399ff',
-        '#66ffcc',
+        '#44ccaa',
         '#ffdd44',
-        '#ff9922',
+        '#ff9933',
         '#ff5555',
         '#ff6688',
         '#ff66ee',

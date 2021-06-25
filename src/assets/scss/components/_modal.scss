@@ -136,33 +136,29 @@
     }
   }
 
-  &-enter-active, &-leave-active {
+  &-enter-active {
     transition: none 0.2s;
 
-    .modal-mask {
-      transition: opacity 0.2s;
+    .modal-mask, .modal {
+      transition: opacity 0.2s, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    .modal {
+  }
+  &-leave-active {
+    transition: none 0.2s;
+
+    .modal-mask, .modal {
       transition: opacity 0.2s, transform 0.2s;
     }
   }
 
-  &-enter-from {
-    .modal-mask {
-      opacity: 0;
-    }
-    .modal {
-      opacity: 0;
-      transform: translate(-50%, calc(-50% - 20px));
-    }
-  }
+  &-enter-from,
   &-leave-to {
     .modal-mask {
       opacity: 0;
     }
     .modal {
       opacity: 0;
-      transform: translate(-50%, calc(-50% + 20px));
+      transform: translate(-50%, -50%)scale(0.95);
     }
   }
 }

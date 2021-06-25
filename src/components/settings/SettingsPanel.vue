@@ -18,6 +18,7 @@
           <i class="icon fas fa-swatchbook" /> Erscheinungsbild
         </bl-button>
         <bl-button
+          @click="$emit('openSettings', 'Accessibility')"
           :class="[
           'setting-link',
           activePage === 'Accessibility'
@@ -25,11 +26,55 @@
             : 'btn-transparent'
           ]"
         >
-          <i class="icon fas fa-child" /> Accessibility
+          <i class="icon fas fa-child" /> Barrierefreiheit
+        </bl-button>
+        <div class="divider" />
+        <bl-button
+          @click="$emit('openNews')"
+          class="setting-link"
+          variant="transparent"
+        >
+          <i class="icon fas fa-scroll" /> Neuigkeiten
         </bl-button>
       </div>
       <div class="app-info">
-        Version: {{ remote.app.getName() }} ({{ remote.app.getVersion() }})<br>
+
+        <!-- Links -->
+        <div class="app-links">
+          <tooltip>
+            <template #activator>
+              <bl-button
+                @click="openLinkInBrowser('https://obnoxiousoliver.github.io')"
+                variant="transparent small"
+              ><i class="fas fa-globe" /></bl-button>
+            </template>
+            Website<br>
+            <span class="secondary">obnoxiousoliver.github.io</span>
+          </tooltip>
+          <tooltip>
+            <template #activator>
+              <bl-button
+                @click="openLinkInBrowser('https://github.com/ObnoxiousOliver')"
+                variant="transparent small"
+              ><i class="fab fa-github" /></bl-button>
+            </template>
+            GitHub - ObnoxiousOliver<br>
+            <span class="secondary">github.com/ObnoxiousOliver</span>
+          </tooltip>
+          <tooltip>
+            <template #activator>
+              <bl-button
+                @click="openLinkInBrowser('https://github.com/ObnoxiousOliver/BetterLANiS/issues')"
+                variant="transparent small"
+              ><i class="fas fa-bug" /></bl-button>
+            </template>
+            Ein Bug melden<br>
+            <span class="secondary">GitHub Issues</span>
+          </tooltip>
+        </div>
+
+        <!-- Client and OS info -->
+        Client: {{ remote.app.getName() }} (v{{ remote.app.getVersion() }})<br>
         OS: {{ os.version() }} ({{ os.release() }})
       </div>
     </div>
@@ -47,12 +92,17 @@ export default {
   },
   computed: {
     remote () {
-      console.log(remote.app)
+      // console.log(remote.app)
       return remote
     },
     os () {
-      console.log(os)
+      // console.log(os)
       return os
+    }
+  },
+  methods: {
+    openLinkInBrowser (url) {
+      remote.shell.openExternal(url)
     }
   }
 }

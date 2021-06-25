@@ -3,7 +3,10 @@
 $accent: var(--accent);
 $accent-foreground: var(--accent-foreground);
 
-$gold: var(--gold);
+$red: var(--red);
+$green: var(--green);
+$blue: var(--blue);
+$yellow: var(--yellow);
 
 $primary-background: var(--primary-background);
 $secondary-background: var(--secondary-background);
@@ -52,7 +55,10 @@ $header-font: var(--header-font);
   --accent: #39f;
   --accent-foreground: #fff;
 
-  --gold: #ffd000;
+  --red: #f44;
+  --green: #6f6;
+  --blue: #35f;
+  --yellow: #fc3;
 
   --primary-background: #222;
   --secondary-background: #171717;
@@ -67,7 +73,7 @@ $header-font: var(--header-font);
   --popup-foreground: #fff;
 
   --primary-foreground: #fff;
-  --secondary-foreground: #757575;
+  --secondary-foreground: #929292;
   --muted-foreground: #626262;
 
   --warning: #fc4;

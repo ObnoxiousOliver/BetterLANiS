@@ -19,8 +19,8 @@ const fs = require('fs')
 const path = require('path')
 const { remote } = require('electron')
 
-const CONFIG_PATH = path.join(remote.process.env.APPDATA, 'betterlanis', 'Config')
-const USERS_PATH = path.join(remote.process.env.APPDATA, 'betterlanis', 'Users')
+const CONFIG_PATH = path.join(remote.process.env.APPDATA, remote.app.getName(), 'Config')
+const USERS_PATH = path.join(remote.process.env.APPDATA, remote.app.getName(), 'Users')
 const ACTIVE_USER_PATH = path.join(CONFIG_PATH, 'active')
 
 export default {
@@ -40,7 +40,12 @@ export default {
   mounted () {
     // this.$emit('changePage', 'Start')
     this.disableForm = true
-    manager.isLoggedIn((success) => {
+    manager.isLoggedIn((success, err) => {
+      if (err) {
+        console.log(err)
+        return
+      }
+
       if (success) {
         this.setUserData({
           callback: () => {
@@ -74,7 +79,12 @@ export default {
       this.login(username, password, schoolId, rememberMe)
     },
     login (username, password, schoolId, rememberMe) {
-      manager.loginLanis(username, password, schoolId, (success) => {
+      manager.loginLanis(username, password, schoolId, (success, err) => {
+        if (err) {
+          console.error(err)
+          return
+        }
+
         if (success) {
           this.setUserData({
             payload: {

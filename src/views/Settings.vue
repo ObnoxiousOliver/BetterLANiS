@@ -1,33 +1,22 @@
 <template>
   <div class="settings-view-component">
     <div class="settings-page">
-      <component :is="page" />
+      <transition name="settings-page" mode="out-in">
+        <component :is="page" />
+      </transition>
     </div>
-    <!-- <div class="sidebar">
-      <SettingsSidebar @go-to="goTo" />
-    </div>
-    <div class="content scroll auto">
-      <div class="setting-view">
-        <transition>
-          <component :is="openSettingTab" />
-        </transition>
-      </div>
-    </div> -->
   </div>
 </template>
 
 <script>
-import Account from './settings/Account'
 import Appearance from './settings/Appearance'
-
-// import SettingsSidebar from '@/components/settings/SettingsSidebar'
+import Accessibility from './settings/Accessibility'
 
 export default {
   name: 'Settings',
   components: {
-    // SettingsSidebar,
-    Account,
-    Appearance
+    Appearance,
+    Accessibility
   },
   props: {
     page: String

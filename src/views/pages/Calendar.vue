@@ -1,6 +1,6 @@
 <template>
   <div class="calendar-view-component scroll auto">
-    <div class="wrapper">
+    <div class="wrapper" ref="wrapper">
       <h1 class="app-header">
         <i class="bi-calendar2-week-fill" /> Kalender
       </h1>
@@ -103,7 +103,11 @@
     </div>
 
     <!-- Popup Modal for selected Event -->
-    <Modal :active="selectedEvent" @closemodal="selectedEvent = undefined">
+    <Modal
+      @closemodal="selectedEvent = undefined"
+      :active="selectedEvent"
+      :nofocus="[$refs.wrapper]"
+    >
       <template #header>{{ selectedEvent.name }}</template>
       <div class="event-details">
         <div v-if="selectedEvent.raw.description" v-html="selectedEvent.raw.description" class="event-description" />

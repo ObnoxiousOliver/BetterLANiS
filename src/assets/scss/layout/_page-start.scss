@@ -5,12 +5,16 @@
   display: flex;
   flex-flow: row-reverse nowrap;
 
-  .startmenu-component {
+  .start-menu-container {
     z-index: 1;
-    flex: 0 0 auto;
+    flex: 0 0 250px;
     width: 250px;
     box-shadow: $elevation-high;
     background: $secondary-background;
+
+    .startmenu-component {
+      height: 100%;
+    }
   }
 
   .router-view {
@@ -38,7 +42,7 @@
   .router {
     &-enter-active,
     &-leave-active {
-      transition: opacity 0.1s ease-in-out;
+      transition: opacity 0.1s;
     }
   
     &-leave-to,
