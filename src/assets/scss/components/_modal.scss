@@ -92,6 +92,25 @@
 
         outline: none;
       }
+
+    }
+
+    .modal-content, .modal-footer {
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+    
+    .modal-header {
+      opacity: 0.2;
+      transition: opacity 0.2s;
+    }
+
+    &:focus-visible, &:focus-within {
+      outline: none;
+
+      .modal-header, .modal-content, .modal-footer {
+        opacity: 1;
+      }
     }
 
     table {

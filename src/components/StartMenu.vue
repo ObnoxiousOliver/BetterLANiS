@@ -7,16 +7,18 @@
     >
       <!-- <div class="user-backdrop" /> -->
       <div class="user-avatar" />
-      <h1 class="user-name">
+      <h1 class="user-name"
+        ref="userContextMenuButton">
         {{ loggedInUser.firstName }} {{ loggedInUser.lastName }}
       </h1>
       <button
-        @click="$refs.userContextMenu.open()"
+        @click="openUserContextMenu"
         class="user-menu-button context-menu-button"
+        ref="userContextMenuButton"
       >
         <i class="bi-chevron-down" />
       </button>
-      <context-menu ref="userContextMenu">
+      <context-menu ref="userContextMenu" :target="$refs.userContextMenuButton">
         <button @click="$emit('userinfo')"><i class="bi bi-person-fill"/> Benutzerinfo</button>
         <div class="divider" />
         <button @click="$emit('logout')" class="error">Abmelden <i class="fas fa-sign-out-alt"/></button>
@@ -120,6 +122,9 @@ export default {
     openAppMenu (app) {
       this.currentApp = app
       this.$refs.appMenu.open()
+    },
+    openUserContextMenu () {
+      this.$refs.userContextMenu.open(this.$refs.userContextMenuButton)
     },
     addFavoriteAppClick (app) {
       this.addFavoriteApp(app.name)

@@ -1,7 +1,7 @@
 <template>
-  <div class="app" @keydown.esc="showSettingsPanel = false; showSettings = false">
+  <div class="app" @keydown.esc="showSettingsPanel = false; showSettings = false; showNews = false">
     <Titlebar
-      @toggle-settings="showSettingsPanel = !showSettingsPanel; showSettings = false"
+      @toggle-settings="showSettingsPanel = !showSettingsPanel; showSettings = false; showNews = false"
       :is-settings-open="showSettingsPanel"
     />
     <div class="app-container" ref="appContainer">
@@ -116,7 +116,8 @@ export default {
     repo () {
       return {
         gitUser: remote.process.env.BL_REPO_USERNAME,
-        gitRepo: remote.process.env.BL_REPO_NAME
+        gitRepo: remote.process.env.BL_REPO_NAME,
+        token: remote.process.env.GITHUB_TOKEN
       }
     }
   },

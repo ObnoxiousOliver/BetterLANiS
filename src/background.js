@@ -203,13 +203,18 @@ app.on('ready', async () => {
     e.reply('setUpdateStatus', 'Checking for Updates...')
 
     // if in Development don't update
-    if (isDevelopment && !process.env.IS_TEST) {
-      startApp()
-      return
-    }
+    // if (isDevelopment && !process.env.IS_TEST) {
+    //   startApp()
+    //   return
+    // }
 
     // Fetch releases of repo
-    fetch(`https://api.github.com/repos/${process.env.BL_REPO_USERNAME}/${process.env.BL_REPO_NAME}/releases`)
+    fetch(`https://api.github.com/repos/${process.env.BL_REPO_USERNAME}/${process.env.BL_REPO_NAME}/releases`,
+      {
+        headers: {
+          Authorization: 'Basic ' + Buffer.from('*:' + process.env.GITHUB_TOKEN).toString('base64')
+        }
+      })
       .then(res => res.json())
       .then(data => {
         // Get Latest Version

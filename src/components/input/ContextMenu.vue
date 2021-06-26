@@ -18,15 +18,12 @@ import { createPopper } from '@popperjs/core'
 
 export default {
   name: 'ContextMenu',
-  props: {
-    target: Object
-  },
   data: () => ({
     contextOpen: false,
     contextShow: false
   }),
   methods: {
-    open () {
+    open (target) {
       this.contextOpen = true
       document.addEventListener('mousedown', this.close)
       document.addEventListener('keydown', this.close)
@@ -37,17 +34,14 @@ export default {
       setTimeout(() => {
         var contextMenu = this.$refs.contextMenu
 
+        var useTarget = target !== undefined
+
         this.contextShow = true
-        createPopper(this.target || {
-          getBoundingClientRect: () => ({
-            width: 0,
-            height: 0,
-            top: y,
-            left: x,
-            right: x,
-            bottom: y
-          })
-        }, contextMenu, { placement: this.target ? 'right-start' : 'bottom-start' })
+        createPopper(
+          useTarget
+            ? target
+            : { getBoundingClientRect: () => ({ width: 0, height: 0, top: y, left: x, right: x, bottom: y }) },
+          contextMenu, { placement: 'bottom-start' })
 
         setTimeout(() => {
           this.$refs.contextMenu.querySelector('.menu-content > button:not([disabled]), .menu-content > a:not([disabled])').focus()

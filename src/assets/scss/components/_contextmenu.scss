@@ -64,13 +64,12 @@
       font-size: 0.8rem;
     }
     .header {
-      background: $accent;
-      color: $accent-foreground;
-      padding: 7px 15px;
-      margin: -10px 0 5px;
+      color: $secondary-foreground;
+      border-bottom: $muted-foreground solid 1px;
+      padding: 0 10px 5px;
+      margin: 0 10px 5px;
       font-family: $header-font;
-      font-size: 1rem;
-      box-shadow: $elevation-low;
+      font-size: 1.1rem;
     }
 
     .context-menu {

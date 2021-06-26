@@ -163,7 +163,7 @@
       class="all-accent-colors-modal"
     >
       <template #header>Akzent Farben</template>
-      <div class="">
+      <div>
         <div class="all-template-colors scroll y auto">
           <button
             @click="setAccentColor(template)"

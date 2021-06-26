@@ -10,6 +10,7 @@
       @mousedown="palette_mousedown"
       class="palette"
       ref="palette"
+      tabindex="1"
     >
       <div
         class="fill"

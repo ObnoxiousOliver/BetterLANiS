@@ -1,8 +1,12 @@
 <template>
   <transition name="modal-component">
-    <div v-if="active" :class="['modal-component', variant.split(' ').map(x => 'modal-' + x)]">
+    <div
+      @keydown.esc="this.$emit('closemodal')"
+      v-if="active"
+      :class="['modal-component', variant.split(' ').map(x => 'modal-' + x)]"
+    >
       <div @click="$emit('closemodal')" class="modal-mask" />
-      <div class="modal">
+      <div class="modal" tabindex="0">
         <button
           @click="$emit('closemodal')"
           class="modal-close-btn"
