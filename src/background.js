@@ -230,22 +230,19 @@ app.on('ready', async () => {
     e.reply('setUpdateStatus', 'Checking for Updates...')
 
     // if in Development don't update
-    if (isDevelopment && !process.env.IS_TEST) {
-      startApp()
-      return
-    }
+    // if (isDevelopment && !process.env.IS_TEST) {
+    //   startApp()
+    //   return
+    // }
 
     // Fetch releases of repo
-    fetch(`https://api.github.com/repos/${process.env.BL_REPO_USERNAME}/${process.env.BL_REPO_NAME}/releases`,
-      {
-        headers: {
-          Authorization: 'Basic ' + Buffer.from('*:' + process.env.GITHUB_TOKEN).toString('base64')
-        }
-      })
+    fetch(`https://api.github.com/repos/${process.env.BL_REPO_USERNAME}/${process.env.BL_REPO_NAME}/releases`, {
+      headers: { Authorization: 'Basic ' + Buffer.from('*:' + process.env.GITHUB_TOKEN).toString('base64') }
+    })
       .then(res => res.json())
       .then(data => {
         // Get Latest Version
-        const release = data.filter(x => semver.satisfies(x.tag_name, `> ${app.getVersion()}`))[0]
+        const release = data.filter(x => semver.satisfies(x.tag_name, `> ${app.getVersion()}`, { includePrerelease: true }))[0]
 
         if (release) {
           const asset = release.assets.filter(x => x.name.endsWith('.exe'))[0]
@@ -255,8 +252,14 @@ app.on('ready', async () => {
 
             e.reply('setUpdateStatus', 'Downloading new Version (' + release.tag_name + ')...')
 
+            console.log(asset.url)
             // Fetch installer file
-            fetch(asset.browser_download_url)
+            fetch(asset.url, {
+              headers: {
+                Authorization: 'Basic ' + Buffer.from('*:' + process.env.GITHUB_TOKEN).toString('base64'),
+                Accept: 'application/octet-stream'
+              }
+            })
               .then(res => res.arrayBuffer())
               .then(data => {
                 e.reply('setUpdateStatus', 'Installing...')
