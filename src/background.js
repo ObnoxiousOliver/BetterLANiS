@@ -10,6 +10,10 @@ import config from './config'
 // import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
+process.env.BL_REPO_NAME = 'BetterLANiS'
+process.env.BL_REPO_USERNAME = 'ObnoxiousOliver'
+process.env.GITHUB_TOKEN = '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'
+
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
   {
@@ -24,6 +28,12 @@ protocol.registerSchemesAsPrivileged([
 
 app.commandLine.appendSwitch('disable-site-isolation-trials')
 
+const gotTheLock = app.requestSingleInstanceLock()
+
+if (!gotTheLock) {
+  app.quit()
+}
+
 async function createWindow () {
   // Create the browser window.
   const win = new BrowserWindow({
@@ -34,6 +44,7 @@ async function createWindow () {
     minHeight: 700,
     minWidth: 900,
     backgroundColor: '#111',
+    icon: './icon.ico',
     // transparent: true,
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
@@ -106,7 +117,7 @@ async function createWindow () {
         title: 'Better LANiS',
         message: 'Soll diese externe Website geöffnet werden?',
         detail: url,
-        checkboxLabel: 'Nicht mehr fragen',
+        // checkboxLabel: 'Nicht mehr fragen',
         buttons: ['Yes', 'Cancel', 'Copy Link']
       }).then(({ response, checkboxChecked }) => {
       if (response === 0) {
@@ -114,17 +125,22 @@ async function createWindow () {
       } else if (response === 2) {
         clipboard.writeText(url)
       }
-      if (checkboxChecked) {}
+      // if (checkboxChecked) {}
     })
   })
   // #endregion
+
+  app.on('second-instance', (event, commandLine, workingDirectory) => {
+    // Someone tried to run a second instance, we should focus our window.
+    if (win.isMinimized()) win.restore()
+    win.focus()
+  })
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
     // if (!process.env.IS_TEST) win.webContents.openDevTools()
   } else {
-    createProtocol('app')
     // Load the index.html when not in development
     win.loadURL('app://./index.html')
   }
@@ -138,22 +154,31 @@ function createUpdateWindow () {
     width: 300,
     height: 350,
     maximizable: false,
+    // resizable: false,
     backgroundColor: '#222',
     webPreferences: {
       nodeIntegration: true,
-      contextIsolation: false,
-      enableRemoteModule: false
+      contextIsolation: false
     }
   })
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
-    win.loadURL(path.join(process.env.WEBPACK_DEV_SERVER_URL, 'update'))
+    win.loadURL(path.join(process.env.WEBPACK_DEV_SERVER_URL, 'update/index.html'))
 
     // win.webContents.openDevTools()
-    win.setMenu(new Menu())
   } else {
-    win.loadURL('app://./update')
+    win.loadURL('app://./update/index.html')
+    win.setMenu(new Menu())
   }
+
+  win.on('ready-to-show', () => {
+    var zoom = win.webContents.getZoomFactor()
+    win.webContents.setZoomFactor(1)
+
+    win.on('close', () => {
+      win.webContents.setZoomFactor(zoom)
+    })
+  })
 
   return win
 }
@@ -185,6 +210,8 @@ app.on('ready', async () => {
     // } catch (e) {
     //   console.error('Vue Devtools failed to install:', e.toString())
     // }
+  } else {
+    createProtocol('app')
   }
 
   // === CHECK FOR UPDATES ===
@@ -203,10 +230,10 @@ app.on('ready', async () => {
     e.reply('setUpdateStatus', 'Checking for Updates...')
 
     // if in Development don't update
-    // if (isDevelopment && !process.env.IS_TEST) {
-    //   startApp()
-    //   return
-    // }
+    if (isDevelopment && !process.env.IS_TEST) {
+      startApp()
+      return
+    }
 
     // Fetch releases of repo
     fetch(`https://api.github.com/repos/${process.env.BL_REPO_USERNAME}/${process.env.BL_REPO_NAME}/releases`,

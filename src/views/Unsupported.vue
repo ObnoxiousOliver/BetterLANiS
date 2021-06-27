@@ -8,6 +8,7 @@
     />
     <div class="browser">
       <iframe
+        @load="iframeLoad"
         ref="viewer"
         :src="sourceUrl"
       />
@@ -37,6 +38,12 @@ export default {
       } else {
         return undefined
       }
+    },
+    allowedLinks () {
+      return [
+        /(start|login)\.schulportal\.hessen\.de/gi,
+        /mo\d{4}\.schule\.hessen\.de/gi
+      ]
     }
   },
   watch: {
@@ -46,10 +53,18 @@ export default {
   },
   mounted () {
     this.setUrl = true
+  },
+  methods: {
+    writeEvent (e) {
+      console.log(e)
+    },
+    iframeLoad (e) {
+      this.pageLoading = false
 
-    this.$refs.viewer.addEventListener('load', () => {
-      var frame = this.$refs.viewer.contentWindow
+      var frame = e.target.contentWindow
       this.location = frame.location
+
+      // Inject CSS
       var style = document.createElement('style')
       style.innerHTML = `
         * {
@@ -67,17 +82,15 @@ export default {
         }
       `
       frame.document.head.append(style)
+
+      // A-tags open Browser
       frame.document.querySelectorAll('a').forEach(el => {
-        if (el.href.startsWith('http')) {
-          if (!el.href.includes('schulportal.hessen.de') && !el.href.includes('.schule.hessen.de')) {
-            el.target = '_blank'
-          }
-        } else {
-          el.target = undefined
+        // console.log(el.href, this.allowedLinks.filter(x => el.href.match(x)))
+        if (!this.allowedLinks.filter(x => el.href.match(x)).length) {
+          el.target = '_blank'
         }
       })
-      this.pageLoading = false
-    })
+    }
   }
 }
 </script>

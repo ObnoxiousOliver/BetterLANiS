@@ -1,5 +1,6 @@
 {
   "name": "betterlanis",
+  "productName": "BetterLANiS",
   "version": "1.0.0-b",
   "private": true,
   "author": "ObnoxiousOliver",
@@ -14,6 +15,7 @@
     "postuninstall": "electron-builder install-app-deps",
     "start": "vue-cli-service electron:serve"
   },
+  "files": ["**/*", "build/icon.*"],
   "main": "background.js",
   "dependencies": {
     "@popperjs/core": "^2.9.1",
