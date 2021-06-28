@@ -250,9 +250,8 @@ app.on('ready', async () => {
           if (asset) {
             const dest = path.join(process.env.TEMP, asset.name)
 
-            e.reply('setUpdateStatus', 'Downloading new Version (' + release.tag_name + ')...')
+            e.reply('setUpdateStatus', 'Downloading (v' + release.tag_name + ')...')
 
-            console.log(asset.url)
             // Fetch installer file
             fetch(asset.url, {
               headers: {
@@ -260,12 +259,17 @@ app.on('ready', async () => {
                 Accept: 'application/octet-stream'
               }
             })
-              .then(res => res.arrayBuffer())
-              .then(data => {
-                e.reply('setUpdateStatus', 'Installing...')
+              .then(res => new Promise((resolve, reject) => {
+                var ws = fs.createWriteStream(dest)
+                res.body.pipe(ws)
 
-                // Write File and open it
-                fs.writeFileSync(dest, Buffer.from(data))
+                ws.on('error', reject)
+
+                res.body.on('end', () => resolve())
+              }))
+              .then(err => {
+                if (err) dialog.showMessageBox(updateWindow, { title: 'Error', detail: err })
+                e.reply('setUpdateStatus', 'Installing...')
                 require('child_process').exec(dest)
                 setTimeout(() => { app.quit() }, 1000)
               })

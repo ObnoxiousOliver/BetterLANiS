@@ -28,7 +28,7 @@ export default {
       .then(res => res.json())
       .then(data => {
         try {
-          const release = data/* .filter(x => x.tag_name === this.version) */[0]
+          const release = data.filter(x => x.body)[0]
           this.newsHtml = release.body
           this.date = moment(release.published_at).format('DD.MM.YYYY')
         } catch {
