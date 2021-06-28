@@ -12,17 +12,17 @@ $accent: #39f;
 
 *, ::before, ::after {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 html, body {
+  position: relative;
   background: #eee;
-  color: #000;
+  color: #282a35;
   margin: 0;
-  height: 100%;
+  padding: 0;
+  min-height: 100vh;
   font-family: Roboto, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 2.4vh;
+  font-size: 1.2rem;
 }
 
 :focus-visible {
@@ -52,9 +52,9 @@ a {
   display: inline-block;
   background: #fff;
   color: #000;
-  border-radius: 3vh;
-  line-height: 6vh;
-  padding: 0 4vh;
+  border-radius: 30px;
+  line-height: 60px;
+  padding: 0 40px;
   text-decoration: none;
   overflow: hidden;
   font-family: inherit;
@@ -74,7 +74,7 @@ a {
       top: 0;
       bottom: 0;
       left: 0;
-      width: 7vh;
+      width: 70px;
       background: #fff;
       opacity: 0.5;
       transform: skewX(-15deg)translateX(-120%);
@@ -94,8 +94,8 @@ a {
   }
   
   &.btn-small {
-    padding: 0 2vh;
-    line-height: 4vh;
+    padding: 0 20px;
+    line-height: 40px;
   }
   
   &:hover:not(.dissabled) {
@@ -121,6 +121,7 @@ a {
   .logo {
     font-size: 10vh;
     line-height: 1;
+    border: none;
     text-shadow: #0005 0 0.04em 0.1em;
 
     .logo-better {
@@ -142,4 +143,6 @@ a {
   }
 }
 
-@import 'layout'
+@import 'layout';
+@import 'text';
+
