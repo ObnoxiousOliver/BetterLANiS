@@ -1,0 +1,129 @@
+/* Theme Libary Theme Item */
+
+.theme-libary-theme-item-component {
+  position: relative;
+  background: $secondary-background;
+  width: 250px;
+  border-radius: 5px;
+  box-shadow: $elevation-medium;
+  margin: 5px;
+  vertical-align: text-top;
+
+  &:hover, &:focus-within {
+    .theme-controls {
+      opacity: 1;
+    }
+  }
+
+  .theme {
+    &-controls {
+      opacity: 0;
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      transition: 0.1s opacity;
+
+      .tooltip-activator {
+        display: inline;
+      }
+
+      .btn {
+        padding: 0 5px;
+      }
+    }
+
+    &-button {
+      display: block;
+      appearance: none;
+      width: 100%;
+      background: none;
+      color: inherit;
+      text-align: left;
+      font: inherit;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+
+      transition: 0.2s background-color;
+
+      &:hover {
+        background: $background-modifier-hover;
+
+        .theme-icon {
+          box-shadow:
+            $background-modifier-hover 0 0 0 5px,
+            $secondary-background 0 0 0 5px;
+        }
+      }
+    }
+
+    &-image {
+      border-radius: 5px 5px 0 0;
+      background: $accent;
+      height: 100px;
+    }
+
+    &-icon {
+      width: 70px;
+      height: 70px;
+      margin: -35px 10px 0;
+      border-radius: 50%;
+      background: $accent;
+      box-shadow:
+        transparent 0 0 0 5px,
+        $secondary-background 0 0 0 5px;
+      transition: box-shadow 0.2s;
+
+      .icon-placeholder {
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        line-height: 70px;
+        font-size: 1.8rem;
+      }
+    }
+
+    &-original {
+      text-align: right;
+      height: 0;
+      margin: -30px 5px 30px;
+      color: $secondary-foreground;
+      font-size: 0.7rem;
+      transition: color 0.1s;
+
+      &:hover {
+        color: #75dfff;
+      }
+    }
+
+    &-info {
+      padding: 5px 10px 15px;
+
+      .theme-header {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        .theme-name {
+          font-family: $header-font;
+          font-size: 1.2rem;
+        }
+
+        .theme-original-name {
+          color: $secondary-foreground;
+        }
+      }
+
+      .theme-details {
+        .theme-version {
+          color: $muted-foreground;
+        }
+
+        .theme-author {
+          color: $muted-foreground;
+        }
+      }
+
+    }
+  }
+}

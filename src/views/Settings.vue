@@ -10,12 +10,14 @@
 
 <script>
 import Appearance from './settings/Appearance'
+import ThemeLibary from './settings/ThemesLibary'
 import Accessibility from './settings/Accessibility'
 
 export default {
   name: 'Settings',
   components: {
     Appearance,
+    ThemeLibary,
     Accessibility
   },
   props: {

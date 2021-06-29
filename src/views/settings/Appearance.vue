@@ -1,7 +1,7 @@
 <template>
   <div class="setting-appearance-view-component scroll y auto">
     <div class="wrapper" ref="wrapper">
-      <h1 class="setting-page-header"><i class="fas fa-swatchbook" /> Erscheinungsbild</h1>
+      <h1 class="setting-page-header"><i class="fas fa-eye" /> Erscheinungsbild</h1>
 
       <!-- Accent Color -->
       <div class="option-container">

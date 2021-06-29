@@ -11,6 +11,7 @@ import config from './config'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 process.env.BL_REPO_NAME = 'BetterLANiS'
+process.env.BL_THEMES_REPO_NAME = 'BetterLANiS-themes'
 process.env.BL_REPO_USERNAME = 'ObnoxiousOliver'
 process.env.GITHUB_TOKEN = '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'
 

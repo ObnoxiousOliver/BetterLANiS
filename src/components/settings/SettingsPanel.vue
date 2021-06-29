@@ -15,7 +15,18 @@
             : 'btn-transparent'
           ]"
         >
-          <i class="icon fas fa-swatchbook" /> Erscheinungsbild
+          <i class="icon fas fa-eye" /> Erscheinungsbild
+        </bl-button>
+        <bl-button
+          @click="$emit('openSettings', 'ThemeLibary')"
+          :class="[
+          'setting-link',
+          activePage === 'ThemeLibary'
+            ? 'btn-primary btn-no-caps'
+            : 'btn-transparent'
+          ]"
+        >
+          <i class="icon fas fa-swatchbook" /> Themen Bibliothek
         </bl-button>
         <bl-button
           @click="$emit('openSettings', 'Accessibility')"
