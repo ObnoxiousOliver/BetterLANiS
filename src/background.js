@@ -12,7 +12,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 
 process.env.BL_REPO_NAME = 'BetterLANiS'
 process.env.BL_REPO_USERNAME = 'ObnoxiousOliver'
-process.env.GITHUB_TOKEN = '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'
+process.env.GITHUB_TOKEN = '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'
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -241,43 +241,48 @@ app.on('ready', async () => {
     })
       .then(res => res.json())
       .then(data => {
-        // Get Latest Version
-        const release = data.filter(x => semver.satisfies(x.tag_name, `> ${app.getVersion()}`, { includePrerelease: true }))[0]
+        try {
+          // Get Latest Version
+          const release = data.filter(x => semver.satisfies(x.tag_name, `> ${app.getVersion()}`, { includePrerelease: true }))[0]
 
-        if (release) {
-          const asset = release.assets.filter(x => x.name.endsWith('.exe'))[0]
+          if (release) {
+            const asset = release.assets.filter(x => x.name.endsWith('.exe'))[0]
 
-          if (asset) {
-            const dest = path.join(process.env.TEMP, asset.name)
+            if (asset) {
+              const dest = path.join(process.env.TEMP, asset.name)
 
-            e.reply('setUpdateStatus', 'Downloading (v' + release.tag_name + ')...')
+              e.reply('setUpdateStatus', 'Downloading (v' + release.tag_name + ')...')
 
-            // Fetch installer file
-            fetch(asset.url, {
-              headers: {
-                Authorization: 'Basic ' + Buffer.from('*:' + process.env.GITHUB_TOKEN).toString('base64'),
-                Accept: 'application/octet-stream'
-              }
-            })
-              .then(res => new Promise((resolve, reject) => {
-                var ws = fs.createWriteStream(dest)
-                res.body.pipe(ws)
-
-                ws.on('error', reject)
-
-                res.body.on('end', () => resolve())
-              }))
-              .then(err => {
-                if (err) dialog.showMessageBox(updateWindow, { title: 'Error', detail: err })
-                e.reply('setUpdateStatus', 'Installing...')
-                require('child_process').exec(dest)
-                setTimeout(() => { app.quit() }, 1000)
+              // Fetch installer file
+              fetch(asset.url, {
+                headers: {
+                  Authorization: 'Basic ' + Buffer.from('*:' + process.env.GITHUB_TOKEN).toString('base64'),
+                  Accept: 'application/octet-stream'
+                }
               })
+                .then(res => new Promise((resolve, reject) => {
+                  var ws = fs.createWriteStream(dest)
+                  res.body.pipe(ws)
+
+                  ws.on('error', reject)
+
+                  res.body.on('end', () => resolve())
+                }))
+                .then(err => {
+                  if (err) dialog.showMessageBox(updateWindow, { title: 'Error', detail: err })
+                  e.reply('setUpdateStatus', 'Installing...')
+                  require('child_process').exec(dest)
+                  setTimeout(() => { app.quit() }, 1000)
+                })
+            } else {
+              e.reply('setUpdateStatus', 'Starting...')
+              startApp()
+            }
           } else {
             e.reply('setUpdateStatus', 'Starting...')
             startApp()
           }
-        } else {
+        } catch {
           e.reply('setUpdateStatus', 'Starting...')
           startApp()
         }
