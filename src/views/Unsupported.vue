@@ -65,23 +65,23 @@ export default {
       this.location = frame.location
 
       // Inject CSS
-      var style = document.createElement('style')
-      style.innerHTML = `
-        * {
-          transition: background-color 0.2s;
-        }
-        h1, h2, h3, h4, h5, h6 {
-          font-family: Poppins;
-        }
-        .navbar-custom, .header-top, .ccm-page #header .header-top.header-top-colored, .sticky-wrapper, .footer, #headlogo {
-          display: none !important;
-        }
-        body {
-          overflow: auto;
-          font-family: Heebo;
-        }
-      `
-      frame.document.head.append(style)
+      // var style = document.createElement('style')
+      // style.innerHTML = `
+      //   * {
+      //     transition: background-color 0.2s;
+      //   }
+      //   h1, h2, h3, h4, h5, h6 {
+      //     font-family: Poppins;
+      //   }
+      //   .navbar-custom, .header-top, .ccm-page #header .header-top.header-top-colored, .sticky-wrapper, .footer, #headlogo {
+      //     display: none !important;
+      //   }
+      //   body {
+      //     overflow: auto;
+      //     font-family: Heebo;
+      //   }
+      // `
+      // frame.document.head.append(style)
 
       // A-tags open Browser
       frame.document.querySelectorAll('a').forEach(el => {
