@@ -292,10 +292,10 @@ export default {
           }
         })
       }
-    }
 
-    if (!data.themes && !data.accent) {
-      store.dispatch('setStyles')
+      if (!data.themes && !data.accent) {
+        store.dispatch('setStyles')
+      }
     }
   },
   // == NOTIFICATIONS ==
