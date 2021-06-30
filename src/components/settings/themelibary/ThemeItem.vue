@@ -3,28 +3,39 @@
     <div class="theme-controls">
       <tooltip>
         <template #activator>
-          <bl-button variant="transparent small" class="download-btn"><i class="bi-download" /></bl-button>
+          <bl-button class="download-btn"><i class="bi-download" /></bl-button>
         </template>
         Herunterladen
       </tooltip>
     </div>
     <button @click="$emit('themeselected')" class="theme-button">
-      <div class="theme-image"></div>
+      <div v-if="theme.preview" class="theme-image" :style="{ color: theme.preview['1'] }">
+        <div class="theme-color1" :style="{ color: theme.preview['2'] }" />
+        <div class="theme-color2" :style="{ color: theme.preview['3'] }" />
+      </div>
+      <div v-else class="theme-image" />
       <div class="theme-icon">
         <img
           v-if="theme.icon64"
           :src="theme.icon64"
         >
+        <div
+          v-else-if="theme.preview"
+          class="icon-placeholder"
+          :style="{ color: theme.preview['1'] }"
+        >
+          <i
+            class="fas fa-swatchbook"
+            :style="{ color: color.getContrastYIQ(theme.preview['1']) }"
+          />
+        </div>
         <div v-else class="icon-placeholder">
           <i class="fas fa-swatchbook" />
         </div>
       </div>
-      <tooltip v-if="theme.author === 'ObnoxiousOliver'" class="theme-original" >
-        <template #activator>
-          <i class="fas fa-gem" />
-        </template>
-        Originales Theme-Pack
-      </tooltip>
+      <div v-if="theme.author === 'ObnoxiousOliver'" class="theme-original">
+        <i class="fas fa-gem" /> Originales Thema
+      </div>
       <div class="theme-info">
         <div class="theme-header">
           <span class="theme-name">{{ theme.displayName }}</span><br>
@@ -39,12 +50,17 @@
 </template>
 
 <script>
-import BlButton from '../../input/BlButton.vue'
+import color from '@/color'
+
 export default {
-  components: { BlButton },
   name: 'ThemeItem',
   props: {
     theme: Object
+  },
+  computed: {
+    color () {
+      return color
+    }
   }
 }
 </script>

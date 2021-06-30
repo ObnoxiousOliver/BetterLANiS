@@ -1,0 +1,62 @@
+/* Theme Base */
+
+.theme-original {
+  white-space: nowrap;
+  color: $secondary-foreground;
+  font-size: 0.7rem;
+  transition: color 0.1s;
+
+  &:hover {
+    color: #75dfff;
+  }
+}
+
+.theme-icon {
+  overflow: hidden;
+  border-radius: 50%;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .icon-placeholder {
+    background: $accent;
+  }
+}
+
+.theme-info {
+  .theme-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .theme-original-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: $secondary-foreground;
+  }
+
+  .theme-details {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    .theme-version {
+      color: $muted-foreground;
+    }
+
+    .theme-author {
+      color: $muted-foreground;
+    }
+  }
+
+  .theme-description {
+    .no-description {
+      color: $muted-foreground;
+      font-style: italic;
+    }
+  }
+}

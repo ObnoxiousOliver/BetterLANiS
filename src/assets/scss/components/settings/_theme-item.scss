@@ -5,7 +5,7 @@
   display: flex;
   gap: 10px;
   height: 100px;
-  border-radius: 3px;
+  border-radius: 50px 3px 3px 50px;
   margin-bottom: 5px;
   transition: background-color 0.2s;
   cursor: pointer;
@@ -14,26 +14,17 @@
     background: $background-modifier-hover;
     transition: background-color 0.1s;
 
-    .theme-icon {
-      .icon-placeholder {
-        transform: scale(1.2);
-      }
-    }
-
     .arrow {
-      transform: translateX(3px);
-      color: $secondary-foreground;
-      transition: color 0.1s, transform 0.1s;
+      opacity: 1;
+      transition: opacity 0.1s;
     }
   }
 
   .theme-icon {
     flex-shrink: 0;
-    border-radius: 3px 0 0 3px;
-    overflow: hidden;
-    background: $accent;
-    height: 100px;
-    width: 100px;
+    margin: 5px 0 5px 5px;
+    height: 90px;
+    width: 90px;
 
     img {
       width: 100%;
@@ -43,12 +34,16 @@
     .icon-placeholder {
       overflow: hidden;
       display: flex;
-      color: $accent-foreground;
       justify-content: center;
       align-items: center;
       height: 100%;
       font-size: 2.5rem;
-      transition: transform 0.5s;
+      color: $accent;
+      background: currentColor;
+
+      i {
+        color: $accent-foreground;
+      }
     }
   }
 
@@ -57,43 +52,26 @@
     width: 0;
     overflow: hidden;
 
-    .theme-original {
-      position: absolute;
-      z-index: 1;
-      top: 5px;
-      right: 5px;
-      color: $secondary-foreground;
-      font-size: 0.7rem;
-      transition: color 0.1s;
+    .theme-header {
+      display: flex;
+      align-items: center;
 
-      &:hover {
-        color: $yellow;
+      .theme-name {
+        flex: 1 1 auto;
+      }
+
+      .theme-original {
+        flex: 0 1 auto;
+        margin: 0 5px;
       }
     }
 
-    .theme-name {
-      white-space: nowrap;
-      overflow: hidden;
-    }
     .theme-details {
       width: 100%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      color: $muted-foreground;
-
-      .theme-description {
-        white-space: normal;
-        color: $secondary-foreground;
-      }
     }
-  }
 
-  .arrow {
-    display: flex;
-    align-items: center;
-    padding-right: 10px;
-    color: $muted-foreground;
-    transition: color 0.2s, transform 0.2s;
+    .theme-description {
+      color: $secondary-foreground;
+    }
   }
 }

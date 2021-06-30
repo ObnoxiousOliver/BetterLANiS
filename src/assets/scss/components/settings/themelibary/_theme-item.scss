@@ -28,7 +28,10 @@
       }
 
       .btn {
-        padding: 0 5px;
+        border-radius: 50%;
+        padding: 0;
+        line-height: 26px;
+        width: 30px;
       }
     }
 
@@ -46,7 +49,8 @@
 
       transition: 0.2s background-color;
 
-      &:hover {
+      &:hover, &:focus-visible {
+        outline: none;
         background: $background-modifier-hover;
 
         .theme-icon {
@@ -59,16 +63,31 @@
 
     &-image {
       border-radius: 5px 5px 0 0;
-      background: $accent;
+      color: $accent;
+      background: currentColor;
       height: 100px;
+      overflow: hidden;
+      display: flex;
+
+      .theme-color1, .theme-color2 {
+        background: currentColor;
+        width: percentage(2 / 3);
+        transform: skewX(-15deg);
+      }
+      .theme-color1 {
+        margin-left: percentage(-1 / 3);
+      }
+      .theme-color2 {
+        width: percentage(0.25 / 3);
+      }
     }
 
     &-icon {
+      position: relative;
       width: 70px;
       height: 70px;
       margin: -35px 10px 0;
-      border-radius: 50%;
-      background: $accent;
+      background: none;
       box-shadow:
         transparent 0 0 0 5px,
         $secondary-background 0 0 0 5px;
@@ -80,6 +99,12 @@
         text-align: center;
         line-height: 70px;
         font-size: 1.8rem;
+        color: $accent;
+        background: currentColor;
+
+        i {
+          color: $accent-foreground;
+        }
       }
     }
 
@@ -123,7 +148,6 @@
           color: $muted-foreground;
         }
       }
-
     }
   }
 }
