@@ -13,7 +13,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 process.env.BL_REPO_NAME = 'BetterLANiS'
 process.env.BL_THEMES_REPO_NAME = 'BetterLANiS-themes'
 process.env.BL_REPO_USERNAME = 'ObnoxiousOliver'
-process.env.GITHUB_TOKEN = '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'
+process.env.GITHUB_AUTH = 'Basic KjpnaHBfWkZaOFltczNLOGtwbTBYSHpkQ29pdUFNVVlIeFEyNDRBY3lB'
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -238,7 +238,7 @@ app.on('ready', async () => {
 
     // Fetch releases of repo
     fetch(`https://api.github.com/repos/${process.env.BL_REPO_USERNAME}/${process.env.BL_REPO_NAME}/releases`, {
-      headers: { Authorization: 'Basic ' + Buffer.from('*:' + process.env.GITHUB_TOKEN).toString('base64') }
+      headers: { Authorization: process.env.GITHUB_AUTH }
     })
       .then(res => res.json())
       .then(data => {
@@ -257,7 +257,7 @@ app.on('ready', async () => {
               // Fetch installer file
               fetch(asset.url, {
                 headers: {
-                  Authorization: 'Basic ' + Buffer.from('*:' + process.env.GITHUB_TOKEN).toString('base64'),
+                  Authorization: process.env.GITHUB_AUTH,
                   Accept: 'application/octet-stream'
                 }
               })

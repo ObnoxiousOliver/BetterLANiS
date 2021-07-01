@@ -117,7 +117,7 @@ export default {
       return {
         gitUser: remote.process.env.BL_REPO_USERNAME,
         gitRepo: remote.process.env.BL_REPO_NAME,
-        token: remote.process.env.GITHUB_TOKEN
+        token: remote.process.env.GITHUB_AUTH
       }
     }
   },
