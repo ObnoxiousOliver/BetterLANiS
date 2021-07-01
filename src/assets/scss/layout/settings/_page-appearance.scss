@@ -52,19 +52,6 @@
     }
   }
 
-  .modal-component {
-    position: absolute;
-    inset: 0 300px 0 0;
-    transition: right 0.4s;
-  }
-
-  @media screen and (max-width: 1000px) {
-    .modal-component {
-      position: absolute;
-      inset: 0 50px 0 0;
-    }
-  }
-
   .custom-colors-modal {
     .modal {
       min-width: unset;
