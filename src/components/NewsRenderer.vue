@@ -22,7 +22,7 @@ export default {
     fetch(`https://api.github.com/repos/${this.repo.gitUser}/${this.repo.gitRepo}/releases`,
       {
         headers: {
-          Authorization: 'Basic ' + Buffer.from('*:' + this.repo.token).toString('base64')
+          Authorization: this.repo.token
         }
       })
       .then(res => res.json())
