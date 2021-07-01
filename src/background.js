@@ -12,7 +12,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 
 process.env.BL_REPO_NAME = 'BetterLANiS'
 process.env.BL_REPO_USERNAME = 'ObnoxiousOliver'
-process.env.GITHUB_TOKEN = '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'
+process.env.GITHUB_TOKEN = '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'
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
