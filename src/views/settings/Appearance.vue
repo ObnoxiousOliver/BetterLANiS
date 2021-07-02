@@ -141,15 +141,28 @@
                   <i class="far fa-folder" /> Im Themen-Ordner öffnen
                 </button>
               </context-menu>
-              <ThemeItem
-                class="default-theme"
-                :theme="{
-                  name: 'Standart Thema',
-                  description: 'Das dunkle Design von Better LANiS'
-                }"
-                :original="true"
-                :noArrow="true"
-              />
+              <transition name="secret-4b34" mode="out-in">
+                <ThemeItem
+                  v-if="!defaultThemeSecretActive"
+                  @click="defaultThemeClick"
+                  class="default-theme"
+                  :theme="{
+                    name: 'Standart Thema',
+                    description: 'Das dunkle Design von Better LANiS'
+                  }"
+                  :original="true"
+                  :noArrow="true"
+                />
+                <ThemeItem
+                  v-else
+                  class="secret-4b34-theme"
+                  :theme="{
+                    name: '???',
+                    description: '???'
+                  }"
+                  :noArrow="true"
+                />
+              </transition>
             </div>
           </div>
         </div>
@@ -281,7 +294,9 @@ export default {
     selectedAvailableTheme: undefined,
     selectedAccentColor: undefined,
     accentColorsOpen: false,
-    customColorOpen: false
+    customColorOpen: false,
+    defaultThemeClickCount: 0,
+    defaultThemeSecretActive: false
   }),
   computed: {
     ...mapState([
@@ -405,6 +420,14 @@ export default {
 
       this.setAccentColor(hex)
       this.customColorOpen = false
+    },
+    defaultThemeClick (e) {
+      this.defaultThemeClickCount++
+      setTimeout(() => this.defaultThemeClickCount--, 5000)
+      if (this.defaultThemeClickCount > 10) {
+        // TRIGGER
+        this.defaultThemeSecretActive = true
+      }
     }
   }
 }

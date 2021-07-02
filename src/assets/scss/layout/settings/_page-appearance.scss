@@ -285,4 +285,318 @@
       margin-left: 5px;
     }
   }
+
+  $glitch1: #f0f;
+  $glitch2: #0ff;
+  $glitch3: #ff0;
+
+  .secret-4b34 {
+    &-enter-active, &-leave-active {
+      animation: glitchOut 0.5s steps(1), glitchBox 0.5s steps(1);
+
+      .icon-placeholder {
+        background: $glitch3;
+
+        i {
+          color: #000;
+        }
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: $glitch1;
+        animation: glitchLines 1s infinite steps(1);
+      }
+    }
+
+    &-theme {
+      animation: glitchText 1s infinite steps(1), glitchTransform 5s infinite steps(1);
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: $glitch1;
+        animation: glitchLines 1s infinite steps(1);
+      }
+
+      .icon-placeholder {
+        background: $glitch3;
+
+        i {
+          color: #000;
+        }
+      }
+    }
+  }
+
+  @keyframes glitchOut {
+    0% {
+      transform: translateX(random($limit: 100) * 1px - 50px);
+    }
+    1% {
+      transform: translateX(random($limit: 5) * 1px - 50px);
+    }
+    5% {
+      transform: translateX(random($limit: 100) * 1px - 50px);
+    }
+    8% {
+      transform: translateX(random($limit: 5) * 1px - 50px);
+    }
+    10% {
+      transform: translateX(random($limit: 5) * 1px - 50px);
+    }
+    15% {
+      transform: translateX(random($limit: 100) * 1px - 50px);
+    }
+    18% {
+      transform: translateX(random($limit: 5) * 1px - 50px);
+    }
+    20% {
+      transform: translateX(random($limit: 100) * 1px - 50px);
+    }
+    53% {
+      transform: translateX(random($limit: 5) * 1px - 50px);
+    }
+    57% {
+      transform: translateX(random($limit: 5) * 1px - 50px);
+    }
+    71% {
+      transform: translateX(random($limit: 100) * 1px - 50px);
+    }
+    75% {
+      transform: translateX(random($limit: 5) * 1px - 50px);
+    }
+  }
+
+  @keyframes glitchTransform {
+    0% {
+      transform: translateX(random($limit: 10) * 1px - 5px);
+    }
+    20% {
+      transform: translateX(random($limit: 20) * 1px - 10px);
+    }
+    40% {
+      transform: translateX(random($limit: 30) * 1px - 15px);
+    }
+    50% {
+      transform: translateX(random($limit: 50) * 1px - 25px);
+    }
+    60% {
+      transform: translateX(random($limit: 100) * 1px - 50px);
+    }
+    70% {
+      transform: translateX(random($limit: 100) * 1px - 50px);
+    }
+    80% {
+      transform: translateX(random($limit: 100) * 1px - 50px);
+    }
+    90% {
+      transform: translateX(random($limit: 100) * 1px - 50px);
+    }
+  }
+  
+  @mixin glitchLine {
+    $heightRandom: 10;
+
+    top: random($limit: 100) * 1px - $heightRandom * 1px;
+    height: random($limit: $heightRandom) * 1px;
+    box-shadow: $glitch2 random($limit: 100) * 1px - 50px random($limit: 100) * 1px - 50px 0 random($limit: 2) * 1px - 1px;
+  }
+
+  @keyframes glitchLines {
+
+    0% {
+      @include glitchLine;
+    }
+    5% {
+      @include glitchLine;
+    }
+    10% {
+      @include glitchLine;
+    }
+    15% {
+      @include glitchLine;
+    }
+    20% {
+      @include glitchLine;
+    }
+    25% {
+      @include glitchLine;
+    }
+    30% {
+      @include glitchLine;
+    }
+    35% {
+      @include glitchLine;
+    }
+    40% {
+      @include glitchLine;
+    }
+    45% {
+      @include glitchLine;
+    }
+    50% {
+      @include glitchLine;
+    }
+    55% {
+      @include glitchLine;
+    }
+    60% {
+      @include glitchLine;
+    }
+    65% {
+      @include glitchLine;
+    }
+    70% {
+      @include glitchLine;
+    }
+    75% {
+      @include glitchLine;
+    }
+    80% {
+      @include glitchLine;
+    }
+    85% {
+      @include glitchLine;
+    }
+    90% {
+      @include glitchLine;
+    }
+    95% {
+      @include glitchLine;
+    }
+  }
+
+  @keyframes glitchText {
+    0% {
+      text-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    5% {
+      text-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    10% {
+      text-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    15% {
+      text-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    20% {
+      text-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    25% {
+      text-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    30% {
+      text-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    35% {
+      text-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    40% {
+      text-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    45% {
+      text-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    50% {
+      text-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    55% {
+      text-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    60% {
+      text-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    65% {
+      text-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    70% {
+      text-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    75% {
+      text-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    80% {
+      text-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    85% {
+      text-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    90% {
+      text-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    95% {
+      text-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+  }
+
+  @keyframes glitchBox {
+    0% {
+      box-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    5% {
+      box-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    10% {
+      box-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    15% {
+      box-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    20% {
+      box-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    25% {
+      box-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    30% {
+      box-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    35% {
+      box-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    40% {
+      box-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    45% {
+      box-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    50% {
+      box-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    55% {
+      box-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    60% {
+      box-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    65% {
+      box-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    70% {
+      box-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    75% {
+      box-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    80% {
+      box-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    85% {
+      box-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    90% {
+      box-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+    95% {
+      box-shadow: $glitch1 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px, $glitch2 random($limit: 10) * 1px - 5px random($limit: 10) * 1px - 5px;
+    }
+  }
 }
