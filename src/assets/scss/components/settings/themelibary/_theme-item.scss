@@ -3,10 +3,9 @@
 .theme-libary-theme-item-component {
   position: relative;
   background: $secondary-background;
-  width: 250px;
+  min-width: 250px;
   border-radius: 5px;
   box-shadow: $elevation-medium;
-  margin: 5px;
   vertical-align: text-top;
 
   &:hover, &:focus-within {

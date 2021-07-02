@@ -1,6 +1,23 @@
 /* Theme Libary */
 
 .theme-libary-view-component {
+  .theme-search {
+    display: block;
+    margin-left: auto;
+    width: 50%;
+    margin-bottom: 10px;
+  }
+
+  .theme-list {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 10px;
+
+    .theme-libary-theme-item-component {
+      width: calc((100% - 20px) / 3);
+    }
+  }
+
   .selected-theme-modal {
     .modal {
       width: 400px;

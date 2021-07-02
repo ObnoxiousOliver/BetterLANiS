@@ -8,10 +8,9 @@
         type="text"
         placeholder="Suchen..."
       >
-      <div v-if="themes.length">
+      <div v-if="themes.length" class="theme-list">
         <ThemeItem
           @themeselected="selectedTheme = theme"
-          style="display: inline-block;"
           v-for="theme in displayedThemes"
           :key="theme.name" :theme="theme"
         />
@@ -92,7 +91,7 @@ const { remote } = require('electron')
 
 const githubAuthHeaders = {
   headers: {
-    Authorization: 'Basic ' + btoa('*:' + remote.process.env.GITHUB_TOKEN)
+    Authorization: remote.process.env.GITHUB_AUTH
   }
 }
 
