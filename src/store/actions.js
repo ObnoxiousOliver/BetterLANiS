@@ -240,6 +240,9 @@ export default {
     var contrast = color.getContrastYIQ(store.state.theme.accent)
 
     el.innerHTML += `:root { --accent: ${store.state.theme.accent}; --accent-foreground: ${contrast}; }`
+    if (store.state.secret.includes('4b34')) {
+      el.innerHTML += 'body { transform: scaleX(-1); transition: transform 0.2s 3s; }'
+    }
     store.dispatch('saveStyles')
   },
   saveStyles (store) {
@@ -311,5 +314,13 @@ export default {
     setTimeout(() => {
       commit('removeNotificationFromCurrent', state.notification.current.indexOf(payload))
     }, 5000)
+  },
+  addSecret (store, payload) {
+    store.commit('secret', payload)
+    switch (payload) {
+      case '4b34':
+        store.dispatch('setStyles')
+        break
+    }
   }
 }

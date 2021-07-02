@@ -155,6 +155,7 @@
                 />
                 <ThemeItem
                   v-else
+                  @click="defaultThemeClick"
                   class="secret-4b34-theme"
                   :theme="{
                     name: '???',
@@ -296,11 +297,12 @@ export default {
     accentColorsOpen: false,
     customColorOpen: false,
     defaultThemeClickCount: 0,
-    defaultThemeSecretActive: false
+    defaultThemeClickTimeout: undefined
   }),
   computed: {
     ...mapState([
-      'theme'
+      'theme',
+      'secret'
     ]),
     currentThemes () {
       var using = [...this.theme.using]
@@ -326,6 +328,9 @@ export default {
     },
     color () {
       return color
+    },
+    defaultThemeSecretActive () {
+      return this.secret.includes('4b34')
     }
   },
   mounted () {
@@ -339,7 +344,8 @@ export default {
       'setAccentColor',
       'saveAccentColor',
       'removeAccentColor',
-      'notify'
+      'notify',
+      'addSecret'
     ]),
     saveAccentColorClick () {
       var hex = this.$refs.accentColorPicker.hex
@@ -421,12 +427,18 @@ export default {
       this.setAccentColor(hex)
       this.customColorOpen = false
     },
-    defaultThemeClick (e) {
+    defaultThemeClick () {
+      clearTimeout(this.defaultThemeClickTimeout)
+
       this.defaultThemeClickCount++
-      setTimeout(() => this.defaultThemeClickCount--, 5000)
+
+      this.defaultThemeClickTimeout = setTimeout(() => {
+        this.defaultThemeClickCount = 0
+      }, 5000)
       if (this.defaultThemeClickCount > 10) {
         // TRIGGER
-        this.defaultThemeSecretActive = true
+        this.defaultThemeClickCount = 0
+        this.addSecret('4b34')
       }
     }
   }

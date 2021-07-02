@@ -34,8 +34,8 @@
       </template>
       <div class="theme-icon">
         <img
-          v-if="selectedTheme.icon64"
-          :src="selectedTheme.icon64"
+          v-if="selectedTheme.iconHref"
+          :src="selectedTheme.iconHref"
         >
         <div
           v-else-if="selectedTheme.preview"
@@ -154,52 +154,23 @@ export default {
             fetch(`https://api.github.com/repos/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/branches/${branch.name}`, githubAuthHeaders)
               .then(res => res.json())
               .then(branchData => {
-                // Get Branch Tree
-                fetch(branchData.commit.commit.tree.url, githubAuthHeaders)
+                // Get Manifest
+                fetch(`https://raw.githubusercontent.com/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/${branch.name}/manifest.json`)
                   .then(res => res.json())
-                  .then(tree => {
-                    // Get manifest.json
-                    var manifestFileInfo = tree.tree
-                      .filter(x => x.type === 'blob')
-                      .filter(x => x.path === 'manifest.json')[0]
-                    if (manifestFileInfo) {
-                      // Get Manifest Blob
-                      fetch(manifestFileInfo.url, githubAuthHeaders)
-                        .then(res => res.json())
-                        .then(manifestBlob => {
-                          var manifest = JSON.parse(atob(manifestBlob.content))
-                          // console.log(manifest)
-
-                          if (!manifest.hidden) {
-                            if (manifest.icon) {
-                              fetch(tree.tree
-                                .filter(x => x.type === 'blob')
-                                .filter(x => x.path === manifest.icon)[0].url, githubAuthHeaders)
-                                .then(res => res.json())
-                                .then(data => {
-                                  this.themes.push({
-                                    name: branch.name,
-                                    displayName: manifest.name,
-                                    version: manifest.version,
-                                    author: manifest.author,
-                                    description: manifest.description,
-                                    icon: manifest.icon,
-                                    icon64: 'data:image/png;base64,' + data.content,
-                                    preview: manifest.preview
-                                  })
-                                })
-                            } else {
-                              this.themes.push({
-                                name: branch.name,
-                                displayName: manifest.name,
-                                version: manifest.version,
-                                author: manifest.author,
-                                description: manifest.description,
-                                preview: manifest.preview
-                              })
-                            }
-                          }
-                        })
+                  .then(manifest => {
+                    if (!manifest.hidden) {
+                      this.themes.push({
+                        name: branch.name,
+                        displayName: manifest.name,
+                        version: manifest.version,
+                        author: manifest.author,
+                        description: manifest.description,
+                        icon: manifest.icon,
+                        iconHref: manifest.icon
+                          ? `https://raw.githubusercontent.com/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/${branch.name}/${manifest.icon}`
+                          : undefined,
+                        preview: manifest.preview
+                      })
                     }
                   })
               })

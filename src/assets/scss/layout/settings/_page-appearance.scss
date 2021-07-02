@@ -291,28 +291,6 @@
   $glitch3: #ff0;
 
   .secret-4b34 {
-    &-enter-active, &-leave-active {
-      animation: glitchOut 0.5s steps(1), glitchBox 0.5s steps(1);
-
-      .icon-placeholder {
-        background: $glitch3;
-
-        i {
-          color: #000;
-        }
-      }
-
-      &::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        right: 0;
-        height: 5px;
-        background: $glitch1;
-        animation: glitchLines 1s infinite steps(1);
-      }
-    }
-
     &-theme {
       animation: glitchText 1s infinite steps(1), glitchTransform 5s infinite steps(1);
 
@@ -332,6 +310,28 @@
         i {
           color: #000;
         }
+      }
+    }
+
+    &-enter-active, &-leave-active {
+      animation: glitchOut 0.5s steps(1), glitchBox 0.5s steps(1);
+
+      .icon-placeholder {
+        background: $glitch3;
+
+        i {
+          color: #000;
+        }
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: $glitch1;
+        animation: glitchLines 1s infinite steps(1);
       }
     }
   }

@@ -16,8 +16,8 @@
       <div v-else class="theme-image" />
       <div class="theme-icon">
         <img
-          v-if="theme.icon64"
-          :src="theme.icon64"
+          v-if="theme.iconHref"
+          :src="theme.iconHref"
         >
         <div
           v-else-if="theme.preview"

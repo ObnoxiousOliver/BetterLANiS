@@ -30,5 +30,6 @@ export default {
   savedUser: {
     data: {},
     path: undefined
-  }
+  },
+  secret: []
 }

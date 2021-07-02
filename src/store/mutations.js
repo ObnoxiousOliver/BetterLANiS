@@ -89,5 +89,12 @@ export default {
   },
   setThemeLibary (state, payload) {
     state.theme.themeLibary = payload
+  },
+  secret (state, payload) {
+    if (state.secret.includes(payload)) {
+      state.secret.splice(state.secret.indexOf(payload), 1)
+    } else {
+      state.secret.push(payload)
+    }
   }
 }
