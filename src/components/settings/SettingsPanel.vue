@@ -6,6 +6,8 @@
         <div class="divider">
           <i class="icon fas fa-cog" /> App-Einstellungen
         </div>
+
+        <!-- Appearance -->
         <bl-button
           @click="$emit('openSettings', 'Appearance')"
           :class="[
@@ -17,6 +19,8 @@
         >
           <i class="icon fas fa-swatchbook" /> Erscheinungsbild
         </bl-button>
+
+        <!-- Accessibility -->
         <bl-button
           @click="$emit('openSettings', 'Accessibility')"
           :class="[
@@ -27,6 +31,19 @@
           ]"
         >
           <i class="icon fas fa-child" /> Barrierefreiheit
+        </bl-button>
+
+        <!-- System -->
+        <bl-button
+          @click="$emit('openSettings', 'System')"
+          :class="[
+          'setting-link',
+          activePage === 'System'
+            ? 'btn-primary btn-no-caps'
+            : 'btn-transparent'
+          ]"
+        >
+          <i class="icon fas fa-microchip" /> System
         </bl-button>
         <div class="divider" />
         <bl-button

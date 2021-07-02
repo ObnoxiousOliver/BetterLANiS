@@ -11,12 +11,14 @@
 <script>
 import Appearance from './settings/Appearance'
 import Accessibility from './settings/Accessibility'
+import System from './settings/System'
 
 export default {
   name: 'Settings',
   components: {
     Appearance,
-    Accessibility
+    Accessibility,
+    System
   },
   props: {
     page: String

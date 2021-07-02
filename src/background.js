@@ -2,11 +2,9 @@
 
 import { app, protocol, BrowserWindow, shell, dialog, clipboard, Menu, MenuItem, ipcMain } from 'electron'
 import path from 'path'
-import fetch from 'node-fetch'
-import fs from 'fs'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
-import semver from 'semver'
 import config from './config'
+import update from './update'
 // import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -58,33 +56,51 @@ async function createWindow () {
 
   // win.hide()
 
-  const menu = new Menu()
-  menu.append(new MenuItem({
-    label: 'Zoom',
-    submenu: [
-      { role: 'resetZoom', accelerator: 'CommandOrControl+0' },
-      { role: 'zoomIn', accelerator: 'CommandOrControl+=' },
-      { role: 'zoomOut', accelerator: 'CommandOrControl+-' }
-    ]
-  }))
-  menu.append(new MenuItem({
-    label: 'View',
-    submenu: [
-      { role: 'reload', accelerator: 'CommandOrControl+r' },
-      { role: 'reload', accelerator: 'f5' },
-      { role: 'toggleDevTools', accelerator: 'CommandOrControl+Shift+i' }
-    ]
-  }))
+  function getMenu () {
+    const menu = new Menu()
+    menu.append(new MenuItem({
+      label: 'Zoom',
+      submenu: [
+        { role: 'resetZoom', accelerator: 'CommandOrControl+0' },
+        { role: 'zoomIn', accelerator: 'CommandOrControl+=' },
+        { role: 'zoomOut', accelerator: 'CommandOrControl+-' }
+      ]
+    }))
+    menu.append(new MenuItem({
+      label: 'View',
+      submenu: [
+        { role: 'reload', accelerator: 'CommandOrControl+r' },
+        { role: 'reload', accelerator: 'f5' }
+      ]
+    }))
+    return menu
+  }
+  function getMenuWithDevTools () {
+    const menuWithDevTools = getMenu()
+    menuWithDevTools.append(new MenuItem({
+      label: 'DevTools',
+      submenu: [
+        { role: 'toggleDevTools', accelerator: 'CommandOrControl+Shift+i' }
+      ]
+    }))
+    return menuWithDevTools
+  }
 
-  win.setMenu(menu)
+  win.setMenu(getMenu())
+
+  ipcMain.on('enable-devtools', (e, val) => {
+    win.setMenu(val ? getMenuWithDevTools() : getMenu())
+
+    if (!val) win.webContents.closeDevTools()
+  })
 
   // #region Get Config File
   config.get(data => {
-    if (data) {
-      win.setBounds(data.bounds)
-      if (data.maximized) {
-        win.maximize()
-      }
+    win.setBounds(data.bounds)
+    if (data.maximized) win.maximize()
+
+    if (data.enableDevTools) {
+      win.setMenu(getMenuWithDevTools())
     }
   })
   // #endregion
@@ -226,67 +242,17 @@ app.on('ready', async () => {
     setTimeout(() => updateWindow.close(), 500)
   }
 
+  // if in Development don't update
+  // if (isDevelopment && !process.env.IS_TEST) {
+  //   startApp()
+  //   return
+  // }
+
   ipcMain.on('checkForUpdatesAndInstall', (e) => {
-    e.reply('setUpdateStatus', 'Checking for Updates...')
-
-    // if in Development don't update
-    // if (isDevelopment && !process.env.IS_TEST) {
-    //   startApp()
-    //   return
-    // }
-
-    // Fetch releases of repo
-    fetch(`https://api.github.com/repos/${process.env.BL_REPO_USERNAME}/${process.env.BL_REPO_NAME}/releases`, {
-      headers: { Authorization: process.env.GITHUB_AUTH }
-    })
-      .then(res => res.json())
-      .then(data => {
-        try {
-          // Get Latest Version
-          const release = data.filter(x => semver.satisfies(x.tag_name, `> ${app.getVersion()}`, { includePrerelease: true }))[0]
-
-          if (release) {
-            const asset = release.assets.filter(x => x.name.endsWith('.exe'))[0]
-
-            if (asset) {
-              const dest = path.join(process.env.TEMP, asset.name)
-
-              e.reply('setUpdateStatus', 'Downloading (v' + release.tag_name + ')...')
-
-              // Fetch installer file
-              fetch(asset.url, {
-                headers: {
-                  Authorization: process.env.GITHUB_AUTH,
-                  Accept: 'application/octet-stream'
-                }
-              })
-                .then(res => new Promise((resolve, reject) => {
-                  var ws = fs.createWriteStream(dest)
-                  res.body.pipe(ws)
-
-                  ws.on('error', reject)
-
-                  res.body.on('end', () => resolve())
-                }))
-                .then(err => {
-                  if (err) dialog.showMessageBox(updateWindow, { title: 'Error', detail: err })
-                  e.reply('setUpdateStatus', 'Installing...')
-                  require('child_process').exec(dest)
-                  setTimeout(() => { app.quit() }, 1000)
-                })
-            } else {
-              e.reply('setUpdateStatus', 'Starting...')
-              startApp()
-            }
-          } else {
-            e.reply('setUpdateStatus', 'Starting...')
-            startApp()
-          }
-        } catch {
-          e.reply('setUpdateStatus', 'Starting...')
-          startApp()
-        }
-      })
+    update.checkForUpdatesAndInstall(
+      status => e.reply('setUpdateStatus', status),
+      startApp
+    )
   })
 })
 
