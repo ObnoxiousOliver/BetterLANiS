@@ -3,7 +3,7 @@
     <div class="theme-controls">
       <tooltip>
         <template #activator>
-          <bl-button class="download-btn"><i class="bi-download" /></bl-button>
+          <bl-button v-if="theme.downloadUrl" class="download-btn"><i class="bi-download" /></bl-button>
         </template>
         Herunterladen
       </tooltip>

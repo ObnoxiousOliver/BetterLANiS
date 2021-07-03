@@ -102,4 +102,19 @@
       }
     }
   }
+
+  .info-box-component {
+    pointer-events: none;
+
+    .info-box {
+      position: absolute;
+      inset: 10px 0 auto 0;
+      width: 50%;
+      margin: auto;
+      padding: 20px;
+      background: $primary-background;
+      border-radius: 5px;
+      box-shadow: $elevation-high;
+    }
+  }
 }

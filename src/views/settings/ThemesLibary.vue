@@ -20,6 +20,7 @@
         Lade...
       </div>
     </div>
+
     <Modal
       @closemodal="selectedTheme = undefined"
       :active="selectedTheme !== undefined"
@@ -70,13 +71,24 @@
       <template #footer>
         <div class="modal-footer">
           <div class="modal-buttons">
-            <bl-button class="download-btn" variant="primary no-caps">
+            <bl-button
+              @click="downloadThemeClick"
+              v-if="selectedTheme.downloadUrl"
+              class="download-btn"
+              variant="primary no-caps"
+            >
               <i class="bi-download" /> Herunterladen
             </bl-button>
           </div>
         </div>
       </template>
     </Modal>
+
+    <div v-if="downloadingTheme" class="info-box-component">
+      <div class="info-box">
+        <h2>{{ downloadingTheme.name }}</h2>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -85,9 +97,11 @@ import ThemeItem from '@/components/settings/themelibary/ThemeItem'
 import Modal from '@/components/Modal'
 
 import color from '@/color'
-import { mapMutations, mapState } from 'vuex'
+import { mapActions, mapMutations, mapState } from 'vuex'
 
-const { remote } = require('electron')
+const { remote, ipcRenderer } = require('electron')
+// const fs = require('fs')
+const path = require('path')
 
 const githubAuthHeaders = {
   headers: {
@@ -123,7 +137,8 @@ export default {
   data: () => ({
     themes: [],
     searchString: '',
-    selectedTheme: undefined
+    selectedTheme: undefined,
+    downloadingTheme: undefined
   }),
   mounted () {
     if (!this.theme.themeLibary.length) {
@@ -135,8 +150,8 @@ export default {
   watch: {
     themes: {
       deep: true,
-      handler (newThemes) {
-        this.setThemeLibary(newThemes)
+      handler (val) {
+        this.setThemeLibary(val)
       }
     }
   },
@@ -144,38 +159,84 @@ export default {
     ...mapMutations([
       'setThemeLibary'
     ]),
+    ...mapActions([
+      'notify'
+    ]),
     fetchThemeLibary () {
-      fetch(`https://api.github.com/repos/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/branches`,
-        githubAuthHeaders)
+      fetch(`https://api.github.com/repos/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/releases`, githubAuthHeaders)
         .then(res => res.json())
-        .then(branches => {
-          branches.forEach(branch => {
-            // Get Branch Details
-            fetch(`https://api.github.com/repos/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/branches/${branch.name}`, githubAuthHeaders)
-              .then(res => res.json())
-              .then(branchData => {
-                // Get Manifest
-                fetch(`https://raw.githubusercontent.com/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/${branch.name}/manifest.json`)
+        .then(releases => {
+          fetch(`https://api.github.com/repos/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/branches`,
+            githubAuthHeaders)
+            .then(res => res.json())
+            .then(branches => {
+              branches.forEach(branch => {
+                // Get Branch Details
+                fetch(`https://api.github.com/repos/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/branches/${branch.name}`, githubAuthHeaders)
                   .then(res => res.json())
-                  .then(manifest => {
-                    if (!manifest.hidden) {
-                      this.themes.push({
-                        name: branch.name,
-                        displayName: manifest.name,
-                        version: manifest.version,
-                        author: manifest.author,
-                        description: manifest.description,
-                        icon: manifest.icon,
-                        iconHref: manifest.icon
-                          ? `https://raw.githubusercontent.com/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/${branch.name}/${manifest.icon}`
-                          : undefined,
-                        preview: manifest.preview
+                  .then(branchData => {
+                    // Get Manifest
+                    fetch(`https://raw.githubusercontent.com/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/${branch.name}/manifest.json`)
+                      .then(res => res.json())
+                      .then(manifest => {
+                        if (!manifest.hidden) {
+                          var downloadUrl
+                          try {
+                            downloadUrl = releases.filter(x => x.target_commitish === branch.name)[0].assets.filter(x => x.name.endsWith('.bl-theme.zip'))[0].url
+                          } catch {}
+
+                          this.themes.push({
+                            name: branch.name,
+                            displayName: manifest.name,
+                            version: manifest.version,
+                            author: manifest.author,
+                            description: manifest.description,
+                            icon: manifest.icon,
+                            iconHref: manifest.icon
+                              ? `https://raw.githubusercontent.com/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/${branch.name}/${manifest.icon}`
+                              : undefined,
+                            preview: manifest.preview,
+                            downloadUrl
+                          })
+                        }
                       })
-                    }
                   })
               })
-          })
+            })
         })
+    },
+    downloadThemeClick () {
+      if (!this.downloadingTheme) {
+        this.downloadTheme(this.selectedTheme, (status, theme) => {
+          switch (status) {
+            case 'loading':
+              this.downloadingTheme = theme
+              break
+            case 'finished':
+              this.downloadingTheme = theme
+              break
+          }
+        })
+      }
+    },
+    downloadTheme (theme, status) {
+      status('loading', theme)
+
+      const dest = path.join(remote.process.env.TEMP, theme.name + '.bl-theme.zip')
+
+      ipcRenderer.send('downloadFile', theme.downloadUrl, dest)
+
+      ipcRenderer.once('downloadFileFinished', (e, err) => {
+        status('finished', theme)
+
+        if (err) {
+          this.notify({
+            title: theme.name,
+            message: err,
+            style: 'error'
+          })
+        }
+      })
     }
   }
 }

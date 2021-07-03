@@ -291,6 +291,24 @@ app.on('ready', async () => {
   })
 })
 
+ipcMain.on('downloadFile', (e, url, dest) => {
+  fetch(url, {
+    headers: {
+      Authorization: process.env.GITHUB_AUTH,
+      Accept: 'application/octet-stream'
+    }
+  })
+    .then(res => new Promise((resolve, reject) => {
+      var ws = fs.createWriteStream(dest)
+      res.body.pipe(ws)
+
+      ws.on('error', reject)
+
+      res.body.on('end', () => resolve())
+    }))
+    .then(err => e.reply('downloadFileFinished', err))
+})
+
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {
   if (process.platform === 'win32') {
