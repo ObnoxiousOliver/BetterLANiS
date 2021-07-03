@@ -16,15 +16,7 @@
           </div>
           <div class="input-container">
             <div  class="input-label">
-              <label for="minimize">
-                In Symbolleiste minimieren
-                <tooltip class="option-help">
-                  <template #activator>
-                    <i class="fas fa-question-circle" />
-                  </template>
-                  In Symbolleiste minimieren
-                </tooltip>
-              </label>
+              <label for="minimize">In Symbolleiste minimieren</label>
               <span class="secondary">Beim Klicken auf das X nur das Fenster schließen. BetterLANiS läuft dann in der Sysbolleiste weiter.</span>
             </div>
             <input type="checkbox" class="input-toggle" id="minimize" v-model="minimizeInTray">
@@ -32,7 +24,7 @@
         </div>
       </div>
       <div class="option-container">
-        <div class="option-name"><i class="bi-braces" /> Entwickler Optionen</div>
+        <div class="option-name"><i class="bi-code-slash" /> Entwickler Optionen</div>
         <div class="option-body">
           <div class="input-container">
             <div class="input-label">
@@ -44,6 +36,14 @@
             </div>
             <input type="checkbox" class="input-toggle" id="devtools" v-model="devTools">
           </div>
+        </div>
+      </div>
+      <div class="option-container">
+        <div class="option-name"><i class="bi-braces"/> Config-Datei</div>
+        <div class="input-container">
+          <bl-button @click="copyConfigFolder">
+            <i class="bi-clipboard" /> Pfad kopieren
+          </bl-button>
           <bl-button @click="openConfigFolder">
             <i class="far fa-folder" /> Config-Ordner öffnen
           </bl-button>
@@ -55,7 +55,8 @@
 
 <script>
 import config from '@/config'
-import { ipcRenderer } from 'electron'
+import { clipboard, ipcRenderer } from 'electron'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'System',
@@ -84,15 +85,24 @@ export default {
   },
   mounted () {
     config.get(data => {
-      console.log(data)
       this.devTools = data.enableDevTools
       this.autoStart = !data.disableAutoStart
       this.minimizeInTray = !data.disableMinimizeInTray
     })
   },
   methods: {
+    ...mapActions([
+      'notify'
+    ]),
     openConfigFolder () {
       require('child_process').exec(`start "" "${config.configDirPath}"`)
+    },
+    copyConfigFolder () {
+      clipboard.writeText(config.configDirPath)
+      this.notify({
+        title: 'Zwischenablage',
+        message: 'Pfad wurde kopiert'
+      })
     }
   }
 }
