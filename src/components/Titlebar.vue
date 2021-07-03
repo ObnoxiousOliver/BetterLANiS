@@ -130,9 +130,7 @@ export default {
   }),
   methods: {
     close () {
-      currentWindow.hide()
       currentWindow.close()
-      currentWindow.removeAllListeners()
     },
     maximize () {
       if (currentWindow.isMaximized()) {

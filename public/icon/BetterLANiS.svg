@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="512"
+   height="512"
+   viewBox="0 0 135.46496 135.46496"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
+   sodipodi:docname="BetterLANiS.svg"
+   inkscape:export-filename="D:\PROJECTS\03. JS ELECTRON\BetterLANiS\betterlanis-vue\build\icon.png"
+   inkscape:export-xdpi="96.000008"
+   inkscape:export-ydpi="96.000008">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="96.783105"
+     inkscape:cy="177.69062"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:pagecheckerboard="false"
+     units="px"
+     inkscape:window-width="2560"
+     inkscape:window-height="1377"
+     inkscape:window-x="1272"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <ellipse
+       style="opacity:1;fill:#222222;fill-opacity:1;stroke:#303030;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke markers fill"
+       id="ellipse3556"
+       ry="67.732475"
+       rx="67.732483"
+       cy="67.732475"
+       cx="67.732483"
+       inkscape:export-filename="D:\PROJECTS\03. JS ELECTRON\BetterLANiS\betterlanis-vue\build\tray.png"
+       inkscape:export-xdpi="3.0000002"
+       inkscape:export-ydpi="3.0000002" />
+    <rect
+       style="fill:#fefefe;fill-opacity:1;stroke:#303030;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke markers fill"
+       id="rect3910"
+       width="12.632436"
+       height="8.1035442"
+       x="61.29578"
+       y="35.582634" />
+    <rect
+       style="fill:#fefefe;fill-opacity:1;stroke:#303030;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke markers fill"
+       id="rect3912"
+       width="10.728922"
+       height="7.5414863"
+       x="63.199295"
+       y="92.340836" />
+    <rect
+       style="fill:#fefefe;fill-opacity:1;stroke:#303030;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke markers fill"
+       id="rect3914"
+       width="7.0193477"
+       height="9.3270779"
+       x="67.40139"
+       y="62.436493" />
+    <g
+       aria-label="L"
+       id="text3887-6"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:89.1066px;line-height:1.25;font-family:Poppins;-inkscape-font-specification:'Poppins, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#fefefe;fill-opacity:1;stroke:none;stroke-width:2.22767"
+       transform="matrix(1.0279261,0,0,1.0279261,0.1887306,-1.891504)">
+      <path
+         d="m 86.9734,87.246825 h 19.95988 V 99.008896 H 71.736172 V 36.456064 H 86.9734 Z"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:89.1066px;font-family:Poppins;-inkscape-font-specification:'Poppins, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#fefefe;fill-opacity:1;stroke-width:2.22767"
+         id="path3907" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:91.5951px;line-height:1.25;font-family:Poppins;-inkscape-font-specification:'Poppins, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#3399ff;fill-opacity:1;stroke:none;stroke-width:2.28988"
+       x="26.518373"
+       y="99.882362"
+       id="text3887"><tspan
+         sodipodi:role="line"
+         id="tspan3885"
+         x="26.518373"
+         y="99.882362"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:91.5951px;font-family:Poppins;-inkscape-font-specification:'Poppins, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#3399ff;fill-opacity:1;stroke-width:2.28988">B</tspan></text>
+  </g>
+</svg>

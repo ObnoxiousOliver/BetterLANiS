@@ -13,9 +13,9 @@ const CONFIG_PATH = path.join(CONFIG_DIR_PATH, 'config.json')
 
 module.exports = {
   get (cb) {
+    var ret = {}
     if (fs.existsSync(CONFIG_PATH)) {
       fs.readFile(CONFIG_PATH, 'utf8', (err, data) => {
-        var ret = {}
         if (!err) {
           try {
             cb(JSON.parse(data))
@@ -26,9 +26,11 @@ module.exports = {
           cb(ret)
         }
       })
+    } else {
+      cb(ret)
     }
   },
-  set (setData) {
+  set (setData, cb) {
     // Create Dir if doesn't exists
     if (fs.existsSync(CONFIG_DIR_PATH)) {
       fs.mkdirSync(CONFIG_DIR_PATH, { recursive: true })
@@ -40,6 +42,8 @@ module.exports = {
       })
 
       fs.writeFileSync(CONFIG_PATH, JSON.stringify(getData, null, 2))
+
+      if (cb) cb(getData)
     })
   },
   configDirPath: CONFIG_DIR_PATH,

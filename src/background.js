@@ -1,18 +1,18 @@
 'use strict'
 
-import { app, protocol, BrowserWindow, shell, dialog, clipboard, Menu, MenuItem, ipcMain } from 'electron'
+import { app, protocol, BrowserWindow, shell, dialog, clipboard, Menu, MenuItem, ipcMain, Tray } from 'electron'
 import path from 'path'
-import fetch from 'node-fetch'
-import fs from 'fs'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
-import semver from 'semver'
 import config from './config'
+import update from './update'
+import AutoLaunch from 'auto-launch'
 // import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 process.env.BL_REPO_NAME = 'BetterLANiS'
 process.env.BL_REPO_USERNAME = 'ObnoxiousOliver'
 process.env.GITHUB_AUTH = 'Basic KjpnaHBfWkZaOFltczNLOGtwbTBYSHpkQ29pdUFNVVlIeFEyNDRBY3lB'
+process.env.RESOURCES_PATH = isDevelopment ? 'public/resources' : process.resourcesPath
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -34,7 +34,9 @@ if (!gotTheLock) {
   app.quit()
 }
 
-async function createWindow () {
+var tray
+
+function createWindow () {
   // Create the browser window.
   const win = new BrowserWindow({
     title: 'Better LANiS',
@@ -58,33 +60,69 @@ async function createWindow () {
 
   // win.hide()
 
-  const menu = new Menu()
-  menu.append(new MenuItem({
-    label: 'Zoom',
-    submenu: [
-      { role: 'resetZoom', accelerator: 'CommandOrControl+0' },
-      { role: 'zoomIn', accelerator: 'CommandOrControl+=' },
-      { role: 'zoomOut', accelerator: 'CommandOrControl+-' }
-    ]
-  }))
-  menu.append(new MenuItem({
-    label: 'View',
-    submenu: [
-      { role: 'reload', accelerator: 'CommandOrControl+r' },
-      { role: 'reload', accelerator: 'f5' },
-      { role: 'toggleDevTools', accelerator: 'CommandOrControl+Shift+i' }
-    ]
-  }))
+  function getMenu () {
+    const menu = new Menu()
+    menu.append(new MenuItem({
+      label: 'Zoom',
+      submenu: [
+        { role: 'resetZoom', accelerator: 'CommandOrControl+0' },
+        { role: 'zoomIn', accelerator: 'CommandOrControl+=' },
+        { role: 'zoomOut', accelerator: 'CommandOrControl+-' }
+      ]
+    }))
+    menu.append(new MenuItem({
+      label: 'View',
+      submenu: [
+        { role: 'reload', accelerator: 'CommandOrControl+r' },
+        { role: 'reload', accelerator: 'f5' }
+      ]
+    }))
+    return menu
+  }
+  function getMenuWithDevTools () {
+    const menuWithDevTools = getMenu()
+    menuWithDevTools.append(new MenuItem({
+      label: 'DevTools',
+      submenu: [
+        { role: 'toggleDevTools', accelerator: 'CommandOrControl+Shift+i' }
+      ]
+    }))
+    return menuWithDevTools
+  }
 
-  win.setMenu(menu)
+  win.setMenu(getMenu())
+
+  // Create Tray Icon
+  tray = new Tray(path.join(process.env.RESOURCES_PATH, 'tray.png'))
+  tray.setToolTip('BetterLANiS')
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'BetterLANiS',
+      icon: path.join(process.env.RESOURCES_PATH, 'tray.png'),
+      enabled: false
+    },
+    { type: 'separator' },
+    {
+      label: 'Schließen',
+      click: () => win.destroy()
+    }
+  ])
+  tray.setContextMenu(contextMenu)
+  tray.addListener('click', () => win.show())
+
+  ipcMain.on('enable-devtools', (e, val) => {
+    win.setMenu(val ? getMenuWithDevTools() : getMenu())
+
+    if (!val) win.webContents.closeDevTools()
+  })
 
   // #region Get Config File
   config.get(data => {
-    if (data) {
-      win.setBounds(data.bounds)
-      if (data.maximized) {
-        win.maximize()
-      }
+    win.setBounds(data.bounds)
+    if (data.maximized) win.maximize()
+
+    if (data.enableDevTools) {
+      win.setMenu(getMenuWithDevTools())
     }
   })
   // #endregion
@@ -92,9 +130,17 @@ async function createWindow () {
   // #region Save Window Bounds
   var configData = {}
 
-  win.on('close', () => {
+  win.on('close', (e) => {
+    e.preventDefault()
+
+    win.hide()
+
     configData.maximized = win.isMaximized()
-    config.set(configData)
+    config.set(configData, data => {
+      if (data.disableMinimizeInTray) {
+        win.destroy()
+      }
+    })
   })
 
   win.on('moved', () => {
@@ -134,6 +180,7 @@ async function createWindow () {
     // Someone tried to run a second instance, we should focus our window.
     if (win.isMinimized()) win.restore()
     win.focus()
+    win.show()
   })
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
@@ -214,6 +261,27 @@ app.on('ready', async () => {
     createProtocol('app')
   }
 
+  // Set Auto Start
+  var autoLaunch = new AutoLaunch({
+    name: 'BetterLANiS',
+    path: app.getPath('exe')
+  })
+  config.get(data => {
+    autoLaunch.isEnabled()
+      .then(isEnabled => {
+        if (!isEnabled && !data.disableAutoStart) autoLaunch.enable()
+        else if (isEnabled && data.disableAutoStart) autoLaunch.disable()
+      })
+  })
+
+  ipcMain.on('setAutoStart', (e, val) => {
+    autoLaunch.isEnabled()
+      .then(isEnabled => {
+        if (!isEnabled && val) autoLaunch.enable()
+        else if (isEnabled && !val) autoLaunch.disable()
+      })
+  })
+
   // === CHECK FOR UPDATES ===
   // options: {
   //   gitUser: String,
@@ -226,67 +294,17 @@ app.on('ready', async () => {
     setTimeout(() => updateWindow.close(), 500)
   }
 
+  // if in Development don't update
+  if (isDevelopment && !process.env.IS_TEST) {
+    startApp()
+    return
+  }
+
   ipcMain.on('checkForUpdatesAndInstall', (e) => {
-    e.reply('setUpdateStatus', 'Checking for Updates...')
-
-    // if in Development don't update
-    // if (isDevelopment && !process.env.IS_TEST) {
-    //   startApp()
-    //   return
-    // }
-
-    // Fetch releases of repo
-    fetch(`https://api.github.com/repos/${process.env.BL_REPO_USERNAME}/${process.env.BL_REPO_NAME}/releases`, {
-      headers: { Authorization: process.env.GITHUB_AUTH }
-    })
-      .then(res => res.json())
-      .then(data => {
-        try {
-          // Get Latest Version
-          const release = data.filter(x => semver.satisfies(x.tag_name, `> ${app.getVersion()}`, { includePrerelease: true }))[0]
-
-          if (release) {
-            const asset = release.assets.filter(x => x.name.endsWith('.exe'))[0]
-
-            if (asset) {
-              const dest = path.join(process.env.TEMP, asset.name)
-
-              e.reply('setUpdateStatus', 'Downloading (v' + release.tag_name + ')...')
-
-              // Fetch installer file
-              fetch(asset.url, {
-                headers: {
-                  Authorization: process.env.GITHUB_AUTH,
-                  Accept: 'application/octet-stream'
-                }
-              })
-                .then(res => new Promise((resolve, reject) => {
-                  var ws = fs.createWriteStream(dest)
-                  res.body.pipe(ws)
-
-                  ws.on('error', reject)
-
-                  res.body.on('end', () => resolve())
-                }))
-                .then(err => {
-                  if (err) dialog.showMessageBox(updateWindow, { title: 'Error', detail: err })
-                  e.reply('setUpdateStatus', 'Installing...')
-                  require('child_process').exec(dest)
-                  setTimeout(() => { app.quit() }, 1000)
-                })
-            } else {
-              e.reply('setUpdateStatus', 'Starting...')
-              startApp()
-            }
-          } else {
-            e.reply('setUpdateStatus', 'Starting...')
-            startApp()
-          }
-        } catch {
-          e.reply('setUpdateStatus', 'Starting...')
-          startApp()
-        }
-      })
+    update.checkForUpdatesAndInstall(
+      status => e.reply('setUpdateStatus', status),
+      startApp
+    )
   })
 })
 
