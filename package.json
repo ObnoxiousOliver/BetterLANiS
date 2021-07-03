@@ -16,8 +16,7 @@
     "start": "vue-cli-service electron:serve"
   },
   "files": [
-    "**/*",
-    "build/icon.*"
+    "build/**/*"
   ],
   "main": "background.js",
   "dependencies": {

@@ -12,6 +12,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 process.env.BL_REPO_NAME = 'BetterLANiS'
 process.env.BL_REPO_USERNAME = 'ObnoxiousOliver'
 process.env.GITHUB_AUTH = 'Basic KjpnaHBfWkZaOFltczNLOGtwbTBYSHpkQ29pdUFNVVlIeFEyNDRBY3lB'
+process.env.RESOURCES_PATH = isDevelopment ? 'public/resources' : process.resourcesPath
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -92,12 +93,12 @@ function createWindow () {
   win.setMenu(getMenu())
 
   // Create Tray Icon
-  tray = new Tray('./build/tray.png')
+  tray = new Tray(path.join(process.env.RESOURCES_PATH, 'tray.png'))
   tray.setToolTip('BetterLANiS')
   const contextMenu = Menu.buildFromTemplate([
     {
       label: 'BetterLANiS',
-      icon: './build/tray.png',
+      icon: path.join(process.env.RESOURCES_PATH, 'tray.png'),
       enabled: false
     },
     { type: 'separator' },
