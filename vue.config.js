@@ -1,7 +1,16 @@
 module.exports = {
   pluginOptions: {
     electronBuilder: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      builderOptions: {
+        extraFiles: [
+          {
+            from: 'public/resources',
+            to: 'resources',
+            filter: '**/*'
+          }
+        ]
+      }
     },
     i18n: {
       locale: 'de',

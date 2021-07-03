@@ -4,7 +4,7 @@
       <h1 class="setting-page-header"><i class="fas fa-child" /> Barrierefreiheit</h1>
       <div class="option-container">
         <div class="option-name">
-          <i class="fas fa-search" /> Zoom-Faktor
+          <i class="bi-search" /> Zoom-Faktor
         </div>
         <div class="option-body">
           <span class="secondary">

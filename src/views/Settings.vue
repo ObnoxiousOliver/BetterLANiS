@@ -12,13 +12,15 @@
 import Appearance from './settings/Appearance'
 import ThemeLibary from './settings/ThemesLibary'
 import Accessibility from './settings/Accessibility'
+import System from './settings/System'
 
 export default {
   name: 'Settings',
   components: {
     Appearance,
     ThemeLibary,
-    Accessibility
+    Accessibility,
+    System
   },
   props: {
     page: String

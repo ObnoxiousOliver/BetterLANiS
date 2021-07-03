@@ -5,13 +5,12 @@
   color: $accent-foreground;
   width: fit-content;
   margin-left: auto;
-  padding: 0 20px;
-  line-height: 40px;
+  padding: 10px 20px;
+  line-height: 20px;
   border-radius: 5px;
   margin-bottom: 5px;
   max-width: 400px;
   box-shadow: $elevation-medium;
-  white-space: nowrap;
   transition: 0.2s;
   filter: brightness(0.3);
 
