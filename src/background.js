@@ -243,10 +243,10 @@ app.on('ready', async () => {
   }
 
   // if in Development don't update
-  // if (isDevelopment && !process.env.IS_TEST) {
-  //   startApp()
-  //   return
-  // }
+  if (isDevelopment && !process.env.IS_TEST) {
+    startApp()
+    return
+  }
 
   ipcMain.on('checkForUpdatesAndInstall', (e) => {
     update.checkForUpdatesAndInstall(

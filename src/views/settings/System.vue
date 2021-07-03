@@ -18,10 +18,16 @@
             <div  class="input-label">
               <label for="minimize">
                 In Symbolleiste minimieren
+                <tooltip class="option-help">
+                  <template #activator>
+                    <i class="fas fa-question-circle" />
+                  </template>
+                  In Symbolleiste minimieren
+                </tooltip>
               </label>
               <span class="secondary">Beim Klicken auf das X nur das Fenster schließen. BetterLANiS läuft dann in der Sysbolleiste weiter.</span>
             </div>
-            <input type="checkbox" class="input-toggle" id="minimize">
+            <input type="checkbox" class="input-toggle" id="minimize" v-model="minimizeInTray">
           </div>
         </div>
       </div>
@@ -38,6 +44,9 @@
             </div>
             <input type="checkbox" class="input-toggle" id="devtools" v-model="devTools">
           </div>
+          <bl-button @click="openConfigFolder">
+            <i class="far fa-folder" /> Config-Ordner öffnen
+          </bl-button>
         </div>
       </div>
     </div>
@@ -50,9 +59,15 @@ import { ipcRenderer } from 'electron'
 
 export default {
   name: 'System',
+  computed: {
+    configDirPath () {
+      return config.configDirPath
+    }
+  },
   data: () => ({
     devTools: false,
-    autoStart: false
+    autoStart: true,
+    minimizeInTray: true
   }),
   watch: {
     devTools (val) {
@@ -60,15 +75,24 @@ export default {
       config.set({ enableDevTools: val })
     },
     autoStart (val) {
-      config.set({ autoStart: val })
+      config.set({ disableAutoStart: !val })
+    },
+    minimizeInTray (val) {
+      config.set({ disableMinimizeInTray: !val })
     }
   },
   mounted () {
     config.get(data => {
       console.log(data)
       this.devTools = data.enableDevTools
-      this.autoStart = data.autoStart
+      this.autoStart = !data.disableAutoStart
+      this.minimizeInTray = !data.disableMinimizeInTray
     })
+  },
+  methods: {
+    openConfigFolder () {
+      require('child_process').exec(`start "" "${config.configDirPath}"`)
+    }
   }
 }
 </script>
