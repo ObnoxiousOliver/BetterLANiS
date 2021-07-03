@@ -39,14 +39,14 @@ var tray
 function createWindow () {
   // Create the browser window.
   const win = new BrowserWindow({
-    title: 'Better LANiS',
+    title: 'BetterLANiS',
     frame: false,
     height: 850,
     width: 900,
     minHeight: 700,
     minWidth: 900,
     backgroundColor: '#111',
-    icon: './icon.ico',
+    icon: isDevelopment ? path.join(process.env.RESOURCES_PATH, 'icon.png') : './icon.ico',
     // transparent: true,
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
@@ -158,14 +158,13 @@ function createWindow () {
 
   win.webContents.on('new-window', (e, url) => {
     e.preventDefault()
-    dialog.showMessageBox(win,
-      {
-        title: 'Better LANiS',
-        message: 'Soll diese externe Website geöffnet werden?',
-        detail: url,
-        // checkboxLabel: 'Nicht mehr fragen',
-        buttons: ['Yes', 'Cancel', 'Copy Link']
-      }).then(({ response, checkboxChecked }) => {
+    dialog.showMessageBox(win, {
+      title: 'Better LANiS',
+      message: 'Soll diese externe Website geöffnet werden?',
+      detail: url,
+      // checkboxLabel: 'Nicht mehr fragen',
+      buttons: ['Yes', 'Cancel', 'Copy Link']
+    }).then(({ response, checkboxChecked }) => {
       if (response === 0) {
         shell.openExternal(url)
       } else if (response === 2) {
@@ -202,6 +201,7 @@ function createUpdateWindow () {
     height: 350,
     maximizable: false,
     // resizable: false,
+    icon: isDevelopment ? path.join(process.env.RESOURCES_PATH, 'icon.png') : './icon.ico',
     backgroundColor: '#222',
     webPreferences: {
       nodeIntegration: true,

@@ -1,9 +1,11 @@
 {
   "name": "betterlanis",
   "productName": "BetterLANiS",
-  "version": "1.0.3-b",
+  "description": "LANiS, aber BETTER",
+  "version": "1.0.4-b",
   "private": true,
   "author": "ObnoxiousOliver",
+  "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
