@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow, shell, dialog, clipboard, Menu, MenuItem, ipcMain } from 'electron'
+import { app, protocol, BrowserWindow, shell, dialog, clipboard, Menu, MenuItem, ipcMain, Tray } from 'electron'
 import path from 'path'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import config from './config'
@@ -32,7 +32,9 @@ if (!gotTheLock) {
   app.quit()
 }
 
-async function createWindow () {
+var tray
+
+function createWindow () {
   // Create the browser window.
   const win = new BrowserWindow({
     title: 'Better LANiS',
@@ -88,6 +90,24 @@ async function createWindow () {
 
   win.setMenu(getMenu())
 
+  // Create Tray Icon
+  tray = new Tray('./build/tray.png')
+  tray.setToolTip('BetterLANiS')
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'BetterLANiS',
+      icon: './build/tray.png',
+      enabled: false
+    },
+    { type: 'separator' },
+    {
+      label: 'Schließen',
+      click: () => win.destroy()
+    }
+  ])
+  tray.setContextMenu(contextMenu)
+  tray.addListener('click', () => win.show())
+
   ipcMain.on('enable-devtools', (e, val) => {
     win.setMenu(val ? getMenuWithDevTools() : getMenu())
 
@@ -108,9 +128,17 @@ async function createWindow () {
   // #region Save Window Bounds
   var configData = {}
 
-  win.on('close', () => {
+  win.on('close', (e) => {
+    e.preventDefault()
+
+    win.hide()
+
     configData.maximized = win.isMaximized()
-    config.set(configData)
+    config.set(configData, data => {
+      if (data.disableMinimizeInTray) {
+        win.destroy()
+      }
+    })
   })
 
   win.on('moved', () => {
@@ -150,6 +178,7 @@ async function createWindow () {
     // Someone tried to run a second instance, we should focus our window.
     if (win.isMinimized()) win.restore()
     win.focus()
+    win.show()
   })
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
