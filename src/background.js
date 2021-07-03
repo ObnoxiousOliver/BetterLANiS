@@ -5,6 +5,7 @@ import path from 'path'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import config from './config'
 import update from './update'
+import AutoLaunch from 'auto-launch'
 // import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -258,6 +259,27 @@ app.on('ready', async () => {
   } else {
     createProtocol('app')
   }
+
+  // Set Auto Start
+  var autoLaunch = new AutoLaunch({
+    name: 'BetterLANiS',
+    path: app.getPath('exe')
+  })
+  config.get(data => {
+    autoLaunch.isEnabled()
+      .then(isEnabled => {
+        if (!isEnabled && !data.disableAutoStart) autoLaunch.enable()
+        else if (isEnabled && data.disableAutoStart) autoLaunch.disable()
+      })
+  })
+
+  ipcMain.on('setAutoStart', (e, val) => {
+    autoLaunch.isEnabled()
+      .then(isEnabled => {
+        if (!isEnabled && val) autoLaunch.enable()
+        else if (isEnabled && !val) autoLaunch.disable()
+      })
+  })
 
   // === CHECK FOR UPDATES ===
   // options: {

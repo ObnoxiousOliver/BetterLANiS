@@ -76,6 +76,7 @@ export default {
     },
     autoStart (val) {
       config.set({ disableAutoStart: !val })
+      ipcRenderer.send('setAutoStart', val)
     },
     minimizeInTray (val) {
       config.set({ disableMinimizeInTray: !val })
