@@ -262,19 +262,23 @@ app.on('ready', async () => {
   }
 
   // Set Auto Start
-  var autoLaunch = new AutoLaunch({
-    name: 'BetterLANiS',
-    path: app.getPath('exe')
-  })
-  config.get(data => {
-    autoLaunch.isEnabled()
-      .then(isEnabled => {
-        if (!isEnabled && !data.disableAutoStart) autoLaunch.enable()
-        else if (isEnabled && data.disableAutoStart) autoLaunch.disable()
-      })
-  })
+  if (!isDevelopment) {
+    var autoLaunch = new AutoLaunch({
+      name: 'BetterLANiS',
+      path: app.getPath('exe')
+    })
+    config.get(data => {
+      autoLaunch.isEnabled()
+        .then(isEnabled => {
+          if (!isEnabled && !data.disableAutoStart) autoLaunch.enable()
+          else if (isEnabled && data.disableAutoStart) autoLaunch.disable()
+        })
+    })
+  }
 
   ipcMain.on('setAutoStart', (e, val) => {
+    if (isDevelopment) return
+
     autoLaunch.isEnabled()
       .then(isEnabled => {
         if (!isEnabled && val) autoLaunch.enable()
