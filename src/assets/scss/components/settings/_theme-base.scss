@@ -1,14 +1,27 @@
 /* Theme Base */
 
 .theme-original {
-  white-space: nowrap;
   color: $secondary-foreground;
-  font-size: 0.7rem;
   transition: color 0.1s;
 
   &:hover {
-    color: #75dfff;
+    color: $diamond;
   }
+}
+
+.theme-installed {
+  color: $secondary-foreground;
+  transition: color 0.1s;
+
+  &:hover {
+    color: $green;
+  }
+}
+
+.theme-tags {
+  white-space: nowrap;
+  font-size: 0.7rem;
+  text-align: right;
 }
 
 .theme-icon {

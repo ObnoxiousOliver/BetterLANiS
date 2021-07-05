@@ -7,30 +7,6 @@
           <i class="icon fas fa-cog" /> App-Einstellungen
         </div>
 
-        <!-- Appearance -->
-        <bl-button
-          @click="$emit('openSettings', 'Appearance')"
-          :class="[
-          'setting-link',
-          activePage === 'Appearance'
-            ? 'btn-primary btn-no-caps'
-            : 'btn-transparent'
-          ]"
-        >
-          <i class="icon fas fa-eye" /> Erscheinungsbild
-        </bl-button>
-        <bl-button
-          @click="$emit('openSettings', 'ThemeLibary')"
-          :class="[
-          'setting-link',
-          activePage === 'ThemeLibary'
-            ? 'btn-primary btn-no-caps'
-            : 'btn-transparent'
-          ]"
-        >
-          <i class="icon fas fa-swatchbook" /> Themen Bibliothek
-        </bl-button>
-
         <!-- Accessibility -->
         <bl-button
           @click="$emit('openSettings', 'Accessibility')"
@@ -56,7 +32,37 @@
         >
           <i class="icon fas fa-microchip" /> System
         </bl-button>
+
+        <div class="divider">
+          <i class="icon fas fa-swatchbook" /> Themen
+        </div>
+
+        <!-- Appearance -->
+        <bl-button
+          @click="$emit('openSettings', 'Appearance')"
+          :class="[
+          'setting-link',
+          activePage === 'Appearance'
+            ? 'btn-primary btn-no-caps'
+            : 'btn-transparent'
+          ]"
+        >
+          <i class="icon fas fa-eye" /> Erscheinungsbild
+        </bl-button>
+        <bl-button
+          @click="$emit('openSettings', 'ThemeLibary')"
+          :class="[
+          'setting-link',
+          activePage === 'ThemeLibary'
+            ? 'btn-primary btn-no-caps'
+            : 'btn-transparent'
+          ]"
+        >
+          <i class="icon fas fa-swatchbook" /> Themen Bibliothek
+        </bl-button>
+
         <div class="divider" />
+
         <bl-button
           @click="$emit('openNews')"
           class="setting-link"

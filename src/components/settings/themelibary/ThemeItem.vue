@@ -3,7 +3,7 @@
     <div class="theme-controls">
       <tooltip>
         <template #activator>
-          <bl-button v-if="theme.downloadUrl" class="download-btn"><i class="bi-download" /></bl-button>
+          <bl-button v-if="theme.downloadUrl && !isInstalled" class="download-btn"><i class="bi-download" /></bl-button>
         </template>
         Herunterladen
       </tooltip>
@@ -33,8 +33,13 @@
           <i class="fas fa-swatchbook" />
         </div>
       </div>
-      <div v-if="theme.author === 'ObnoxiousOliver'" class="theme-original">
-        <i class="fas fa-gem" /> Originales Thema
+      <div v-if="theme.author === 'ObnoxiousOliver'" class="theme-tags">
+        <span class="theme-original">
+          <i class="fas fa-gem" /> Originales Thema<br>
+        </span>
+        <span class="theme-installed" v-if="isInstalled">
+          <i class="fas fa-check" /> Installiert<br>
+        </span>
       </div>
       <div class="theme-info">
         <div class="theme-header">
@@ -55,7 +60,8 @@ import color from '@/color'
 export default {
   name: 'ThemeItem',
   props: {
-    theme: Object
+    theme: Object,
+    isInstalled: Boolean
   },
   computed: {
     color () {

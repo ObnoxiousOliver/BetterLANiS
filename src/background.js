@@ -2,6 +2,8 @@
 
 import { app, protocol, BrowserWindow, shell, dialog, clipboard, Menu, MenuItem, ipcMain, Tray } from 'electron'
 import path from 'path'
+import fs from 'fs'
+import fetch from 'node-fetch'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import config from './config'
 import update from './update'
@@ -30,10 +32,6 @@ protocol.registerSchemesAsPrivileged([
 app.commandLine.appendSwitch('disable-site-isolation-trials')
 
 const gotTheLock = app.requestSingleInstanceLock()
-
-if (!gotTheLock) {
-  app.quit()
-}
 
 var tray
 
@@ -138,6 +136,7 @@ function createWindow () {
 
     configData.maximized = win.isMaximized()
     config.set(configData, data => {
+      // Close Window if minimize in tray is disabled
       if (data.disableMinimizeInTray) {
         win.destroy()
       }
@@ -175,6 +174,16 @@ function createWindow () {
     })
   })
   // #endregion
+
+  // remove x-frame-options from response headers
+  win.webContents.session.webRequest.onHeadersReceived({ urls: [] }, (details, callback) => {
+    if (details.responseHeaders['x-frame-options']) {
+      delete details.responseHeaders['x-frame-options']
+    }
+
+    var cbValue = { cancel: false, responseHeaders: details.responseHeaders }
+    callback(cbValue)
+  })
 
   app.on('second-instance', (event, commandLine, workingDirectory) => {
     // Someone tried to run a second instance, we should focus our window.
@@ -250,6 +259,11 @@ app.on('activate', () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', async () => {
+  if (!gotTheLock) {
+    app.quit()
+    return
+  }
+
   if (isDevelopment && !process.env.IS_TEST) {
     // Install Vue Devtools
     // ===> Don't install because Vue Devtools don't support Vue3
@@ -323,6 +337,17 @@ ipcMain.on('downloadFile', (e, url, dest) => {
     .then(res => new Promise((resolve, reject) => {
       var ws = fs.createWriteStream(dest)
       res.body.pipe(ws)
+
+      var downloaded = 0
+      var contentLength = res.headers.get('content-length')
+
+      res.body.on('data', (data) => {
+        downloaded += data.length
+
+        e.reply('downloadFileStatus', {
+          progress: downloaded / contentLength
+        })
+      })
 
       ws.on('error', reject)
 

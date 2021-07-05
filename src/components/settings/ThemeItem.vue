@@ -24,8 +24,10 @@
         <h3 class="theme-name">
           {{ theme.name }}
         </h3>
-        <div v-if="original" class="theme-original">
-          <i class="fas fa-gem" /> Originales Thema
+        <div class="theme-tags">
+          <div v-if="original" class="theme-original">
+            <i class="fas fa-gem" /> Originales Thema
+          </div>
         </div>
       </div>
       <div class="theme-details">

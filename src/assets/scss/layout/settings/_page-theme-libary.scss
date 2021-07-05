@@ -74,7 +74,7 @@
       }
     }
 
-    .theme-original {
+    .theme-tags {
       position: absolute;
       right: 20px;
       top: 15px;
@@ -107,6 +107,8 @@
     pointer-events: none;
 
     .info-box {
+      pointer-events: all;
+      z-index: 1;
       position: absolute;
       inset: 10px 0 auto 0;
       width: 50%;
@@ -115,6 +117,25 @@
       background: $primary-background;
       border-radius: 5px;
       box-shadow: $elevation-high;
+
+    }
+    &.info-box {
+      &-enter-active,
+      &-leave-active {
+        transition: 0.1s;
+
+        .info-box {
+          transition: opacity 0.1s, transform 0.1s;
+        }
+      }
+
+      &-enter-from,
+      &-leave-to {
+        .info-box {
+          opacity: 0;
+          transform: translateY(-100%);
+        }
+      }
     }
   }
 }

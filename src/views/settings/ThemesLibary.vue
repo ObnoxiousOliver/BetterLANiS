@@ -12,7 +12,9 @@
         <ThemeItem
           @themeselected="selectedTheme = theme"
           v-for="theme in displayedThemes"
-          :key="theme.name" :theme="theme"
+          :key="theme.name"
+          :theme="theme"
+          :isInstalled="isInstalled(theme.name)"
         />
       </div>
       <div v-else>
@@ -52,8 +54,13 @@
           <i class="fas fa-swatchbook" />
         </div>
       </div>
-      <div class="theme-original">
-        <i class="fas fa-gem" /> Originales Thema
+      <div class="theme-tags">
+        <span v-if="selectedTheme.author === 'ObnoxiousOliver'" class="theme-original">
+          <i class="fas fa-gem" /> Originales Thema<br>
+        </span>
+        <span v-if="isInstalled(selectedTheme.name)" class="theme-installed">
+          <i class="fas fa-check" /> Installiert<br>
+        </span>
       </div>
       <div class="theme-info">
         <div class="theme-header">
@@ -75,20 +82,27 @@
               @click="downloadThemeClick"
               v-if="selectedTheme.downloadUrl"
               class="download-btn"
-              variant="primary no-caps"
+              :variant="isInstalled(selectedTheme.name) ? 'small' : 'primary' + ' no-caps'"
             >
-              <i class="bi-download" /> Herunterladen
+            <i class="bi-download" />
+            <span> Herunterladen</span>
+            </bl-button>
+            <bl-button v-if="isInstalled(selectedTheme.name)" variant="primary no-caps" disabled>
+              Anwenden
             </bl-button>
           </div>
         </div>
       </template>
     </Modal>
 
-    <div v-if="downloadingTheme" class="info-box-component">
-      <div class="info-box">
-        <h2>{{ downloadingTheme.name }}</h2>
+    <transition name="info-box">
+      <div v-if="downloadingTheme" class="info-box-component">
+          <div class="info-box">
+            <h2>Downloading - {{ downloadingTheme.name }}</h2>
+            <progress class="progress-bar" :value="downloadingTheme.progress" />
+          </div>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
 
@@ -100,8 +114,9 @@ import color from '@/color'
 import { mapActions, mapMutations, mapState } from 'vuex'
 
 const { remote, ipcRenderer } = require('electron')
-// const fs = require('fs')
+const fs = require('fs')
 const path = require('path')
+const extract = require('extract-zip')
 
 const githubAuthHeaders = {
   headers: {
@@ -138,9 +153,12 @@ export default {
     themes: [],
     searchString: '',
     selectedTheme: undefined,
-    downloadingTheme: undefined
+    downloadingTheme: undefined,
+    installedThemes: undefined
   }),
   mounted () {
+    this.installedThemes = fs.readdirSync(this.theme.path).filter(x => x.endsWith('.bl-theme'))
+
     if (!this.theme.themeLibary.length) {
       this.fetchThemeLibary()
     } else {
@@ -171,35 +189,30 @@ export default {
             .then(res => res.json())
             .then(branches => {
               branches.forEach(branch => {
-                // Get Branch Details
-                fetch(`https://api.github.com/repos/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/branches/${branch.name}`, githubAuthHeaders)
+                // Get Manifest
+                fetch(`https://raw.githubusercontent.com/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/${branch.name}/manifest.json`)
                   .then(res => res.json())
-                  .then(branchData => {
-                    // Get Manifest
-                    fetch(`https://raw.githubusercontent.com/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/${branch.name}/manifest.json`)
-                      .then(res => res.json())
-                      .then(manifest => {
-                        if (!manifest.hidden) {
-                          var downloadUrl
-                          try {
-                            downloadUrl = releases.filter(x => x.target_commitish === branch.name)[0].assets.filter(x => x.name.endsWith('.bl-theme.zip'))[0].url
-                          } catch {}
+                  .then(manifest => {
+                    if (!manifest.hidden) {
+                      var downloadUrl
+                      try {
+                        downloadUrl = releases.filter(x => x.target_commitish === branch.name)[0].assets.filter(x => x.name.endsWith('.bl-theme.zip'))[0].url
+                      } catch {}
 
-                          this.themes.push({
-                            name: branch.name,
-                            displayName: manifest.name,
-                            version: manifest.version,
-                            author: manifest.author,
-                            description: manifest.description,
-                            icon: manifest.icon,
-                            iconHref: manifest.icon
-                              ? `https://raw.githubusercontent.com/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/${branch.name}/${manifest.icon}`
-                              : undefined,
-                            preview: manifest.preview,
-                            downloadUrl
-                          })
-                        }
+                      this.themes.push({
+                        name: branch.name,
+                        displayName: manifest.name,
+                        version: manifest.version,
+                        author: manifest.author,
+                        description: manifest.description,
+                        icon: manifest.icon,
+                        iconHref: manifest.icon
+                          ? `https://raw.githubusercontent.com/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/${branch.name}/${manifest.icon}`
+                          : undefined,
+                        preview: manifest.preview,
+                        downloadUrl
                       })
+                    }
                   })
               })
             })
@@ -208,26 +221,62 @@ export default {
     downloadThemeClick () {
       if (!this.downloadingTheme) {
         this.downloadTheme(this.selectedTheme, (status, theme) => {
-          switch (status) {
+          switch (status.state) {
             case 'loading':
-              this.downloadingTheme = theme
+              this.downloadingTheme = {
+                ...theme,
+                progress: status.progress
+              }
               break
             case 'finished':
-              this.downloadingTheme = theme
+              this.downloadingTheme = undefined
+              this.installedThemes = fs.readdirSync(this.theme.path).filter(x => x.endsWith('.bl-theme'))
               break
           }
         })
       }
     },
     downloadTheme (theme, status) {
-      status('loading', theme)
+      status({
+        state: 'loading',
+        progress: 0
+      }, theme)
 
-      const dest = path.join(remote.process.env.TEMP, theme.name + '.bl-theme.zip')
+      const dest = path.join(this.theme.path, theme.name + '.bl-theme')
+      const zipDest = dest + '.zip'
 
-      ipcRenderer.send('downloadFile', theme.downloadUrl, dest)
+      console.log(theme.downloadUrl)
+
+      ipcRenderer.send('downloadFile', theme.downloadUrl, zipDest)
+
+      function downloadFileStatus (e, downloadStatus) {
+        status({
+          state: 'loading',
+          progress: downloadStatus.progress
+        }, theme)
+      }
+
+      ipcRenderer.on('downloadFileStatus', downloadFileStatus)
 
       ipcRenderer.once('downloadFileFinished', (e, err) => {
-        status('finished', theme)
+        ipcRenderer.removeListener('downloadFileStatus', downloadFileStatus)
+
+        var sizeUnzipped = 0
+
+        extract(zipDest, {
+          dir: dest,
+          onEntry (entry, file) {
+            sizeUnzipped += entry.compressedSize
+            status({
+              state: 'loading',
+              progress: sizeUnzipped / file.fileSize
+            }, theme)
+          }
+        })
+          .then(() => {
+            fs.unlinkSync(zipDest)
+            status({ state: 'finished' }, theme)
+          })
 
         if (err) {
           this.notify({
@@ -237,6 +286,9 @@ export default {
           })
         }
       })
+    },
+    isInstalled (theme) {
+      return this.installedThemes.includes(theme + '.bl-theme')
     }
   }
 }
