@@ -219,8 +219,8 @@ fieldset {
   font-size: clamp(2rem, 7vw, 10rem);
 
   .secret-9aj2-content {
-    text-shadow:
-      #0009 0 0.05em 0.1em;
+    font-weight: 700;
+    text-shadow: #0009 0 0.05em 0.1em;
   }
 
   &::before, &::after {

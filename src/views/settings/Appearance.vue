@@ -63,13 +63,6 @@
             >
               <i class="far fa-folder" /> Themen-Ordner öffnen
             </bl-button>
-            <bl-button
-              @click="getThemes"
-              class="refresh-btn"
-              variant="transparent small"
-            >
-              <i class="fa fa-sync" /> Neu laden
-            </bl-button>
           </div>
           <div class="theme-select">
             <div class="available-themes scroll y auto thin">
@@ -281,6 +274,9 @@ import ThemeItem from '../../components/settings/ThemeItem.vue'
 
 const fs = require('fs')
 const path = require('path')
+const chokidar = require('chokidar')
+
+var watcher
 
 export default {
   name: 'Appearance',
@@ -334,7 +330,17 @@ export default {
     }
   },
   mounted () {
-    this.getThemes()
+    watcher = chokidar.watch(this.theme.path, {
+      ignored: /^\./,
+      persistent: true
+    })
+
+    watcher.on('add', (e) => { this.getThemes() })
+    watcher.on('unlink', (e) => { this.getThemes() })
+  },
+  unmounted () {
+    watcher.unwatch(this.theme.path)
+    watcher.close()
   },
   methods: {
     ...mapActions([
@@ -384,6 +390,7 @@ export default {
           })
           this.themes.push({
             name: theme,
+            path: theme,
             description: 'Keine "manifest.json" Datei gefunden',
             notUsable: true
           })

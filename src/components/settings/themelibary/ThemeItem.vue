@@ -1,9 +1,14 @@
 <template>
   <div class="theme-libary-theme-item-component">
     <div class="theme-controls">
-      <tooltip>
+      <tooltip v-if="theme.downloadUrl && !isInstalled">
         <template #activator>
-          <bl-button v-if="theme.downloadUrl && !isInstalled" class="download-btn"><i class="bi-download" /></bl-button>
+          <bl-button
+            class="download-btn"
+            @click="$emit('download')"
+          >
+            <i class="bi-download" />
+          </bl-button>
         </template>
         Herunterladen
       </tooltip>

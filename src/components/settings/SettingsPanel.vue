@@ -49,6 +49,8 @@
         >
           <i class="icon fas fa-eye" /> Erscheinungsbild
         </bl-button>
+
+        <!-- ThemeLibary -->
         <bl-button
           @click="$emit('openSettings', 'ThemeLibary')"
           :class="[
@@ -59,6 +61,9 @@
           ]"
         >
           <i class="icon fas fa-swatchbook" /> Themen Bibliothek
+          <template #badge>
+            <div class="btn-badge">Neu</div>
+          </template>
         </bl-button>
 
         <div class="divider" />

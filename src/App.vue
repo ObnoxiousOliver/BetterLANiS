@@ -24,6 +24,7 @@
       </transition>
       <transition name="settingswindow">
         <Settings
+          @openSettings="openSettings"
           :page="settingsPage"
           v-if="showSettings"
         />
