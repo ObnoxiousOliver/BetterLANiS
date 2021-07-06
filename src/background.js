@@ -93,7 +93,7 @@ function createWindow () {
   win.setMenu(getMenu())
 
   // Create Tray Icon
-  tray = new Tray(path.join(process.env.RESOURCES_PATH, 'tray.png'))
+  tray = new Tray(path.join(process.env.RESOURCES_PATH, 'icon.png'))
   tray.setToolTip('BetterLANiS')
   const contextMenu = Menu.buildFromTemplate([
     {
@@ -299,7 +299,7 @@ app.on('ready', async () => {
   }
 
   // if in Development don't update
-  if (isDevelopment && !process.env.IS_TEST) {
+  if ((isDevelopment && !process.env.IS_TEST) || process.platform !== 'win32') {
     startApp()
     return
   }
