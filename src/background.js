@@ -99,7 +99,7 @@ function createWindow () {
     {
       label: 'BetterLANiS',
       icon: path.join(process.env.RESOURCES_PATH, 'tray.png'),
-      enabled: false
+      click: () => win.show()
     },
     { type: 'separator' },
     {

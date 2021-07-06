@@ -19,8 +19,8 @@ const fs = require('fs')
 const path = require('path')
 const { remote } = require('electron')
 
-const CONFIG_PATH = path.join(remote.process.env.APPDATA, remote.app.getName(), 'Config')
-const USERS_PATH = path.join(remote.process.env.APPDATA, remote.app.getName(), 'Users')
+const CONFIG_PATH = path.join(remote.app.getPath('userData'), 'Config')
+const USERS_PATH = path.join(remote.app.getPath('userData'), 'Users')
 const ACTIVE_USER_PATH = path.join(CONFIG_PATH, 'active')
 
 export default {
