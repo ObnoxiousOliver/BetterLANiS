@@ -55,14 +55,14 @@
 
 <script>
 import config from '@/config'
-import { clipboard, ipcRenderer } from 'electron'
+import { clipboard, ipcRenderer, remote } from 'electron'
 import { mapActions } from 'vuex'
 
 export default {
   name: 'System',
   computed: {
     configDirPath () {
-      return config.configDirPath
+      return remote.process.platform
     }
   },
   data: () => ({
@@ -95,7 +95,7 @@ export default {
       'notify'
     ]),
     openConfigFolder () {
-      require('child_process').exec(`start "" "${config.configDirPath}"`)
+      config.openPath(config.configDirPath)
     },
     copyConfigFolder () {
       clipboard.writeText(config.configDirPath)

@@ -5,11 +5,11 @@ const { remote } = require('electron')
 const fs = require('fs')
 const path = require('path')
 
-const CONFIG_PATH = path.join(remote.process.env.APPDATA, remote.app.getName(), 'Config')
-const USERS_PATH = path.join(remote.process.env.APPDATA, remote.app.getName(), 'Users')
+const CONFIG_PATH = path.join(remote.app.getPath('userData'), 'Config')
+const USERS_PATH = path.join(remote.app.getPath('userData'), 'Users')
 const ACTIVE_USER_PATH = path.join(CONFIG_PATH, 'active')
 const THEME_CONFIG_PATH = path.join(CONFIG_PATH, 'theme.json')
-const THEMES_PATH = path.join(remote.process.env.APPDATA, remote.app.getName(), 'Themes')
+const THEMES_PATH = path.join(remote.app.getPath('userData'), 'Themes')
 
 export default {
   appStart (store) {
