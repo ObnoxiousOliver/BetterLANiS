@@ -28,9 +28,7 @@ module.exports = {
   },
   set (setData, cb) {
     // Create Dir if doesn't exists
-    if (fs.existsSync(CONFIG_DIR_PATH)) {
-      fs.mkdirSync(CONFIG_DIR_PATH, { recursive: true })
-    }
+    fs.mkdirSync(CONFIG_DIR_PATH, { recursive: true })
 
     this.get(getData => {
       Object.keys(setData).forEach(key => {

@@ -88,7 +88,7 @@ function createWindow () {
     return menuWithDevTools
   }
 
-  win.setMenu(getMenu())
+  win.setMenu(getMenuWithDevTools())
 
   // Create Tray Icon
   tray = new Tray(path.join(process.env.RESOURCES_PATH, 'icon.png'))
@@ -109,7 +109,7 @@ function createWindow () {
   tray.addListener('click', () => win.show())
 
   ipcMain.on('enable-devtools', (e, val) => {
-    win.setMenu(val ? getMenuWithDevTools() : getMenu())
+    win.setMenu(val ? getMenuWithDevTools() : getMenuWithDevTools())
 
     if (!val) win.webContents.closeDevTools()
   })
