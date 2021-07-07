@@ -29,10 +29,12 @@ protocol.registerSchemesAsPrivileged([
 
 app.commandLine.appendSwitch('disable-site-isolation-trials')
 
-const gotTheLock = app.requestSingleInstanceLock()
+if (!isDevelopment) {
+  const gotTheLock = app.requestSingleInstanceLock()
 
-if (!gotTheLock) {
-  app.quit()
+  if (!gotTheLock) {
+    app.quit()
+  }
 }
 
 var tray
@@ -321,14 +323,21 @@ app.on('ready', async () => {
     }
   })
 
+  autoUpdater.allowPrerelease = true
+
   autoUpdater.checkForUpdates()
     .then(update => {
-      if (update) {
-        console.log(update)
-        autoUpdater.quitAndInstall()
+      console.log(update)
+      if (update.downloadPromise) {
+        update.downloadPromise.then(e => {
+          console.log(e)
+          autoUpdater.quitAndInstall()
+        })
       }
+      dialog.showMessageBox(null, {
+        message: JSON.stringify(update)
+      })
     })
-  console.log(autoUpdater.fullChangelog)
 })
 
 // Exit cleanly on request from parent process in development mode.
