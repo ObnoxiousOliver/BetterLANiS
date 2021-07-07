@@ -4,8 +4,9 @@ import { app, protocol, BrowserWindow, shell, dialog, clipboard, Menu, MenuItem,
 import path from 'path'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import config from './config'
-import update from './update'
+// import update from './update'
 import AutoLaunch from 'auto-launch'
+import { autoUpdater } from 'electron-updater'
 // import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -192,6 +193,7 @@ function createWindow () {
   return win
 }
 
+// eslint-disable-next-line no-unused-vars
 function createUpdateWindow () {
   const win = new BrowserWindow({
     frame: false,
@@ -289,25 +291,44 @@ app.on('ready', async () => {
   //   gitUser: String,
   //   gitRepo: String
   // }
-  const updateWindow = createUpdateWindow()
+  // const updateWindow = createUpdateWindow()
 
-  function startApp () {
-    createWindow()
-    setTimeout(() => updateWindow.close(), 500)
-  }
+  // function startApp () {
+  //   createWindow()
+  //   setTimeout(() => updateWindow.close(), 500)
+  // }
 
-  // if in Development don't update
-  if ((isDevelopment && !process.env.IS_TEST) || process.platform !== 'win32') {
-    startApp()
-    return
-  }
+  // // if in Development don't update
+  // if ((isDevelopment && !process.env.IS_TEST) || process.platform !== 'win32') {
+  //   startApp()
+  //   return
+  // }
 
-  ipcMain.on('checkForUpdatesAndInstall', (e) => {
-    update.checkForUpdatesAndInstall(
-      status => e.reply('setUpdateStatus', status),
-      startApp
-    )
+  // ipcMain.on('checkForUpdatesAndInstall', (e) => {
+  //   update.checkForUpdatesAndInstall(
+  //     status => e.reply('setUpdateStatus', status),
+  //     startApp
+  //   )
+  // })
+
+  autoUpdater.setFeedURL({
+    provider: 'github',
+    repo: process.env.BL_REPO_NAME,
+    owner: process.env.BL_REPO_USERNAME,
+    private: true,
+    requestHeaders: {
+      Authorization: process.env.GITHUB_AUTH
+    }
   })
+
+  autoUpdater.checkForUpdates()
+    .then(update => {
+      if (update) {
+        console.log(update)
+        autoUpdater.quitAndInstall()
+      }
+    })
+  console.log(autoUpdater.fullChangelog)
 })
 
 // Exit cleanly on request from parent process in development mode.
