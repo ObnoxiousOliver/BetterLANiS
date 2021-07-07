@@ -46,7 +46,7 @@ function createWindow () {
     minHeight: 700,
     minWidth: 900,
     backgroundColor: '#111',
-    icon: isDevelopment ? path.join(process.env.RESOURCES_PATH, 'icon.png') : './icon.ico',
+    icon: isDevelopment ? path.join(process.env.RESOURCES_PATH, 'icon.png') : './icon.png',
     // transparent: true,
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
@@ -57,8 +57,6 @@ function createWindow () {
       devTools: true
     }
   })
-
-  // win.hide()
 
   function getMenu () {
     const menu = new Menu()
@@ -201,7 +199,7 @@ function createUpdateWindow () {
     height: 350,
     maximizable: false,
     // resizable: false,
-    icon: isDevelopment ? path.join(process.env.RESOURCES_PATH, 'icon.png') : './icon.ico',
+    icon: isDevelopment ? path.join(process.env.RESOURCES_PATH, 'icon.png') : './icon.png',
     backgroundColor: '#222',
     webPreferences: {
       nodeIntegration: true,
