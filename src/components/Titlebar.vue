@@ -94,9 +94,9 @@
       </div>
       <transition name="currentUser">
         <div class="currentUser" v-if="currentSchool">
-          {{ currentSchool.name }} 🞄
-          <span v-if="loggedInUser.class" class="class">{{ loggedInUser.firstName }} {{ loggedInUser.lastName }}</span>
-          <span v-if="loggedInUser.class" class="class"> | {{ loggedInUser.class }}</span>
+          {{ currentSchool.name }}<i class="bi-dot" />
+          <span class="user-name">{{ loggedInUser.firstName }} {{ loggedInUser.lastName }}</span> |
+          <span class="user-class">{{ loggedInUser.class }}</span>
         </div>
       </transition>
     </div>

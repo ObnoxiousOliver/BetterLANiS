@@ -14,9 +14,7 @@ const THEMES_PATH = path.join(remote.app.getPath('userData'), 'Themes')
 export default {
   appStart (store) {
     store.commit('setThemesPath', THEMES_PATH)
-    if (!fs.existsSync(THEMES_PATH)) {
-      fs.mkdirSync(THEMES_PATH)
-    }
+    fs.mkdirSync(THEMES_PATH, { recursive: true })
     store.dispatch('loadStyles')
 
     fetch('https://start.schulportal.hessen.de/exporteur.php?a=schoollist')
@@ -42,9 +40,7 @@ export default {
           schoolId: doc.querySelector('#institutionsid').textContent.trim()
         }
 
-        if (!fs.existsSync(USERS_PATH)) {
-          fs.mkdirSync(USERS_PATH)
-        }
+        fs.mkdirSync(USERS_PATH, { recursive: true })
 
         store.commit('setSavedUserPath', `${btoa(userData.schoolId + userData.username).split('/').join(' ')}.bluser`)
 
@@ -189,9 +185,7 @@ export default {
   },
   logout (store) {
     remote.session.defaultSession.clearStorageData()
-    if (fs.existsSync(ACTIVE_USER_PATH)) {
-      fs.unlinkSync(ACTIVE_USER_PATH)
-    }
+    fs.unlinkSync(ACTIVE_USER_PATH, { recursive: true })
     store.commit('resetAll')
   },
   addTheme (store, payload) {
@@ -251,9 +245,7 @@ export default {
 
     // console.log(save)
 
-    if (!fs.existsSync(CONFIG_PATH)) {
-      fs.mkdirSync(CONFIG_PATH)
-    }
+    fs.mkdirSync(CONFIG_PATH, { recursive: true })
 
     fs.writeFileSync(THEME_CONFIG_PATH, JSON.stringify(save))
   },

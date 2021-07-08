@@ -97,9 +97,7 @@ export default {
 
               // Encrypt and save Logindata if remember me is checked
               if (rememberMe) {
-                if (!fs.existsSync(CONFIG_PATH)) {
-                  fs.mkdirSync(CONFIG_PATH)
-                }
+                fs.mkdirSync(CONFIG_PATH, { recursive: true })
 
                 // console.log('Writeing to', ACTIVE_USER_PATH, this.savedUser.path)
                 fs.writeFileSync(ACTIVE_USER_PATH, this.savedUser.path)
