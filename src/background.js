@@ -295,10 +295,13 @@ app.on('ready', async () => {
   // }
   // const updateWindow = createUpdateWindow()
 
-  // function startApp () {
-  //   createWindow()
-  //   setTimeout(() => updateWindow.close(), 500)
-  // }
+  function startApp (err) {
+    dialog.showMessageBox(null, {
+      message: JSON.stringify(err, null, 2)
+    })
+    createWindow()
+    // setTimeout(() => updateWindow.close(), 500)
+  }
 
   // // if in Development don't update
   // if ((isDevelopment && !process.env.IS_TEST) || process.platform !== 'win32') {
@@ -325,6 +328,8 @@ app.on('ready', async () => {
 
   autoUpdater.allowPrerelease = true
 
+  process.env.APPIMAGE = path.join(__dirname, `BetterLANiS-${app.getVersion()}.AppImage`)
+
   autoUpdater.checkForUpdates()
     .then(update => {
       console.log(update)
@@ -332,12 +337,12 @@ app.on('ready', async () => {
         update.downloadPromise.then(e => {
           console.log(e)
           autoUpdater.quitAndInstall()
-        })
-      }
+        }).catch(startApp)
+      } else startApp()
       dialog.showMessageBox(null, {
-        message: JSON.stringify(update)
+        message: JSON.stringify(update, null, 2)
       })
-    })
+    }).catch(startApp)
 })
 
 // Exit cleanly on request from parent process in development mode.

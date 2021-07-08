@@ -392,7 +392,7 @@ export default {
     },
     openInFolder (theme) {
       var pathToOpen = path.join(this.theme.path, theme.path)
-      config.openFolder(pathToOpen)
+      config.openPath(pathToOpen)
     },
     openCustomColor () {
       this.customColorOpen = true
