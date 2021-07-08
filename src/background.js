@@ -259,6 +259,7 @@ app.on('ready', async () => {
     // } catch (e) {
     //   console.error('Vue Devtools failed to install:', e.toString())
     // }
+    process.env.APPIMAGE = path.join(__dirname, `BetterLANiS-${app.getVersion()}.AppImage`)
   } else {
     createProtocol('app')
   }
@@ -293,14 +294,15 @@ app.on('ready', async () => {
   //   gitUser: String,
   //   gitRepo: String
   // }
-  // const updateWindow = createUpdateWindow()
+  const updateWindow = createUpdateWindow()
 
-  function startApp (err) {
-    dialog.showMessageBox(null, {
-      message: JSON.stringify(err, null, 2)
-    })
+  function startApp (e) {
+    // dialog.showMessageBox(null, {
+    //   message: JSON.stringify(err, null, 2)
+    // })
+    e.reply('setUpdateStatus', 'Starting...')
     createWindow()
-    // setTimeout(() => updateWindow.close(), 500)
+    setTimeout(() => updateWindow.close(), 500)
   }
 
   // // if in Development don't update
@@ -309,40 +311,42 @@ app.on('ready', async () => {
   //   return
   // }
 
-  // ipcMain.on('checkForUpdatesAndInstall', (e) => {
-  //   update.checkForUpdatesAndInstall(
-  //     status => e.reply('setUpdateStatus', status),
-  //     startApp
-  //   )
-  // })
+  ipcMain.on('checkForUpdatesAndInstall', (e) => {
+    // update.checkForUpdatesAndInstall(
+    //   status => e.reply('setUpdateStatus', status),
+    //   startApp
+    // )
 
-  autoUpdater.setFeedURL({
-    provider: 'github',
-    repo: process.env.BL_REPO_NAME,
-    owner: process.env.BL_REPO_USERNAME,
-    private: true,
-    requestHeaders: {
-      Authorization: process.env.GITHUB_AUTH
-    }
+    e.reply('setUpdateStatus', 'Checking for Updates...')
+
+    autoUpdater.setFeedURL({
+      provider: 'github',
+      repo: process.env.BL_REPO_NAME,
+      owner: process.env.BL_REPO_USERNAME,
+      private: true,
+      requestHeaders: {
+        Authorization: process.env.GITHUB_AUTH
+      }
+    })
+
+    autoUpdater.allowPrerelease = true
+
+    autoUpdater.checkForUpdates()
+      .then(update => {
+        console.log(update)
+        if (update.downloadPromise) {
+          e.reply('setUpdateStatus', 'Downloading(v' + update.updateInfo.version + ')...')
+
+          update.downloadPromise.then(e => {
+            console.log(e)
+            autoUpdater.quitAndInstall()
+          }).catch(() => startApp(e))
+        } else startApp(e)
+        // dialog.showMessageBox(null, {
+        //   message: JSON.stringify(update, null, 2)
+        // })
+      }).catch(() => startApp(e))
   })
-
-  autoUpdater.allowPrerelease = true
-
-  process.env.APPIMAGE = path.join(__dirname, `BetterLANiS-${app.getVersion()}.AppImage`)
-
-  autoUpdater.checkForUpdates()
-    .then(update => {
-      console.log(update)
-      if (update.downloadPromise) {
-        update.downloadPromise.then(e => {
-          console.log(e)
-          autoUpdater.quitAndInstall()
-        }).catch(startApp)
-      } else startApp()
-      dialog.showMessageBox(null, {
-        message: JSON.stringify(update, null, 2)
-      })
-    }).catch(startApp)
 })
 
 // Exit cleanly on request from parent process in development mode.
