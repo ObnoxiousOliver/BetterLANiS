@@ -1,13 +1,9 @@
 const { remote, app } = require('electron')
-const process = require('process')
+// const process = require('process')
 const fs = require('fs')
 const path = require('path')
 
-const CONFIG_DIR_PATH = path.join(
-  process.env.APPDATA,
-  remote ? remote.app.getName() : app.getName(),
-  'Config'
-)
+const CONFIG_DIR_PATH = path.join(remote ? remote.app.getPath('userData') : app.getPath('userData'), 'Config')
 
 const CONFIG_PATH = path.join(CONFIG_DIR_PATH, 'config.json')
 
@@ -32,9 +28,7 @@ module.exports = {
   },
   set (setData, cb) {
     // Create Dir if doesn't exists
-    if (fs.existsSync(CONFIG_DIR_PATH)) {
-      fs.mkdirSync(CONFIG_DIR_PATH, { recursive: true })
-    }
+    fs.mkdirSync(CONFIG_DIR_PATH, { recursive: true })
 
     this.get(getData => {
       Object.keys(setData).forEach(key => {
@@ -47,5 +41,19 @@ module.exports = {
     })
   },
   configDirPath: CONFIG_DIR_PATH,
-  configPath: CONFIG_PATH
+  configPath: CONFIG_PATH,
+  openPath (path) {
+    var execString
+
+    switch (remote ? remote.process.platform : process.platform) {
+      case 'linux':
+        execString = `xdg-open "${path}"`
+        break
+      default:
+        execString = `start "" "${path}"`
+        break
+    }
+
+    require('child_process').exec(execString)
+  }
 }

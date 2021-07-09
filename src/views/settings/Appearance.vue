@@ -259,6 +259,7 @@
 
 <script>
 import color from '@/color'
+import config from '@/config'
 
 import { mapActions, mapState } from 'vuex'
 import Modal from '../../components/Modal.vue'
@@ -391,7 +392,7 @@ export default {
     },
     openInFolder (theme) {
       var pathToOpen = path.join(this.theme.path, theme.path)
-      require('child_process').exec(`start "" "${pathToOpen}"`)
+      config.openPath(pathToOpen)
     },
     openCustomColor () {
       this.customColorOpen = true

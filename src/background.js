@@ -4,8 +4,9 @@ import { app, protocol, BrowserWindow, shell, dialog, clipboard, Menu, MenuItem,
 import path from 'path'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import config from './config'
-import update from './update'
+// import update from './update'
 import AutoLaunch from 'auto-launch'
+import { autoUpdater } from 'electron-updater'
 // import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -28,10 +29,12 @@ protocol.registerSchemesAsPrivileged([
 
 app.commandLine.appendSwitch('disable-site-isolation-trials')
 
-const gotTheLock = app.requestSingleInstanceLock()
+if (!isDevelopment) {
+  const gotTheLock = app.requestSingleInstanceLock()
 
-if (!gotTheLock) {
-  app.quit()
+  if (!gotTheLock) {
+    app.quit()
+  }
 }
 
 var tray
@@ -46,7 +49,7 @@ function createWindow () {
     minHeight: 700,
     minWidth: 900,
     backgroundColor: '#111',
-    icon: isDevelopment ? path.join(process.env.RESOURCES_PATH, 'icon.png') : './icon.ico',
+    icon: path.join(process.env.RESOURCES_PATH, 'icon.png'),
     // transparent: true,
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
@@ -57,8 +60,6 @@ function createWindow () {
       devTools: true
     }
   })
-
-  // win.hide()
 
   function getMenu () {
     const menu = new Menu()
@@ -93,13 +94,13 @@ function createWindow () {
   win.setMenu(getMenu())
 
   // Create Tray Icon
-  tray = new Tray(path.join(process.env.RESOURCES_PATH, 'tray.png'))
+  tray = new Tray(path.join(process.env.RESOURCES_PATH, 'icon.png'))
   tray.setToolTip('BetterLANiS')
   const contextMenu = Menu.buildFromTemplate([
     {
       label: 'BetterLANiS',
       icon: path.join(process.env.RESOURCES_PATH, 'tray.png'),
-      enabled: false
+      click: () => win.show()
     },
     { type: 'separator' },
     {
@@ -194,6 +195,7 @@ function createWindow () {
   return win
 }
 
+// eslint-disable-next-line no-unused-vars
 function createUpdateWindow () {
   const win = new BrowserWindow({
     frame: false,
@@ -201,7 +203,7 @@ function createUpdateWindow () {
     height: 350,
     maximizable: false,
     // resizable: false,
-    icon: isDevelopment ? path.join(process.env.RESOURCES_PATH, 'icon.png') : './icon.ico',
+    icon: path.join(process.env.RESOURCES_PATH, 'icon.png'),
     backgroundColor: '#222',
     webPreferences: {
       nodeIntegration: true,
@@ -257,6 +259,7 @@ app.on('ready', async () => {
     // } catch (e) {
     //   console.error('Vue Devtools failed to install:', e.toString())
     // }
+    process.env.APPIMAGE = path.join(__dirname, `BetterLANiS-${app.getVersion()}.AppImage`)
   } else {
     createProtocol('app')
   }
@@ -293,22 +296,56 @@ app.on('ready', async () => {
   // }
   const updateWindow = createUpdateWindow()
 
-  function startApp () {
+  function startApp (e) {
+    // dialog.showMessageBox(null, {
+    //   message: JSON.stringify(err, null, 2)
+    // })
+    e.reply('setUpdateStatus', 'Starting...')
     createWindow()
     setTimeout(() => updateWindow.close(), 500)
   }
 
-  // if in Development don't update
-  if (isDevelopment && !process.env.IS_TEST) {
-    startApp()
-    return
-  }
+  // // if in Development don't update
+  // if ((isDevelopment && !process.env.IS_TEST) || process.platform !== 'win32') {
+  //   startApp()
+  //   return
+  // }
 
   ipcMain.on('checkForUpdatesAndInstall', (e) => {
-    update.checkForUpdatesAndInstall(
-      status => e.reply('setUpdateStatus', status),
-      startApp
-    )
+    // update.checkForUpdatesAndInstall(
+    //   status => e.reply('setUpdateStatus', status),
+    //   startApp
+    // )
+
+    e.reply('setUpdateStatus', 'Checking for Updates...')
+
+    autoUpdater.setFeedURL({
+      provider: 'github',
+      repo: process.env.BL_REPO_NAME,
+      owner: process.env.BL_REPO_USERNAME,
+      // private: true,
+      requestHeaders: {
+        Authorization: process.env.GITHUB_AUTH
+      }
+    })
+
+    autoUpdater.allowPrerelease = true
+
+    autoUpdater.checkForUpdates()
+      .then(update => {
+        console.log(update)
+        if (update.downloadPromise) {
+          e.reply('setUpdateStatus', 'Downloading(v' + update.updateInfo.version + ')...')
+
+          update.downloadPromise.then(e => {
+            console.log(e)
+            autoUpdater.quitAndInstall()
+          }).catch(() => startApp(e))
+        } else startApp(e)
+        // dialog.showMessageBox(null, {
+        //   message: JSON.stringify(update, null, 2)
+        // })
+      }).catch(() => startApp(e))
   })
 })
 
