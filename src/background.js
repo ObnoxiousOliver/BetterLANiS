@@ -10,9 +10,10 @@ import { autoUpdater } from 'electron-updater'
 // import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
-process.env.BL_REPO_NAME = 'BetterLANiS'
+process.env.BL_REPO_NAME = 'BetterLANiS-testing'
 process.env.BL_REPO_USERNAME = 'ObnoxiousOliver'
-process.env.GITHUB_AUTH = 'Basic KjpnaHBfWkZaOFltczNLOGtwbTBYSHpkQ29pdUFNVVlIeFEyNDRBY3lB'
+// process.env.GITHUB_AUTH = 'Basic KjpnaHBfWkZaOFltczNLOGtwbTBYSHpkQ29pdUFNVVlIeFEyNDRBY3lB'
+process.env.GITHUB_AUTH = 'Basic ' + Buffer.from('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').toString('base64')
 process.env.RESOURCES_PATH = isDevelopment ? 'public/resources' : process.resourcesPath
 
 // Scheme must be registered before the app is ready
@@ -91,7 +92,7 @@ function createWindow () {
     return menuWithDevTools
   }
 
-  win.setMenu(getMenuWithDevTools())
+  win.setMenu(getMenu())
 
   // Create Tray Icon
   tray = new Tray(path.join(process.env.RESOURCES_PATH, 'icon.png'))
@@ -112,7 +113,7 @@ function createWindow () {
   tray.addListener('click', () => win.show())
 
   ipcMain.on('enable-devtools', (e, val) => {
-    win.setMenu(val ? getMenuWithDevTools() : getMenuWithDevTools())
+    win.setMenu(val ? getMenuWithDevTools() : getMenu())
 
     if (!val) win.webContents.closeDevTools()
   })
@@ -324,6 +325,7 @@ app.on('ready', async () => {
       repo: process.env.BL_REPO_NAME,
       owner: process.env.BL_REPO_USERNAME,
       private: true,
+      token: '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',
       requestHeaders: {
         Authorization: process.env.GITHUB_AUTH
       }
