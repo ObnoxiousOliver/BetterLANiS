@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import semver from 'semver'
 import fetch from 'node-fetch'
-import { app, dialog, remote } from 'electron'
+import { app, dialog } from 'electron'
 
 export default {
   checkForUpdatesAndInstall: (setUpdateStatus, startApp) => {
@@ -22,7 +22,7 @@ export default {
             const asset = release.assets.filter(x => x.name.endsWith('.exe'))[0]
 
             if (asset) {
-              const dest = path.join(process.env.TEMP, asset.name)
+              const dest = path.join(app.getPath('temp'), asset.name)
 
               setUpdateStatus('Downloading (v' + release.tag_name + ')...')
 
@@ -42,7 +42,7 @@ export default {
                   res.body.on('end', () => resolve())
                 }))
                 .then(err => {
-                  if (err) dialog.showMessageBox(remote.getCurrentWindow(), { title: 'Error', detail: err })
+                  if (err) dialog.showMessageBox(null, { title: 'Error', detail: err })
                   setUpdateStatus('Installing...')
                   require('child_process').exec(dest)
                   setTimeout(() => {

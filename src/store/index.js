@@ -34,7 +34,7 @@ export default createStore({
       return schools
     },
     appDataPath () {
-      return path.join(remote.process.env.APPDATA, remote.app.getName())
+      return path.join(remote.app.getPath('userData'))
     }
   },
   modules: {
