@@ -2,6 +2,8 @@
 
 import { app, protocol, BrowserWindow, shell, dialog, clipboard, Menu, MenuItem, ipcMain, Tray } from 'electron'
 import path from 'path'
+import fs from 'fs'
+import fetch from 'node-fetch'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import config from './config'
 // import update from './update'
@@ -11,6 +13,7 @@ import { autoUpdater } from 'electron-updater'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 process.env.BL_REPO_NAME = 'BetterLANiS'
+process.env.BL_THEMES_REPO_NAME = 'BetterLANiS-themes'
 process.env.BL_REPO_USERNAME = 'ObnoxiousOliver'
 process.env.GITHUB_AUTH = 'Basic KjpnaHBfWkZaOFltczNLOGtwbTBYSHpkQ29pdUFNVVlIeFEyNDRBY3lB'
 process.env.RESOURCES_PATH = isDevelopment ? 'public/resources' : process.resourcesPath
@@ -29,20 +32,14 @@ protocol.registerSchemesAsPrivileged([
 
 app.commandLine.appendSwitch('disable-site-isolation-trials')
 
-if (!isDevelopment) {
-  const gotTheLock = app.requestSingleInstanceLock()
-
-  if (!gotTheLock) {
-    app.quit()
-  }
-}
+const gotTheLock = app.requestSingleInstanceLock()
 
 var tray
 
 function createWindow () {
   // Create the browser window.
   const win = new BrowserWindow({
-    title: 'BetterLANiS',
+    title: 'Better LANiS',
     frame: false,
     height: 850,
     width: 900,
@@ -95,10 +92,10 @@ function createWindow () {
 
   // Create Tray Icon
   tray = new Tray(path.join(process.env.RESOURCES_PATH, 'icon.png'))
-  tray.setToolTip('BetterLANiS')
+  tray.setToolTip('Better LANiS')
   const contextMenu = Menu.buildFromTemplate([
     {
-      label: 'BetterLANiS',
+      label: 'Better LANiS',
       icon: path.join(process.env.RESOURCES_PATH, 'tray.png'),
       click: () => win.show()
     },
@@ -138,6 +135,7 @@ function createWindow () {
 
     configData.maximized = win.isMaximized()
     config.set(configData, data => {
+      // Close Window if minimize in tray is disabled
       if (data.disableMinimizeInTray) {
         win.destroy()
       }
@@ -175,6 +173,16 @@ function createWindow () {
     })
   })
   // #endregion
+
+  // remove x-frame-options from response headers
+  win.webContents.session.webRequest.onHeadersReceived({ urls: [] }, (details, callback) => {
+    if (details.responseHeaders['x-frame-options']) {
+      delete details.responseHeaders['x-frame-options']
+    }
+
+    var cbValue = { cancel: false, responseHeaders: details.responseHeaders }
+    callback(cbValue)
+  })
 
   app.on('second-instance', (event, commandLine, workingDirectory) => {
     // Someone tried to run a second instance, we should focus our window.
@@ -261,13 +269,18 @@ app.on('ready', async () => {
     // }
     process.env.APPIMAGE = path.join(__dirname, `BetterLANiS-${app.getVersion()}.AppImage`)
   } else {
+    if (!gotTheLock) {
+      app.quit()
+      return
+    }
+
     createProtocol('app')
   }
 
   // Set Auto Start
   if (!isDevelopment) {
     var autoLaunch = new AutoLaunch({
-      name: 'BetterLANiS',
+      name: 'Better LANiS',
       path: app.getPath('exe')
     })
     config.get(data => {
@@ -333,7 +346,7 @@ app.on('ready', async () => {
 
     autoUpdater.checkForUpdates()
       .then(update => {
-        console.log(update)
+        // console.log(update)
         if (update.downloadPromise) {
           e.reply('setUpdateStatus', 'Downloading(v' + update.updateInfo.version + ')...')
 
@@ -347,6 +360,35 @@ app.on('ready', async () => {
         // })
       }).catch(() => startApp(e))
   })
+})
+
+ipcMain.on('downloadFile', (e, url, dest) => {
+  fetch(url, {
+    headers: {
+      Authorization: process.env.GITHUB_AUTH,
+      Accept: 'application/octet-stream'
+    }
+  })
+    .then(res => new Promise((resolve, reject) => {
+      var ws = fs.createWriteStream(dest)
+      res.body.pipe(ws)
+
+      var downloaded = 0
+      var contentLength = res.headers.get('content-length')
+
+      res.body.on('data', (data) => {
+        downloaded += data.length
+
+        e.reply('downloadFileStatus', {
+          progress: downloaded / contentLength
+        })
+      })
+
+      ws.on('error', reject)
+
+      res.body.on('end', () => resolve())
+    }))
+    .then(err => e.reply('downloadFileFinished', err))
 })
 
 // Exit cleanly on request from parent process in development mode.

@@ -24,6 +24,7 @@
       </transition>
       <transition name="settingswindow">
         <Settings
+          @openSettings="openSettings"
           :page="settingsPage"
           v-if="showSettings"
         />
@@ -60,6 +61,16 @@
       </template>
       <NewsRenderer :version="remote.app.getVersion()" :repo="repo" />
     </Modal>
+
+    <!-- secret-9aj2 -->
+    <transition name="secret-9aj2">
+      <div
+        v-if="this['secret-9aj2']"
+        class="secret-9aj2"
+        ref="secret-9aj2-el">
+        <h1 class="secret-9aj2-content">Alt F4</h1>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -100,7 +111,8 @@ export default {
     showSettings: false,
     settingsPage: '',
     page: 'Login',
-    showNews: false
+    showNews: false,
+    'secret-9aj2': false
   }),
   computed: {
     ...mapState([
@@ -179,6 +191,28 @@ export default {
       if (remote.getCurrentWebContents().isDevToolsOpened) { this.devToolsWarning() }
       remote.getCurrentWebContents().on('devtools-focused', () => this.devToolsWarning())
     }
+
+    // secret-9aj2
+    window.addEventListener('keydown', e => {
+      if (e.altKey && e.key === 'F4') {
+        e.preventDefault()
+
+        if (!this['secret-9aj2']) {
+          this['secret-9aj2'] = true
+
+          setTimeout(() => {
+            const compStyle = window.getComputedStyle(this.$refs['secret-9aj2-el'])
+            const dur = compStyle.transitionDuration
+
+            var animationTime = parseFloat(dur) * (dur.endsWith('s') ? 1000 : dur.endsWith('ms') ? 1 : 0)
+            setTimeout(() => {
+              this['secret-9aj2'] = false
+              remote.getCurrentWindow().close()
+            }, animationTime)
+          })
+        }
+      }
+    })
   }
 }
 </script>

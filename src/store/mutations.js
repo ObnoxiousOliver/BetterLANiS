@@ -86,5 +86,15 @@ export default {
     state.apps.history = state.apps.history.reverse()
     state.apps.history = state.apps.history.slice(0, 7)
     state.apps.history = state.apps.history.reverse()
+  },
+  setThemeLibary (state, payload) {
+    state.theme.themeLibary = payload
+  },
+  secret (state, payload) {
+    if (state.secret.includes(payload)) {
+      state.secret.splice(state.secret.indexOf(payload), 1)
+    } else {
+      state.secret.push(payload)
+    }
   }
 }

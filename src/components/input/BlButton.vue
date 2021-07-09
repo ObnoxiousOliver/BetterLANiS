@@ -8,9 +8,10 @@
       variant ? ' btn-' + variant.split(' ').join(' btn-') : ''
     ]"
   >
-    <div class="btn__content">
+    <div class="btn-content">
       <slot />
     </div>
+    <slot name="badge" />
   </router-link>
   <button
     v-else
@@ -20,9 +21,10 @@
       variant ? ' btn-' + variant.split(' ').join(' btn-') : ''
     ]"
   >
-    <div class="btn__content">
+    <div class="btn-content">
       <slot />
     </div>
+    <slot name="badge" />
   </button>
 </template>
 

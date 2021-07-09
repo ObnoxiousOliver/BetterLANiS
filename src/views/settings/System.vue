@@ -8,16 +8,16 @@
           <div class="input-container">
             <div  class="input-label">
               <label for="autostart">
-                BetterLANiS starten
+                Better LANiS starten
               </label>
-              <span class="secondary">Starte BetterLANiS automatisch beim start deines Computers.</span>
+              <span class="secondary">Starte Better LANiS automatisch beim start deines Computers.</span>
             </div>
             <input type="checkbox" class="input-toggle" id="autostart" v-model="autoStart">
           </div>
           <div class="input-container">
             <div  class="input-label">
               <label for="minimize">In Symbolleiste minimieren</label>
-              <span class="secondary">Beim Klicken auf das X nur das Fenster schließen. BetterLANiS läuft dann in der Sysbolleiste weiter.</span>
+              <span class="secondary">Beim Klicken auf das X nur das Fenster schließen. Better LANiS läuft dann in der Sysbolleiste weiter.</span>
             </div>
             <input type="checkbox" class="input-toggle" id="minimize" v-model="minimizeInTray">
           </div>

@@ -2,7 +2,7 @@
   <div class="settings-view-component">
     <div class="settings-page">
       <transition name="settings-page" mode="out-in">
-        <component :is="page" />
+        <component :is="page" @openSettings="openSettings" />
       </transition>
     </div>
   </div>
@@ -10,6 +10,7 @@
 
 <script>
 import Appearance from './settings/Appearance'
+import ThemeLibary from './settings/ThemesLibary'
 import Accessibility from './settings/Accessibility'
 import System from './settings/System'
 
@@ -17,11 +18,17 @@ export default {
   name: 'Settings',
   components: {
     Appearance,
+    ThemeLibary,
     Accessibility,
     System
   },
   props: {
     page: String
+  },
+  methods: {
+    openSettings (page) {
+      this.$emit('openSettings', page)
+    }
   }
 }
 </script>

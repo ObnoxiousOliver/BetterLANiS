@@ -42,11 +42,6 @@
     border: $warning solid 2px;
   }
 
-  &.notification-success {
-    background: $success;
-    color: $success-foreground;
-  }
-
   &.notifications-list {
     &-leave-active {
       clip-path: inset(0);

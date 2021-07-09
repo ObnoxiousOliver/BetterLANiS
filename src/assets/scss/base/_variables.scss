@@ -7,6 +7,7 @@ $red: var(--red);
 $green: var(--green);
 $blue: var(--blue);
 $yellow: var(--yellow);
+$diamond: var(--diamond);
 
 $primary-background: var(--primary-background);
 $secondary-background: var(--secondary-background);
@@ -32,10 +33,6 @@ $error: var(--error);
 $error-background: var(--error-background);
 $error-foreground: var(--error-foreground);
 
-$success: var(--success);
-$success-background: var(--success-background);
-$success-foreground: var(--success-foreground);
-
 $button: var(--button);
 $button-foreground: var(--button-foreground);
 $button-highlight: var(--button-highlight);
@@ -59,6 +56,7 @@ $header-font: var(--header-font);
   --green: #6f6;
   --blue: #35f;
   --yellow: #fc3;
+  --diamond: #75dfff;
 
   --primary-background: #222;
   --secondary-background: #171717;

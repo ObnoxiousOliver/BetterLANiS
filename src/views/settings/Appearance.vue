@@ -1,7 +1,7 @@
 <template>
   <div class="setting-appearance-view-component scroll y auto">
     <div class="wrapper" ref="wrapper">
-      <h1 class="setting-page-header"><i class="fas fa-swatchbook" /> Erscheinungsbild</h1>
+      <h1 class="setting-page-header"><i class="fas fa-eye" /> Erscheinungsbild</h1>
 
       <!-- Accent Color -->
       <div class="option-container">
@@ -62,13 +62,6 @@
               variant="transparent small"
             >
               <i class="far fa-folder" /> Themen-Ordner öffnen
-            </bl-button>
-            <bl-button
-              @click="getThemes"
-              class="refresh-btn"
-              variant="transparent small"
-            >
-              <i class="fa fa-sync" /> Neu laden
             </bl-button>
           </div>
           <div class="theme-select">
@@ -141,15 +134,29 @@
                   <i class="far fa-folder" /> Im Themen-Ordner öffnen
                 </button>
               </context-menu>
-              <ThemeItem
-                class="default-theme"
-                :theme="{
-                  name: 'Standart Thema',
-                  description: 'Das dunkle Design von Better LANiS'
-                }"
-                :original="true"
-                :noArrow="true"
-              />
+              <transition name="secret-4b34" mode="out-in">
+                <ThemeItem
+                  v-if="!defaultThemeSecretActive"
+                  @click="defaultThemeClick"
+                  class="default-theme"
+                  :theme="{
+                    name: 'Standart Thema',
+                    description: 'Das dunkle Design von Better LANiS'
+                  }"
+                  :original="true"
+                  :noArrow="true"
+                />
+                <ThemeItem
+                  v-else
+                  @click="defaultThemeClick"
+                  class="secret-4b34-theme"
+                  :theme="{
+                    name: '???',
+                    description: '???'
+                  }"
+                  :noArrow="true"
+                />
+              </transition>
             </div>
           </div>
         </div>
@@ -268,6 +275,9 @@ import ThemeItem from '../../components/settings/ThemeItem.vue'
 
 const fs = require('fs')
 const path = require('path')
+const chokidar = require('chokidar')
+
+var watcher
 
 export default {
   name: 'Appearance',
@@ -282,11 +292,14 @@ export default {
     selectedAvailableTheme: undefined,
     selectedAccentColor: undefined,
     accentColorsOpen: false,
-    customColorOpen: false
+    customColorOpen: false,
+    defaultThemeClickCount: 0,
+    defaultThemeClickTimeout: undefined
   }),
   computed: {
     ...mapState([
-      'theme'
+      'theme',
+      'secret'
     ]),
     currentThemes () {
       var using = [...this.theme.using]
@@ -312,10 +325,23 @@ export default {
     },
     color () {
       return color
+    },
+    defaultThemeSecretActive () {
+      return this.secret.includes('4b34')
     }
   },
   mounted () {
-    this.getThemes()
+    watcher = chokidar.watch(this.theme.path, {
+      ignored: /^\./,
+      persistent: true
+    })
+
+    watcher.on('add', (e) => { this.getThemes() })
+    watcher.on('unlink', (e) => { this.getThemes() })
+  },
+  unmounted () {
+    watcher.unwatch(this.theme.path)
+    watcher.close()
   },
   methods: {
     ...mapActions([
@@ -325,7 +351,8 @@ export default {
       'setAccentColor',
       'saveAccentColor',
       'removeAccentColor',
-      'notify'
+      'notify',
+      'addSecret'
     ]),
     saveAccentColorClick () {
       var hex = this.$refs.accentColorPicker.hex
@@ -364,6 +391,7 @@ export default {
           })
           this.themes.push({
             name: theme,
+            path: theme,
             description: 'Keine "manifest.json" Datei gefunden',
             notUsable: true
           })
@@ -406,6 +434,20 @@ export default {
 
       this.setAccentColor(hex)
       this.customColorOpen = false
+    },
+    defaultThemeClick () {
+      clearTimeout(this.defaultThemeClickTimeout)
+
+      this.defaultThemeClickCount++
+
+      this.defaultThemeClickTimeout = setTimeout(() => {
+        this.defaultThemeClickCount = 0
+      }, 5000)
+      if (this.defaultThemeClickCount > 10) {
+        // TRIGGER
+        this.defaultThemeClickCount = 0
+        this.addSecret('4b34')
+      }
     }
   }
 }
