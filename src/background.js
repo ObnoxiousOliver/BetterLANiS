@@ -49,7 +49,7 @@ function createWindow () {
     minHeight: 700,
     minWidth: 900,
     backgroundColor: '#111',
-    icon: isDevelopment ? path.join(process.env.RESOURCES_PATH, 'icon.png') : './icon.png',
+    icon: path.join(process.env.RESOURCES_PATH, 'icon.png'),
     // transparent: true,
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
@@ -203,7 +203,7 @@ function createUpdateWindow () {
     height: 350,
     maximizable: false,
     // resizable: false,
-    icon: isDevelopment ? path.join(process.env.RESOURCES_PATH, 'icon.png') : './icon.png',
+    icon: path.join(process.env.RESOURCES_PATH, 'icon.png'),
     backgroundColor: '#222',
     webPreferences: {
       nodeIntegration: true,
