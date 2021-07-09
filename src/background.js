@@ -32,20 +32,14 @@ protocol.registerSchemesAsPrivileged([
 
 app.commandLine.appendSwitch('disable-site-isolation-trials')
 
-if (!isDevelopment) {
-  const gotTheLock = app.requestSingleInstanceLock()
-
-  if (!gotTheLock) {
-    app.quit()
-  }
-}
+const gotTheLock = app.requestSingleInstanceLock()
 
 var tray
 
 function createWindow () {
   // Create the browser window.
   const win = new BrowserWindow({
-    title: 'BetterLANiS',
+    title: 'Better LANiS',
     frame: false,
     height: 850,
     width: 900,
@@ -98,10 +92,10 @@ function createWindow () {
 
   // Create Tray Icon
   tray = new Tray(path.join(process.env.RESOURCES_PATH, 'icon.png'))
-  tray.setToolTip('BetterLANiS')
+  tray.setToolTip('Better LANiS')
   const contextMenu = Menu.buildFromTemplate([
     {
-      label: 'BetterLANiS',
+      label: 'Better LANiS',
       icon: path.join(process.env.RESOURCES_PATH, 'tray.png'),
       click: () => win.show()
     },
@@ -265,11 +259,6 @@ app.on('activate', () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', async () => {
-  if (!gotTheLock) {
-    app.quit()
-    return
-  }
-
   if (isDevelopment && !process.env.IS_TEST) {
     // Install Vue Devtools
     // ===> Don't install because Vue Devtools don't support Vue3
@@ -280,13 +269,18 @@ app.on('ready', async () => {
     // }
     process.env.APPIMAGE = path.join(__dirname, `BetterLANiS-${app.getVersion()}.AppImage`)
   } else {
+    if (!gotTheLock) {
+      app.quit()
+      return
+    }
+
     createProtocol('app')
   }
 
   // Set Auto Start
   if (!isDevelopment) {
     var autoLaunch = new AutoLaunch({
-      name: 'BetterLANiS',
+      name: 'Better LANiS',
       path: app.getPath('exe')
     })
     config.get(data => {
@@ -352,7 +346,7 @@ app.on('ready', async () => {
 
     autoUpdater.checkForUpdates()
       .then(update => {
-        console.log(update)
+        // console.log(update)
         if (update.downloadPromise) {
           e.reply('setUpdateStatus', 'Downloading(v' + update.updateInfo.version + ')...')
 
