@@ -13,7 +13,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 process.env.BL_REPO_NAME = 'BetterLANiS-testing'
 process.env.BL_REPO_USERNAME = 'ObnoxiousOliver'
 // process.env.GITHUB_AUTH = 'Basic KjpnaHBfWkZaOFltczNLOGtwbTBYSHpkQ29pdUFNVVlIeFEyNDRBY3lB'
-process.env.GITHUB_AUTH = 'Basic ' + Buffer.from('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').toString('base64')
+process.env.GITHUB_AUTH = 'Basic Z2hwX2lCMUdmRFVkaldjQnBIYW92Qlh3RFBreUpOUEV5RzBEU0NXRw=='
 process.env.RESOURCES_PATH = isDevelopment ? 'public/resources' : process.resourcesPath
 
 // Scheme must be registered before the app is ready
@@ -325,7 +325,7 @@ app.on('ready', async () => {
       repo: process.env.BL_REPO_NAME,
       owner: process.env.BL_REPO_USERNAME,
       private: true,
-      token: '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',
+      token: Buffer.from('Z2hwX2lCMUdmRFVkaldjQnBIYW92Qlh3RFBreUpOUEV5RzBEU0NXRw==', 'base64'),
       requestHeaders: {
         Authorization: process.env.GITHUB_AUTH
       }
