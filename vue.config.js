@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 module.exports = {
   pluginOptions: {
     electronBuilder: {
@@ -9,7 +10,13 @@ module.exports = {
             to: 'resources',
             filter: '**/*'
           }
-        ]
+        ],
+        win: {
+          artifactName: 'Better-LANiS-Setup-${version}.${ext}'
+        },
+        linux: {
+          artifactName: 'Better-LANiS.${ext}'
+        }
       }
     },
     i18n: {
@@ -19,7 +26,7 @@ module.exports = {
       enableLegacy: false,
       runtimeOnly: false,
       compositionOnly: false,
-      fullInstall: true
+      fullInstall: false
     }
   }
 }

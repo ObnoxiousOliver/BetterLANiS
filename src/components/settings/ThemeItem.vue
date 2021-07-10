@@ -31,12 +31,9 @@
         </div>
       </div>
       <div class="theme-details">
-        <span v-if="theme.version" class="theme-version">
-          v{{ theme.version }}
-        </span>
-        <span v-if="theme.author" class="theme-author">
-          by {{ theme.author }}
-        </span>
+        <span v-if="theme.version" class="theme-version">v{{ theme.version }}</span>
+        <span v-if="theme.author" class="theme-author"> by {{ theme.author }}</span>
+        <span v-if="theme.authors" class="theme-author"><span v-if="theme.author">, </span>{{ theme.authors.join(', ') }}</span>
       </div>
       <div v-if="theme.description" class="theme-description">
         {{ theme.description }}
