@@ -1,3 +1,4 @@
+import json5 from 'json5'
 import moment from 'moment'
 
 const BASE_ADDRESS = 'https://start.schulportal.hessen.de/'
@@ -109,20 +110,25 @@ export default {
         route: '/calendar',
         icon: 'bi-calendar2-week-fill',
         getData (link, callback) {
-          // fetch(BASE_ADDRESS + link)
-          //   .then(res => res.text())
-          //   .then(data => {
-          //     const parser = new DOMParser()
-          //     const doc = parser.parseFromString(data, 'text/html')
-          //     const script = doc.querySelector('#content > script:nth-child(9):not(src)').text
+          fetch(BASE_ADDRESS + link)
+            .then(res => res.text())
+            .then(data => {
+              const parser = new DOMParser()
+              const doc = parser.parseFromString(data, 'text/html')
+              const script = doc.querySelector('#content > script:nth-child(9):not(src)').text
 
-          //     var categories = script.split(';')
-          //       .filter(x => x.trim().startsWith('categories.push'))
-          //       .map(x => x.substring(x.indexOf('(') + 1, x.indexOf(')')))
+              var categories = {}
 
-          //     callback(categories)
-          //   })
-          callback(link)
+              script.split(';')
+                .filter(x => x.trim().startsWith('categories.push'))
+                .map(x => x.substring(x.indexOf('(') + 1, x.indexOf(')')))
+                .map(x => json5.parse(x))
+                .forEach(x => { categories[x.id] = x })
+
+              var ret = { categories }
+              callback(ret)
+            })
+          // callback(link)
         },
         getMonth (dateString, callback) {
           var startEndD = moment(dateString)

@@ -4,8 +4,28 @@
   height: 100%;
   width: 100%;
 
+  .season-icon {
+    font-size: 0.7em;
+    vertical-align: 0.15em;
+
+    &.season {
+      &-spring {
+        color: #78c255;
+      }
+      &-summer {
+        color: #ffb81f;
+      }
+      &-fall {
+        color: #a06353;
+      }
+      &-winter {
+        color: #5fdfff;
+      }
+    }
+  }
+
   .calendar-controls {
-    margin-bottom: 10px;
+    margin: 10px 0;
     display: flex;
 
     .date-info {
@@ -30,244 +50,292 @@
     }
   }
 
+  .calendar-panel {
+    margin: 10px 0;
+    
+    .panel-controls {
+      display: flex;
+      gap: 5px;
+
+      .event-search {
+        flex: 1 0 auto;
+      }
+      
+      .category-dropdown {
+        display: inline-block;
+        min-width: 250px;
+        width: 30%;
+      }
+    }
+  }
+
   // ### CALENDAR ### //
   /* Month View */
-  .calendar.month-view {
-    $header-height: 40px;
-
-    background: $muted-foreground;
+  .calendar {
+    float: right;
     display: grid;
     width: 100%;
-    padding: 1px;
-    grid-template-rows: $header-height 1fr;
-    gap: 1px;
-
-    .calendar-row .row-header,
-    .calendar-row .row-skeleton,
-    .events {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
+    height: fit-content;
+    
+    &.month-view {
+      border-radius: 5px;
+      padding: 1px;
+      background: $muted-foreground;
+      $header-height: 40px;
+      grid-template-rows: $header-height 1fr;
       gap: 1px;
-    }
 
-    .calendar-header {
-      display: grid;
-      grid-template-columns: 50px repeat(7, 1fr);
-      grid-row: 1;
-      gap: 1px;
-    }
-
-    .calendar-header .cell {
-      text-align: center;
-      font: 700 1.1rem $header-font;
-      line-height: $header-height;
-      padding: 0 5px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .calendar-row {
-      display: grid;
-      grid-template-rows: auto auto 1fr;
-      grid-template-columns: 50px 1fr;
-      min-height: 98px;
-      gap: 0 1px;
-
-      .row-week {
-        grid-column: 1;
-        grid-row: 1 / -1;
-        text-align: center;
-        padding: 10px 0;
-        font: 300 1.5rem $header-font;
-  
-        span {
-          writing-mode: vertical-lr;
-          transform: rotate(180deg);
-        }
+      .calendar-row .row-header,
+      .calendar-row .row-skeleton,
+      .events {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 1px;
       }
 
-      .row-header {
-        z-index: 1;
+      .calendar-header {
+        display: grid;
+        grid-template-columns: 50px repeat(7, 1fr);
         grid-row: 1;
-        grid-column: 2 / -1;
-        pointer-events: none;
+        gap: 1px;
+        border-radius: 4px 4px 0 0;
+        overflow: hidden;
+      }
+
+      .calendar-header .cell {
         text-align: center;
+        font: 700 1.1rem $header-font;
+        line-height: $header-height;
+        padding: 0 5px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
 
-        .cell {
-          padding: 5px 0;
-          background-color: unset;
+      .calendar-row {
+        display: grid;
+        grid-template-rows: auto auto 1fr;
+        grid-template-columns: 50px 1fr;
+        min-height: 98px;
+        gap: 0 1px;
 
-          &.is-today {
-            position: relative;
+        &:last-child .row-skeleton {
+          overflow: hidden;
+          border-radius: 0 0 4px 0;
+        }
+        &:last-child .row-week {
+          overflow: hidden;
+          border-radius: 0 0 0 4px;
+        }
 
-            &::after {
-              content: "";
-              position: absolute;
-              top: 0;
-              left: 10%;
-              right: 10%;
-              height: 4px;
-              background-color: $accent;
+        .row-week {
+          grid-column: 1;
+          grid-row: 1 / -1;
+          text-align: center;
+          padding: 10px 0;
+          font: 300 1.5rem $header-font;
+    
+          span {
+            writing-mode: vertical-lr;
+            transform: rotate(180deg);
+          }
+        }
+
+        .row-header {
+          z-index: 1;
+          grid-row: 1;
+          grid-column: 2 / -1;
+          pointer-events: none;
+          text-align: center;
+
+          .cell {
+            padding: 5px 0;
+            background-color: unset;
+
+            &.is-today {
+              position: relative;
+
+              &::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 10%;
+                right: 10%;
+                height: 4px;
+                background-color: $accent;
+              }
+            }
+
+            &.not-this-month {
+              color: $secondary-foreground;
             }
           }
+        }
 
-          &.not-this-month {
-            color: $secondary-foreground;
+        .row-skeleton {
+          grid-row: 1 / -1;
+          grid-column: 2 / -1;
+
+          .cell {
+            div {
+              height: 100%;
+              transition: all 0.1s;
+            }
+            &:hover div {
+              background-color: $background-modifier-hover;
+            }
+            &.is-today div {
+              background-color: $background-modifier-selected;
+            }
+            &.is-today:hover div {
+              background-color: $background-modifier-active;
+            }
           }
         }
       }
 
-      .row-skeleton {
-        grid-row: 1 / -1;
+      .cell {
+        background-color: $tertiary-background;
+      }
+
+      .events {
+        grid-row: 2;
         grid-column: 2 / -1;
+        gap: 2px 3px;
+        padding: 1px;
+        pointer-events: none;
 
-        .cell {
-          div {
-            height: 100%;
-            transition: all 0.1s;
-          }
-          &:hover div {
-            background-color: $background-modifier-hover;
-          }
-          &.is-today div {
-            background-color: $background-modifier-selected;
-          }
-          &.is-today:hover div {
-            background-color: $background-modifier-active;
-          }
-        }
-      }
-    }
-
-    .cell {
-      background-color: $tertiary-background;
-    }
-
-    .events {
-      grid-row: 2;
-      grid-column: 2 / -1;
-      gap: 2px 3px;
-      padding: 1px;
-      pointer-events: none;
-
-      .event {
-        position: relative;
-        pointer-events: all;
-        background-color: $accent;
-        color: $accent-foreground;
-        border-radius: 3px;
-        height: 30px;
-        line-height: 30px;
-        cursor: pointer;
-        transition-property: background-color, border-color, color;
-        transition-duration: 0.2s;
-        transition-timing-function: ease-in-out;
-
-        div {
-          padding: 0 10px;
-          position: absolute;
-          inset: 0;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-
-        &.active {
-          background-color: $button-highlight;
-          color: $button-highlight-foreground;
-        }
-
-        &.no-start {
-          border-left-width: 0;
-          border-radius: 0 3px 3px 0;
-          margin-left: -10px;
+        .event {
+          position: relative;
+          pointer-events: all;
+          background-color: $accent;
+          color: $accent-foreground;
+          border-radius: 3px;
+          border: transparent solid 2px;
+          height: 30px;
+          line-height: 26px;
+          cursor: pointer;
+          transition-property: background-color, border, color;
+          transition-duration: 0.15s;
+          transition-timing-function: ease-in-out;
 
           div {
-            left: 10px;
-          }
-
-          &::before {
-            content: '';
+            padding: 0 10px;
             position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            width: 30px;
-            background: $tertiary-background;
-            mask-image: linear-gradient(
-              to left,
-              hsla(0, 0%, 0%, 0) 0%,
-              hsla(0, 0%, 0%, 0.013) 8.1%,
-              hsla(0, 0%, 0%, 0.049) 15.5%,
-              hsla(0, 0%, 0%, 0.104) 22.5%,
-              hsla(0, 0%, 0%, 0.175) 29%,
-              hsla(0, 0%, 0%, 0.259) 35.3%,
-              hsla(0, 0%, 0%, 0.352) 41.2%,
-              hsla(0, 0%, 0%, 0.45) 47.1%,
-              hsla(0, 0%, 0%, 0.55) 52.9%,
-              hsla(0, 0%, 0%, 0.648) 58.8%,
-              hsla(0, 0%, 0%, 0.741) 64.7%,
-              hsla(0, 0%, 0%, 0.825) 71%,
-              hsla(0, 0%, 0%, 0.896) 77.5%,
-              hsla(0, 0%, 0%, 0.951) 84.5%,
-              hsla(0, 0%, 0%, 0.987) 91.9%,
-              hsl(0, 0%, 0%) 100%
-            );
-          }
-        }
-        &.no-end {
-          border-right-width: 0;
-          border-radius: 3px 0 0 3px;
-          margin-right: -10px;
-
-          div {
-            right: 10px;
+            inset: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
 
-          &::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            width: 30px;
-            background: $tertiary-background;
-            mask-image: linear-gradient(
-              to right,
-              hsla(0, 0%, 0%, 0) 0%,
-              hsla(0, 0%, 0%, 0.013) 8.1%,
-              hsla(0, 0%, 0%, 0.049) 15.5%,
-              hsla(0, 0%, 0%, 0.104) 22.5%,
-              hsla(0, 0%, 0%, 0.175) 29%,
-              hsla(0, 0%, 0%, 0.259) 35.3%,
-              hsla(0, 0%, 0%, 0.352) 41.2%,
-              hsla(0, 0%, 0%, 0.45) 47.1%,
-              hsla(0, 0%, 0%, 0.55) 52.9%,
-              hsla(0, 0%, 0%, 0.648) 58.8%,
-              hsla(0, 0%, 0%, 0.741) 64.7%,
-              hsla(0, 0%, 0%, 0.825) 71%,
-              hsla(0, 0%, 0%, 0.896) 77.5%,
-              hsla(0, 0%, 0%, 0.951) 84.5%,
-              hsla(0, 0%, 0%, 0.987) 91.9%,
-              hsl(0, 0%, 0%) 100%
-            );
+          &.active {
+            color: $button-highlight-foreground !important;
+            background-color: $button-highlight !important;
           }
-        }
-        &.no-end.no-start {
-          border-radius: 0;
+
+          &:focus-visible {
+            border-color: currentColor;
+            outline: none;
+          }
+
+          &.no-start {
+            border-left-width: 0;
+            border-radius: 0 3px 3px 0;
+            margin-left: -10px;
+
+            div {
+              left: 10px;
+            }
+
+            &::before {
+              content: '';
+              position: absolute;
+              inset: -2px auto -2px 0;
+              width: 30px;
+              background: $tertiary-background;
+              mask-image: linear-gradient(
+                to left,
+                hsla(0, 0%, 0%, 0) 0%,
+                hsla(0, 0%, 0%, 0.013) 8.1%,
+                hsla(0, 0%, 0%, 0.049) 15.5%,
+                hsla(0, 0%, 0%, 0.104) 22.5%,
+                hsla(0, 0%, 0%, 0.175) 29%,
+                hsla(0, 0%, 0%, 0.259) 35.3%,
+                hsla(0, 0%, 0%, 0.352) 41.2%,
+                hsla(0, 0%, 0%, 0.45) 47.1%,
+                hsla(0, 0%, 0%, 0.55) 52.9%,
+                hsla(0, 0%, 0%, 0.648) 58.8%,
+                hsla(0, 0%, 0%, 0.741) 64.7%,
+                hsla(0, 0%, 0%, 0.825) 71%,
+                hsla(0, 0%, 0%, 0.896) 77.5%,
+                hsla(0, 0%, 0%, 0.951) 84.5%,
+                hsla(0, 0%, 0%, 0.987) 91.9%,
+                hsl(0, 0%, 0%) 100%
+              );
+            }
+          }
+          &.no-end {
+            border-right-width: 0;
+            border-radius: 3px 0 0 3px;
+            margin-right: -10px;
+
+            div {
+              right: 10px;
+            }
+
+            &::after {
+              content: '';
+              position: absolute;
+              inset: -2px 0 -2px auto;
+              width: 30px;
+              background: $tertiary-background;
+              mask-image: linear-gradient(
+                to right,
+                hsla(0, 0%, 0%, 0) 0%,
+                hsla(0, 0%, 0%, 0.013) 8.1%,
+                hsla(0, 0%, 0%, 0.049) 15.5%,
+                hsla(0, 0%, 0%, 0.104) 22.5%,
+                hsla(0, 0%, 0%, 0.175) 29%,
+                hsla(0, 0%, 0%, 0.259) 35.3%,
+                hsla(0, 0%, 0%, 0.352) 41.2%,
+                hsla(0, 0%, 0%, 0.45) 47.1%,
+                hsla(0, 0%, 0%, 0.55) 52.9%,
+                hsla(0, 0%, 0%, 0.648) 58.8%,
+                hsla(0, 0%, 0%, 0.741) 64.7%,
+                hsla(0, 0%, 0%, 0.825) 71%,
+                hsla(0, 0%, 0%, 0.896) 77.5%,
+                hsla(0, 0%, 0%, 0.951) 84.5%,
+                hsla(0, 0%, 0%, 0.987) 91.9%,
+                hsl(0, 0%, 0%) 100%
+              );
+            }
+          }
+          &.no-end.no-start {
+            border-radius: 0;
+          }
         }
       }
     }
   }
 
-  .event-details {
-    .event-description, .event-no-description {
-      margin-bottom: 10px;
-      font-size: 1.1rem;
+  .selected-event-modal {
+    .modal-header {
+      padding: 0;
     }
-    .event-no-description {
-      color: $muted-foreground;
-      font-style: italic;
+    
+    .event-header {
+      padding: 15px 20px 15px 30px;
+      height: 100%;
+    }
+
+    .event-details {
+      .event-description, .event-no-description {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+      }
+      .event-no-description {
+        color: $muted-foreground;
+        font-style: italic;
+      }
     }
   }
 }

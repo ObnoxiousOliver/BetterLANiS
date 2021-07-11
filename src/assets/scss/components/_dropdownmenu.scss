@@ -1,0 +1,118 @@
+/* Dropdown Menu */
+
+.dropdown-menu-component {
+  position: relative;
+
+  .dropdown-btn {
+    position: relative;
+    @include buttonReset;
+    display: flex;
+    width: 100%;
+    background-color: $button;
+    color: $button-foreground;
+    border: 2px solid transparent;
+    padding: 0.5rem 1rem 0.5rem 0;
+    border-radius: 3px;
+    letter-spacing: 0.1em;
+    transition: 0.1s ease-in-out;
+
+    &:hover {
+      background-color: $button-highlight;
+      color: $button-highlight-foreground;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+    }
+
+    &:focus-visible {
+      outline: none;
+      border-color: $accent;
+    }
+
+    .dropdown-content {
+      flex: 1 1 auto;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 0 0 0 1rem;
+    }
+
+    .dropdown-arrow {
+      transition: transform 0.2s;
+    }
+
+    &.is-open {
+      z-index: 11;
+      background: $accent;
+      color: $accent-foreground;
+      box-shadow: $elevation-low;
+
+      &:hover {
+        background-color: $accent-foreground;
+        color: $accent;
+      }
+
+      &:focus-visible {
+        border-color: $accent-foreground;
+      }
+
+      border-radius: 3px 3px 0 0;
+
+      .dropdown-arrow {
+        transform: rotate(180deg);
+      }
+    }
+  }
+  
+  .dropdown {
+    position: absolute;
+    z-index: 10;
+    top: 100%;
+    background: $popup-background;
+    color: $popup-foreground;
+    min-width: 150px;
+    max-height: 30vh;
+    width: 100%;
+    padding: 10px 0;
+    border-radius: 0 0 5px 5px;
+    box-shadow: $elevation-medium;
+
+    .dropdown-option {
+      @include buttonReset;
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 0.2rem 1rem;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+
+      &:hover, &.active {
+        background-color: $button-highlight;
+        color: $button-highlight-foreground;
+      }
+    }
+
+    &-enter-active,
+    &-leave-active {
+      clip-path: polygon(0 0, 0 100%, 100% 100%, 100% 0);
+      transform: none;
+      transition: all 0.2s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    &-leave-active {
+      pointer-events: none;
+    }
+
+    &-enter-from,
+    &-leave-to {
+      transform: translateY(-50%);
+      clip-path: polygon(
+        0 50%,
+        0 50%,
+        100% 50%,
+        100% 50%);
+    }
+  }
+}
