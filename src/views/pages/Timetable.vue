@@ -1,7 +1,10 @@
 <template>
   <div class="timetable-view-component scroll auto">
     <div class="wrapper">
-      <h1 class="app-header"><i class="fas fa-clock" /> Stundenplan</h1>
+      <h1 class="app-header">
+        <i class="fas fa-clock" /> Stundenplan
+        <span v-if="loggedInUser.class"> der {{ loggedInUser.class }}</span>
+      </h1>
       <div class="date-info">
         <div class="date-today">
           Heute: {{ dayOfWeekString }}, {{ today.format('DD.MM.YYYY') }}
@@ -28,140 +31,146 @@
           </bl-button>
         </div>
       </div>
-      <table v-if="timetable" class="timetable">
-        <thead>
-          <tr>
-            <td class="timetable-data timetable-header">
-              Stunden
-            </td>
-            <td
-              :class="[
-                'timetable-data',
-                'timetable-header',
-                today.day() === 1 ? 'is-today' : ''
-              ]"
-            >
-              Montag
-            </td>
-            <td
-              :class="[
-                'timetable-data',
-                'timetable-header',
-                today.day() === 2 ? 'is-today' : ''
-              ]"
-            >
-              Dienstag
-            </td>
-            <td
-              :class="[
-                'timetable-data',
-                'timetable-header',
-                today.day() === 3 ? 'is-today' : ''
-              ]"
-            >
-              Mittwoch
-            </td>
-            <td
-              :class="[
-                'timetable-data',
-                'timetable-header',
-                today.day() === 4 ? 'is-today' : ''
-              ]"
-            >
-              Donnerstag
-            </td>
-            <td
-              :class="[
-                'timetable-data',
-                'timetable-header',
-                today.day() === 5 ? 'is-today' : ''
-              ]"
-            >
-              Freitag
-            </td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="(row, rowIndex) in timetable.lessions"
-            :key="rowIndex"
-            :class="[
-              'timetable-row', isEmpty(rowIndex) ? 'empty-row' : '',
-              hoveringRows.includes(rowIndex) ? 'hover' : ''
-            ]"
-            @mouseenter="hoveringRows.push(rowIndex)"
-            @mouseleave="hoveringRows = []"
-          >
-            <td
-              class="timetable-data timetable-time"
-              @mouseenter="addHoveringRows(rowIndex, 1)"
-            >
-              <span class="time-header">{{ rowIndex + 1 }}. Stunde</span>
-              <span class="time-start-end">{{ timetable.times[rowIndex].start }} - {{ timetable.times[rowIndex].end }}</span>
-            </td>
-            <td
-              v-for="(lession, columnIndex) in row"
-              :key="columnIndex"
-              :class="[
-                'timetable-data',
-                'timetable-lession',
-                hoveringRows.filter(x => rowIndex < x && x <= rowIndex + lession.span - 1).length
-                  && !hoveringRows.includes(rowIndex)
-                  ? 'hover' : '',
-                lession.subjects.length > 1 ? 'multiple-entrys' : ''
-              ]"
-              :ref="rowIndex + '-' + columnIndex"
-              :rowspan="lession.span"
-              @mouseenter="addHoveringRows(rowIndex, lession.span)"
-            >
-              <div
-                v-for="(subject, subjectIndex) in lession.subjects"
-                :key="'subject' + subjectIndex"
-                :class="['timetable-subject', subject.id === activeSubject ? 'active' : '']"
-                @mouseleave="activeSubject = undefined"
-                @mouseenter="activeSubject = subject.id"
+      <div class="timetable-container">
+        <table v-if="timetable" class="timetable">
+          <thead>
+            <tr>
+              <td class="timetable-data timetable-header">
+                Stunden
+              </td>
+              <td
+                :class="[
+                  'timetable-data',
+                  'timetable-header',
+                  today.day() === 1 ? 'is-today' : ''
+                ]"
               >
-                <div class="subject-layout">
-                  <span class="subject-name">
-                    {{ subject.name }}
-                  </span>
-                  <span
-                    class="subject-room"
-                    v-if="subject.room"
-                  >
-                    {{ subject.room }}
-                  </span>
-                  <span
-                    :class="['subject-week', abWeek === subject.week.toUpperCase() ? 'active' : '']"
-                    v-if="subject.week"
-                  >
-                    {{ subject.week }}
-                  </span>
-                  <span
-                    class="subject-teacher"
-                    v-if="subject.teacher"
-                  >
-                    {{ subject.teacher }}
-                  </span>
+                Montag
+              </td>
+              <td
+                :class="[
+                  'timetable-data',
+                  'timetable-header',
+                  today.day() === 2 ? 'is-today' : ''
+                ]"
+              >
+                Dienstag
+              </td>
+              <td
+                :class="[
+                  'timetable-data',
+                  'timetable-header',
+                  today.day() === 3 ? 'is-today' : ''
+                ]"
+              >
+                Mittwoch
+              </td>
+              <td
+                :class="[
+                  'timetable-data',
+                  'timetable-header',
+                  today.day() === 4 ? 'is-today' : ''
+                ]"
+              >
+                Donnerstag
+              </td>
+              <td
+                :class="[
+                  'timetable-data',
+                  'timetable-header',
+                  today.day() === 5 ? 'is-today' : ''
+                ]"
+              >
+                Freitag
+              </td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(row, rowIndex) in timetable.lessions"
+              :key="rowIndex"
+              :class="[
+                'timetable-row', isEmpty(rowIndex) ? 'empty-row' : '',
+                hoveringRows.includes(rowIndex) ? 'hover' : ''
+              ]"
+              @mouseenter="hoveringRows.push(rowIndex)"
+              @mouseleave="hoveringRows = []"
+            >
+              <td
+                class="timetable-data timetable-time"
+                @mouseenter="addHoveringRows(rowIndex, 1)"
+              >
+                <span class="time-header">{{ rowIndex + 1 }}. Stunde</span>
+                <span class="time-start-end">{{ timetable.times[rowIndex].start }} - {{ timetable.times[rowIndex].end }}</span>
+              </td>
+              <td
+                v-for="(lession, columnIndex) in row"
+                :key="columnIndex"
+                :class="[
+                  'timetable-data',
+                  'timetable-lession',
+                  hoveringRows.filter(x => rowIndex < x && x <= rowIndex + lession.span - 1).length
+                    && !hoveringRows.includes(rowIndex)
+                    ? 'hover' : '',
+                  lession.subjects.length > 1 ? 'multiple-entrys' : ''
+                ]"
+                :ref="rowIndex + '-' + columnIndex"
+                :rowspan="lession.span"
+                @mouseenter="addHoveringRows(rowIndex, lession.span)"
+              >
+                <div
+                  v-for="(subject, subjectIndex) in lession.subjects"
+                  :key="'subject' + subjectIndex"
+                  :class="['timetable-subject', subject.id === activeSubject ? 'active' : '']"
+                  @mouseleave="activeSubject = undefined"
+                  @mouseenter="activeSubject = subject.id"
+                >
+                  <div class="subject-layout">
+                    <span class="subject-name">
+                      {{ subject.name }}
+                    </span> <span
+                      class="subject-room"
+                      v-if="subject.room"
+                    >{{ subject.room }}</span> <span
+                      :class="['subject-week', abWeek === subject.week.toUpperCase() ? 'active' : '']"
+                      v-if="subject.week"
+                    >
+                      {{ subject.week }}
+                    </span><br>
+                    <span
+                      class="subject-teacher"
+                      v-if="subject.teacher"
+                    >
+                      {{ subject.teacher }}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <bl-button @click="downloadAsPDF">
+        <i class="far fa-file-pdf" /> PDF herunterladen
+      </bl-button>
     </div>
   </div>
 </template>
 
 <script>
 import moment from 'moment'
-import { mapGetters, mapState } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
+
+import manager from '@/manager'
+import { ipcRenderer } from 'electron'
+import fs from 'fs'
 
 export default {
   name: 'Timetable',
   computed: {
     ...mapState([
-      'apps'
+      'apps',
+      'loggedInUser'
     ]),
     ...mapGetters([
       'currentSchool'
@@ -174,6 +183,9 @@ export default {
     },
     today () {
       return moment()
+    },
+    manager () {
+      return manager
     },
     dayOfWeekString () {
       switch (this.today.day()) {
@@ -219,6 +231,9 @@ export default {
     timetable: { date: undefined }
   }),
   methods: {
+    ...mapActions([
+      'notify'
+    ]),
     isEmpty (row, timetable) {
       // if on current row is no lession check rows above
       if (this.timetable.lessions[row].filter(x => x.span).length === 0) {
@@ -241,6 +256,29 @@ export default {
       for (let i = 0; i < span; i++) {
         this.hoveringRows.push(row + i)
       }
+    },
+    downloadAsPDF () {
+      ipcRenderer.send('saveDialog', {
+        filters: [{ name: 'PDF', extensions: ['pdf'] }],
+        defaultPath: 'stundenplan_' + this.loggedInUser.username + '.pdf'
+      })
+      ipcRenderer.once('saveDialogRes', (e, save) => {
+        if (save.canceled) return
+
+        this.notify({
+          title: 'Stundenplan',
+          message: 'wird heruntergeladen...'
+        })
+
+        fetch(manager.urls.BASE_ADDRESS +
+        this.apps.supported.timetable.link +
+        `?e=1&a=detail_klasse&pdf=1${this.timetable.date ? `&date=${this.timetable.date}` : ''}`)
+          .then(res => res.arrayBuffer())
+          .then(data => {
+            fs.writeFileSync(save.filePath, Buffer.from(data))
+            require('child_process').exec(save.filePath)
+          })
+      })
     }
   },
   mounted () {

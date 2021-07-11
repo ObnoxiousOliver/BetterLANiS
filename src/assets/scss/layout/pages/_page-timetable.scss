@@ -56,8 +56,16 @@
     }
   }
 
+  .timetable-container {
+    border-radius: 5px;
+    overflow: hidden;
+    border: $muted-foreground solid 1px;
+    margin-bottom: 10px;
+  }
+
   .timetable {
-    width: 100%;
+    width: calc(100% + 2px);
+    margin: -1px;
     border-spacing: 0;
     border-collapse: collapse;
     cursor: default;
@@ -109,15 +117,15 @@
         margin: 2px;
         transition: all 0.15s;
 
-        .subject-layout {
-          width: fit-content;
-          margin: 0 auto;
-          display: grid;
-          padding: 0 5px;
-          grid-template-areas:
-            "name room week"
-            "teacher teacher week";
-        }
+        // .subject-layout {
+        //   width: fit-content;
+        //   margin: 0 auto;
+        //   display: grid;
+        //   padding: 0 5px;
+        //   grid-template-areas:
+        //     "name room week"
+        //     "teacher teacher week";
+        // }
 
         &.active {
           border-color: $accent;
@@ -132,7 +140,6 @@
           grid-area: name;
           font-weight: 700;
           font-size: 1.1em;
-          margin-right: 5px;
         }
 
         .subject-room {
@@ -149,8 +156,7 @@
         .subject-week {
           grid-area: week;
           background: $secondary-background;
-          margin: auto 0 auto 5px;
-          padding: 0 4px;
+          padding: 0 0.3em;
           border-radius: 3px;
           font-family: $header-font;
           font-weight: 700;
@@ -163,8 +169,12 @@
       }
 
       &.multiple-entrys {
-        .timetable-subject .subject-teacher {
-          display: none;
+        .timetable-subject {
+          white-space: nowrap;
+
+          .subject-teacher {
+            display: none;
+          }
         }
       }
 

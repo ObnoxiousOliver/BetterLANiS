@@ -303,26 +303,26 @@ app.on('ready', async () => {
   })
 
   // === CHECK FOR UPDATES ===
-  // options: {
-  //   gitUser: String,
-  //   gitRepo: String
-  // }
-  const updateWindow = createUpdateWindow()
+  var mainWindow
+  var updateWindow
+
+  // if in Development don't update
+  if (isDevelopment) {
+    startApp()
+  } else {
+    updateWindow = createUpdateWindow()
+  }
 
   function startApp (e) {
     // dialog.showMessageBox(null, {
     //   message: JSON.stringify(err, null, 2)
     // })
-    e.reply('setUpdateStatus', 'Starting...')
-    createWindow()
-    setTimeout(() => updateWindow.close(), 500)
+    if (e) e.reply('setUpdateStatus', 'Starting...')
+    mainWindow = createWindow()
+    setTimeout(() => {
+      if (updateWindow) updateWindow.close()
+    }, 500)
   }
-
-  // // if in Development don't update
-  // if ((isDevelopment && !process.env.IS_TEST) || process.platform !== 'win32') {
-  //   startApp()
-  //   return
-  // }
 
   ipcMain.on('checkForUpdatesAndInstall', (e) => {
     // update.checkForUpdatesAndInstall(
@@ -360,35 +360,40 @@ app.on('ready', async () => {
         // })
       }).catch(() => startApp(e))
   })
-})
 
-ipcMain.on('downloadFile', (e, url, dest) => {
-  fetch(url, {
-    headers: {
-      Authorization: process.env.GITHUB_AUTH,
-      Accept: 'application/octet-stream'
-    }
-  })
-    .then(res => new Promise((resolve, reject) => {
-      var ws = fs.createWriteStream(dest)
-      res.body.pipe(ws)
+  ipcMain.on('downloadFile', (e, url, dest) => {
+    fetch(url, {
+      headers: {
+        Authorization: process.env.GITHUB_AUTH,
+        Accept: 'application/octet-stream'
+      }
+    })
+      .then(res => new Promise((resolve, reject) => {
+        var ws = fs.createWriteStream(dest)
+        res.body.pipe(ws)
 
-      var downloaded = 0
-      var contentLength = res.headers.get('content-length')
+        var downloaded = 0
+        var contentLength = res.headers.get('content-length')
 
-      res.body.on('data', (data) => {
-        downloaded += data.length
+        res.body.on('data', (data) => {
+          downloaded += data.length
 
-        e.reply('downloadFileStatus', {
-          progress: downloaded / contentLength
+          e.reply('downloadFileStatus', {
+            progress: downloaded / contentLength
+          })
         })
-      })
 
-      ws.on('error', reject)
+        ws.on('error', reject)
 
-      res.body.on('end', () => resolve())
-    }))
-    .then(err => e.reply('downloadFileFinished', err))
+        res.body.on('end', () => resolve())
+      }))
+      .then(err => e.reply('downloadFileFinished', err))
+  })
+
+  ipcMain.on('saveDialog', (e, options) => {
+    dialog.showSaveDialog(mainWindow, options)
+      .then(save => e.reply('saveDialogRes', save))
+  })
 })
 
 // Exit cleanly on request from parent process in development mode.
