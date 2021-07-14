@@ -5,24 +5,150 @@
         <i class="bi-calendar2-week-fill" /> Kalender
       </h1>
 
-      <div class="calendar-container">
+      <div class="calendar-panel">
+        <h2><i class="bi-funnel-fill" /> Filter</h2>
+        <div class="panel-controls">
+          <input
+            type="text"
+            class="input-field event-search"
+            placeholder="Nach Titel/Ort/Beschreibung suchen..."
+            v-model="searchString"
+          >
+          <DropdownMenu
+            @itemselected="categoryFilterSelected"
+            :data="categoryFilter"
+            class="category-dropdown"
+          />
+          <DropdownMenu
+            @itemselected="calendarViewSelected"
+            :data="[
+              { value: 'year', content: '<i class=\u0022bi-list-ul\u0022></i> Jahr'},
+              { value: 'month', content: '<i class=\u0022bi-calendar2-week\u0022></i> Monat'},
+              { value: 'week', content: '<i class=\u0022bi-layout-three-columns\u0022></i> Woche'}
+            ]"
+            :defaultIndex="0"
+            class="calendar-view-dropdown"
+          />
+        </div>
+      </div>
+
+      <div v-if="calendarView === 'year'" class="calendar-container view-year">
+        <div class="calendar-controls">
+          <bl-button class="last-month" @click="lastYear" @click.ctrl="lastDecade">
+            <i class="bi-chevron-left" />
+          </bl-button>
+
+          <div class="date-info">
+            <h2 class="date-current">
+              <!-- <i
+                v-if="yearToIcon(currentDate.year())"
+                :class="yearToIcon(currentDate.year()).i"
+                :style="{
+                  color: yearToIcon(currentDate.year()).c,
+                  '-webkit-text-stroke': color.getContrastYIQ(yearToIcon(currentDate.year()).c) + ' 1px'
+                }"
+              /> -->
+              {{ currentDate.year() }}
+            </h2>
+            <tooltip class="date-today" placement="bottom">
+              <template #activator>
+                <button class="inline-btn" @click="goToToday">
+                  Heute: {{ today.format('DD.MM.YYYY') }}
+                </button>
+              </template>
+              Gehe zum
+              {{ today.format('DD.MM.YYYY') }}
+            </tooltip>
+          </div>
+
+          <bl-button class="next-month" @click.="nextYear" @click.ctrl="nextDecade">
+            <i class="bi-chevron-right" />
+          </bl-button>
+        </div>
+
+        <div
+          v-if="yearData"
+          class="calendar"
+        >
+          <div
+            class="events"
+            v-for="month in yearData"
+            :key="month.date.format('YYYY-MM-DD')"
+          >
+            <transition name="event-month">
+              <h2
+                class="event-month"
+                v-show="month.events.filter(e => matchesSearch(e)).length"
+              >
+                {{ monthToString(month.date.month()) }} {{ month.date.year() }}
+              </h2>
+            </transition>
+            <div
+              v-for="event in month.events"
+              :key="event.id"
+              class="event-container"
+            >
+              <transition name="event">
+                <button
+                  @click="selectedEvent = event"
+                  class="event"
+                  v-show="matchesSearch(event)"
+                >
+                  <div class="event-category" :style="{
+                    ...categories[event.raw.category] ? {
+                        '--background': color.pastelify(categories[event.raw.category].color),
+                        '--color': color.getContrastYIQ(color.pastelify(categories[event.raw.category].color))
+                      } : {}
+                    }"
+                  >
+                    <i
+                      v-if="categories[event.raw.category]"
+                      :class="categories[event.raw.category].logo"
+                    />
+                    <i v-else class="bi-three-dots" />
+                  </div>
+                  <div
+                    v-if="moment(event.raw.Anfang).format('YYYY-MM-DD') !== moment(event.raw.Ende).format('YYYY-MM-DD')"
+                    class="event-date"
+                  >
+                    {{ moment(event.raw.Anfang).format('DD.MM.YYYY') }}<br>
+                    - {{ moment(event.raw.Ende).format('DD.MM.YYYY') }}
+                  </div>
+                  <div v-else class="event-date">
+                    {{ moment(event.raw.Anfang).format('DD.MM.YYYY') }}
+                  </div>
+                  <h3 class="event-name">{{ event.name }}</h3>
+                </button>
+              </transition>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div v-else-if="calendarView === 'week'" class="calendar-container view-week">
+        Week
+      </div>
+
+      <div v-else class="calendar-container view-month">
         <div class="calendar-controls">
           <bl-button class="last-month" @click="lastMonth">
             <i class="bi-chevron-left" />
           </bl-button>
 
           <div class="date-info">
-            <h2 class="date-current-month">
+            <h2 class="date-current">
               <i :class="['season-icon',
                 'season-' + ['spring', 'summer', 'fall', 'winter']
-                  .filter((x, i) => getSeason(currentMonth.month()) === i)[0],
-                monthToIcon(currentMonth.month())]" />
-              {{ monthToString(currentMonth.month()) }}
-              {{ currentMonth.year() }}
+                  .filter((x, i) => getSeason(currentDate.month()) === i)[0],
+                monthToIcon(currentDate.month())]"
+              />
+              {{ monthToString(currentDate.month()) }}
+              {{ currentDate.year() }}
             </h2>
             <tooltip class="date-today" placement="bottom">
               <template #activator>
-                <button class="inline-btn" @click="goToTodaysMonth">
+                <button class="inline-btn" @click="goToToday">
                   Heute: {{ today.format('DD.MM.YYYY') }}
                 </button>
               </template>
@@ -37,26 +163,10 @@
           </bl-button>
         </div>
 
-        <div class="calendar-panel">
-          <h2><i class="bi-funnel-fill" /> Filter</h2>
-          <div class="panel-controls">
-            <input
-              type="text"
-              class="input-field event-search"
-              placeholder="Nach Titel/Ort/Beschreibung suchen..."
-            >
-            <DropdownMenu
-              @itemselected="categoryFilterSelected"
-              :data="categoryFilter"
-              class="category-dropdown"
-            />
-          </div>
-        </div>
-
         <!-- Calendar View -->
         <div
           v-if="monthData"
-          class="calendar month-view"
+          class="calendar"
         >
           <div class="calendar-header">
             <div class="cell">KW</div>
@@ -105,13 +215,14 @@
             <div class="events">
               <button
                 v-for="event in week.events"
-                :key="event.id + event.start + event.span"
+                :key="`${event.id}:${week.dates[weekIndex].date}`"
                 :class="['event inline-btn', event.style, event.id === hoveringEvent ? 'active' : '']"
                 :style="{
                   'grid-column': event.start + ' / span ' + event.span,
+                  opacity: matchesSearch(event) ? '' : '0.1',
                   ...categories[event.raw.category] ? {
-                    'background-color': color.pastelify(categories[event.raw.category].color),
-                    color: color.getContrastYIQ(color.pastelify(categories[event.raw.category].color))
+                    '--background': color.pastelify(categories[event.raw.category].color),
+                    '--color': color.getContrastYIQ(color.pastelify(categories[event.raw.category].color))
                   } : {}
                 }"
                 @mouseenter="hoveringEvent = event.id"
@@ -135,7 +246,7 @@
     <!-- Popup Modal for selected Event -->
     <Modal
       @closemodal="selectedEvent = undefined"
-      :active="selectedEvent"
+      :active="selectedEvent !== undefined"
       :nofocus="[$refs.wrapper]"
       class="selected-event-modal"
     >
@@ -185,15 +296,15 @@ export default {
     today () {
       return moment()
     },
-    currentMonth () {
-      return moment(this.month)
+    currentDate () {
+      return moment(this.date)
     },
     categories () {
       return this.apps.supported.calendar.data.categories
     },
     categoryFilter () {
       return [
-        { value: { id: 0 }, content: 'Alle Kategorien' },
+        { value: {}, content: 'Alle Kategorien' },
         ...Object.values(this.categories).map(x => ({
           value: x,
           content: `<i class="${x.logo}" ></i> ${x.name}`
@@ -202,19 +313,38 @@ export default {
     },
     color () {
       return color
+    },
+    moment () {
+      return moment
     }
   },
   data: () => ({
     hoveringEvent: undefined,
     selectedEvent: undefined,
     monthData: undefined,
-    month: moment().format('YYYY-MM-01'),
-    pastel: ''
+    date: moment().format('YYYY-MM-01'),
+    yearData: undefined,
+    calendarView: undefined,
+    searchString: '',
+    filterCategory: 0
   }),
   mounted () {
-    manager.apps.supported.kalender.getMonth(this.month, data => {
-      this.monthData = data
-    })
+    this.calendarView = 'year'
+  },
+  watch: {
+    calendarView (val) {
+      switch (val) {
+        case 'year':
+          this.updateYearCalendar()
+          break
+        case 'week':
+          this.updateMonthCalendar()
+          break
+        default:
+          this.updateMonthCalendar()
+          break
+      }
+    }
   },
   methods: {
     isToday (week, day) {
@@ -223,21 +353,56 @@ export default {
       return this.today.format('YYYY-MM-DD') === target.format('YYYY-MM-DD')
     },
     nextMonth () {
-      this.month = moment(this.month).month(moment(this.month).month() + 1).format('YYYY-MM-01')
-      this.updateCalendar()
+      this.date = moment(this.date).month(moment(this.date).month() + 1).format('YYYY-MM-DD')
+      this.updateMonthCalendar()
     },
     lastMonth () {
-      this.month = moment(this.month).month(moment(this.month).month() - 1).format('YYYY-MM-01')
-      this.updateCalendar()
+      this.date = moment(this.date).month(moment(this.date).month() - 1).format('YYYY-MM-DD')
+      this.updateMonthCalendar()
     },
-    goToTodaysMonth () {
-      this.month = this.today.format('YYYY-MM-01')
+    nextYear (e) {
+      if (e.ctrlKey) return
+      this.date = moment(this.date).year(moment(this.date).year() + 1).format('YYYY-MM-DD')
+      this.updateYearCalendar()
+    },
+    lastYear (e) {
+      if (e.ctrlKey) return
+      this.date = moment(this.date).year(moment(this.date).year() - 1).format('YYYY-MM-DD')
+      this.updateYearCalendar()
+    },
+    nextDecade () {
+      this.date = moment(this.date).year(moment(this.date).year() + 10).format('YYYY-MM-DD')
+      this.updateYearCalendar()
+    },
+    lastDecade () {
+      this.date = moment(this.date).year(moment(this.date).year() - 10).format('YYYY-MM-DD')
+      this.updateYearCalendar()
+    },
+    goToToday () {
+      this.date = this.today.format('YYYY-MM-01')
       this.updateCalendar()
     },
     updateCalendar () {
-      manager.apps.supported.kalender.getMonth(this.month, data => {
+      switch (this.calendarView) {
+        case 'year':
+          this.updateYearCalendar()
+          break
+        case 'week':
+          this.updateMonthCalendar()
+          break
+        default:
+          this.updateMonthCalendar()
+          break
+      }
+    },
+    updateMonthCalendar () {
+      manager.apps.supported.kalender.getMonth(this.date, data => {
         this.monthData = data
-        // console.log(data)
+      })
+    },
+    updateYearCalendar () {
+      manager.apps.supported.kalender.getYear(this.date, data => {
+        this.yearData = data
       })
     },
     formatDate (date) {
@@ -269,11 +434,79 @@ export default {
       ]
       return monthArray[this.getSeason(monthIndex)]
     },
+    yearToIcon (year) {
+      var yearArray = [
+        /* 0 */ undefined,
+        /* 1 */ { c: '#555', i: 'fas fa-smog' },
+        /* 2 */ { c: '#fff791', i: 'fas fa-charging-station' },
+        /* 3 */ { c: '#aaa', i: 'fas fa-space-shuttle' },
+        /* 4 */ { c: '#000', i: 'fas fa-fist-raised' },
+        /* 5 */ { c: '#4ec0f7', i: 'fas fa-atom' },
+        /* 6 */ { c: '#ff0', i: 'fas fa-radiation' },
+        /* 7 */ { c: '#7dda17', i: 'fas fa-biohazard' },
+        /* 8 */ { c: '#f11', i: 'fas fa-skull-crossbones' },
+        /* 9 */ { c: '#5fcc44', i: 'fas fa-seedling' },
+        /* 10 */ { c: '#b71752', i: 'fas fa-virus' },
+        /* 11 */ { c: '#999', i: 'fas fa-mobile' },
+        /* 12 */ { c: '#ff6ba8', i: 'fas fa-peace' },
+        /* 13 */ { c: '#f11', i: 'fas fa-heart-broken' },
+        /* 14 */ { c: '#111', i: 'fas fa-industry' }
+      ]
+
+      return yearArray[this.getYearEvolutionIndex(year)]
+    },
     getSeason (monthIndex) {
       var season = [3, 0, 1, 2, 3]
       return season[Math.floor((monthIndex + 1) / 3)]
     },
+    getYearEvolutionIndex (y) {
+      function r (min, max) {
+        return y >= min && y < max
+      }
+
+      switch (true) {
+        default: return 0
+        case (r(1850, 1939)): return 14
+        case (r(1939, 1946)): return 13
+        case (r(1946, 1980)): return 12
+        case (r(1980, 2020)): return 11
+        case (r(2020, 2022)): return 10
+        case (r(2022, 2100)): return 1
+        case (r(2100, 2250)): return 2
+        case (r(2250, 2310)): return 3
+        case (r(2310, 2350)): return 4
+        case (r(2350, 2380)): return 5
+        case (r(2380, 2400)): return 6
+        case (r(2400, 2420)): return 7
+        case (r(2420, 3200)): return 8
+        case (r(3200, Infinity)): return 9
+      }
+    },
     categoryFilterSelected (category) {
+      this.filterCategory = category.value.id
+    },
+    calendarViewSelected (view) {
+      this.calendarView = view.value
+    },
+    matchesSearch (event) {
+      if (this.filterCategory) {
+        if (this.filterCategory !== parseInt(event.raw.category)) return false
+      }
+
+      if (this.searchString.trim() !== '') {
+        const keywords = this.searchString.trim().toLowerCase().split(' ')
+        return keywords.every(key =>
+          event.name.toLowerCase().includes(key) ||
+          (event.raw.Ort
+            ? event.raw.Ort.toLowerCase().includes(key)
+            : false) ||
+          (event.raw.description
+            ? event.raw.description.toLowerCase().includes(key)
+            : false))
+      } else return true
+    },
+    getHeight (e) {
+      console.log(e)
     }
   }
 }

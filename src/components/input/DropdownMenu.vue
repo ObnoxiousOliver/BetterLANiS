@@ -5,7 +5,7 @@
   >
     <button
       @click="toggleDropdown"
-      @mousewheel="dropdownScroll"
+      @mousewheel.prevent="dropdownScroll"
       @keydown.up="indexUp"
       @keydown.down="indexDown"
       :class="['dropdown-btn', dropdownOpen ? 'is-open' : '']"
@@ -34,7 +34,8 @@
 export default {
   name: 'DropdownMenu',
   props: {
-    data: Array
+    data: Array,
+    defaultIndex: Number
   },
   data: () => ({
     selectedIndex: 0,
@@ -46,6 +47,7 @@ export default {
     }
   },
   mounted () {
+    this.selectedIndex = this.defaultIndex | 0
   },
   methods: {
     dropdownScroll (e) {

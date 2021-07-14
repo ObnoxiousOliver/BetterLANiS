@@ -179,7 +179,8 @@ export default {
                     evStyle.push('no-start')
                   }
                 }
-                if (moment(event.end).date(moment(event.end).date() + 1).diff(end) >= 0) {
+
+                if (moment(event.end).date(moment(event.end).date() + 1).diff(end) > 0) {
                   event.end = moment(end).date(moment(end).date() + 1).format('YYYY-MM-DD')
 
                   evStyle.push('no-end')
@@ -212,8 +213,86 @@ export default {
                 })
               }
 
+              // Sort Events
+              weeks.forEach(week => {
+                // Get Nuber of iterations
+                const iterations = week.events.map(x => week.events.filter(y => y.start === x.start).length).sort()[0] + 1
+
+                const sortedEvents = []
+                const days = []
+
+                var uniqueEvents = week.events.map(x => x.start).filter((item, pos, self) => self.indexOf(item) === pos)
+
+                for (let i = 0; i < uniqueEvents.length; i++) {
+                  days.push(week.events.filter(x => x.start === uniqueEvents[i]))
+                }
+
+                console.log(days)
+
+                for (let i = 0; i < iterations; i++) {
+                  days.forEach(x => {
+                    sortedEvents.push(...x.filter((y, pos) => pos === i))
+                  })
+                }
+                // console.log(sortedEvents)
+
+                week.events = sortedEvents
+              })
+
+              console.log(weeks)
+
               var monthData = { start, end, weekNumbers, weeks }
               callback(monthData)
+            })
+        },
+        getYear  (dateString, callback) {
+          var startEndD = moment(dateString)
+          startEndD.dayOfYear(1)
+          var start = startEndD.format('YYYY-MM-DD')
+
+          startEndD.year(startEndD.year() + 1).dayOfYear(0)
+          var end = startEndD.format('YYYY-MM-DD')
+
+          fetch('https://start.schulportal.hessen.de/kalender.php', {
+            headers: {
+              accept: 'application/json, text/javascript, */*; q=0.01',
+              'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+              'cache-control': 'no-cache',
+              pragma: 'no-cache'
+            },
+            body: `f=getEvents&start=${start}&end=${end}`,
+            method: 'POST'
+          }).then(res => res.json())
+            .then(data => {
+              const months = []
+
+              data.map(x => ({
+                id: x.Id,
+                name: x.title,
+                raw: x
+              }))
+                .forEach(event => {
+                  var startD = moment(event.raw.start)
+
+                  if (!months.filter(x =>
+                    x.date.month() === startD.month() &&
+                    x.date.year() === startD.year())
+                    .length) {
+                    months.push({
+                      date: moment(dateString)
+                        .month(startD.month())
+                        .year(startD.year()),
+                      events: []
+                    })
+                  }
+
+                  months.filter(x =>
+                    x.date.month() === startD.month() &&
+                    x.date.year() === startD.year())[0]
+                    .events.push(event)
+                })
+
+              callback(months.filter(x => x.events.length))
             })
         }
       }
