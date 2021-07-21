@@ -227,7 +227,7 @@ export default {
                   days.push(week.events.filter(x => x.start === uniqueEvents[i]))
                 }
 
-                console.log(days)
+                // console.log(days)
 
                 for (let i = 0; i < iterations; i++) {
                   days.forEach(x => {
@@ -239,7 +239,7 @@ export default {
                 week.events = sortedEvents
               })
 
-              console.log(weeks)
+              // console.log(weeks)
 
               var monthData = { start, end, weekNumbers, weeks }
               callback(monthData)

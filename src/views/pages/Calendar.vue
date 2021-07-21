@@ -21,13 +21,10 @@
           />
           <DropdownMenu
             @itemselected="calendarViewSelected"
-            :data="[
-              { value: 'year', content: '<i class=\u0022bi-list-ul\u0022></i> Jahr'},
-              { value: 'month', content: '<i class=\u0022bi-calendar2-week\u0022></i> Monat'},
-              { value: 'week', content: '<i class=\u0022bi-layout-three-columns\u0022></i> Woche'}
-            ]"
+            :data="calendarViews"
             :defaultIndex="0"
             class="calendar-view-dropdown"
+            ref="calendarViewDropdown"
           />
         </div>
       </div>
@@ -103,7 +100,7 @@
                   >
                     <i
                       v-if="categories[event.raw.category]"
-                      :class="categories[event.raw.category].logo"
+                      :class="mapIcon(categories[event.raw.category].logo)"
                     />
                     <i v-else class="bi-three-dots" />
                   </div>
@@ -233,7 +230,7 @@
                 <div>
                   <i
                     v-if="categories[event.raw.category]"
-                    :class="categories[event.raw.category].logo"
+                    :class="mapIcon(categories[event.raw.category].logo)"
                   /> {{ event.name }}
                 </div>
               </button>
@@ -259,7 +256,7 @@
         }" class="event-header">
         <i
           v-if="categories[selectedEvent.raw.category]"
-          :class="categories[selectedEvent.raw.category].logo"
+          :class="mapIcon(categories[selectedEvent.raw.category].logo)"
         />
           {{ selectedEvent.name }}
         </div>
@@ -278,6 +275,7 @@
 import moment from 'moment'
 import manager from '@/manager'
 import color from '@/color'
+import icons from '@/icons'
 
 import { mapState } from 'vuex'
 import Modal from '@/components/Modal.vue'
@@ -307,7 +305,7 @@ export default {
         { value: {}, content: 'Alle Kategorien' },
         ...Object.values(this.categories).map(x => ({
           value: x,
-          content: `<i class="${x.logo}" ></i> ${x.name}`
+          content: `<i class="${icons.mapIcon(x.logo)}" ></i> ${x.name}`
         }))
       ]
     },
@@ -316,6 +314,13 @@ export default {
     },
     moment () {
       return moment
+    },
+    calendarViews () {
+      return [
+        { value: 'year', content: '<i class=\u0022bi-list-ul\u0022></i> Jahr' },
+        { value: 'month', content: '<i class=\u0022bi-calendar2-week\u0022></i> Monat' },
+        { value: 'week', content: '<i class=\u0022bi-layout-three-columns\u0022></i> Woche' }
+      ]
     }
   },
   data: () => ({
@@ -329,24 +334,17 @@ export default {
     filterCategory: 0
   }),
   mounted () {
-    this.calendarView = 'year'
+    this.$refs.calendarViewDropdown.setIndex(0)
   },
   watch: {
     calendarView (val) {
-      switch (val) {
-        case 'year':
-          this.updateYearCalendar()
-          break
-        case 'week':
-          this.updateMonthCalendar()
-          break
-        default:
-          this.updateMonthCalendar()
-          break
-      }
+      this.updateCalendar()
     }
   },
   methods: {
+    mapIcon (icon) {
+      return icons.mapIcon(icon)
+    },
     isToday (week, day) {
       var target = moment(this.monthData.start)
       target.date(target.date() + week * 7 + day)
@@ -354,29 +352,29 @@ export default {
     },
     nextMonth () {
       this.date = moment(this.date).month(moment(this.date).month() + 1).format('YYYY-MM-DD')
-      this.updateMonthCalendar()
+      this.updateCalendar()
     },
     lastMonth () {
       this.date = moment(this.date).month(moment(this.date).month() - 1).format('YYYY-MM-DD')
-      this.updateMonthCalendar()
+      this.updateCalendar()
     },
     nextYear (e) {
       if (e.ctrlKey) return
       this.date = moment(this.date).year(moment(this.date).year() + 1).format('YYYY-MM-DD')
-      this.updateYearCalendar()
+      this.updateCalendar()
     },
     lastYear (e) {
       if (e.ctrlKey) return
       this.date = moment(this.date).year(moment(this.date).year() - 1).format('YYYY-MM-DD')
-      this.updateYearCalendar()
+      this.updateCalendar()
     },
     nextDecade () {
       this.date = moment(this.date).year(moment(this.date).year() + 10).format('YYYY-MM-DD')
-      this.updateYearCalendar()
+      this.updateCalendar()
     },
     lastDecade () {
       this.date = moment(this.date).year(moment(this.date).year() - 10).format('YYYY-MM-DD')
-      this.updateYearCalendar()
+      this.updateCalendar()
     },
     goToToday () {
       this.date = this.today.format('YYYY-MM-01')

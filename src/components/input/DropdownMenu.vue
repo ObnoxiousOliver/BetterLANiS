@@ -60,6 +60,12 @@ export default {
     indexUp () {
       if (this.selectedIndex > 0) this.selectedIndex -= 1
     },
+    setIndex (index) {
+      if (index >= 0 && index < this.data.length) {
+        this.selectedIndex = index
+        this.$emit('itemselected', this.data[index])
+      }
+    },
     toggleDropdown () {
       if (this.dropdownOpen) this.closeDropdown()
       else this.openDropdown()
