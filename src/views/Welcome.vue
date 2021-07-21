@@ -6,7 +6,7 @@
         <div class="user-avatar" />
       </div>
       <div class="card-body">
-        <h3>Welcome</h3>
+        <h3>Willkommen</h3>
         <h1>{{ loggedInUser.firstName }} {{ loggedInUser.lastName }}</h1>
       </div>
     </div>
