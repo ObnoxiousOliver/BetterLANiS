@@ -1,0 +1,28 @@
+.app-card-list-component {
+  padding: 5px 10px;
+
+  & > div {
+    display: flex;
+    width: min-content;
+  }
+
+  .app-card-component {
+    margin-right: 10px;
+  }
+
+  .app {
+    &-enter-active,
+    &-leave-active {
+      transition: 0.2s, margin 0.3s, transform 0.3s ;
+    }
+    &-enter-from,
+    &-leave-to {
+      opacity: 0;
+      margin: 0 -160px 0 0;
+      transform: scale(0.5);
+    }
+    &-move {
+      transition: transform 0.2s;
+    }
+  }
+}

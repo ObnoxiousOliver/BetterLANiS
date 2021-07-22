@@ -11,46 +11,61 @@
         </div>
       </div>
 
-      <!-- FAVORITE APPS -->
-      <div class="section-header">
-        <h2><i class="bi-suit-heart" /> Favoriten</h2>
-        <bl-button @click="favoritesModalOpen = true" variant="transparent small">
-          <i class="bi-plus-circle" />
-        </bl-button>
-      </div>
-      <div v-if="favoriteApps.length" class="favorite-apps app-card-list scroll x auto">
-        <transition-group
-          name="app"
-          tag="div"
-        >
-          <AppCard
-            @click="addHistoryApp(app.name)"
-            v-for="app in favoriteApps"
-            :key="app.name"
-            :icon="app.icon"
-            :to="app.route ? app.route : `/unsupported/${app.link.replaceAll('?', '&query:')}`"
-          >
-            {{ app.name }}
-          </AppCard>
-        </transition-group>
-      </div>
-      <div class="no-favorites" v-else>
-        <i>Keine Favoriten eingespeichert</i>
-        <bl-button @click="favoritesModalOpen = true" variant="primary">
-          <i class="bi-suit-heart" /> Favoriten anlegen
-        </bl-button>
+      <div :class="['main', recentApps.length ? '' : 'no-sidebar']">
+        <!-- FAVORITE APPS -->
+        <div class="favorite-apps">
+          <div class="section-header">
+            <h2><i class="bi-suit-heart" /> Favoriten</h2>
+            <bl-button @click="favoritesModalOpen = true" variant="transparent small">
+              <i class="bi-plus-circle" />
+            </bl-button>
+          </div>
+          <AppCardList v-if="favoriteApps.length">
+            <AppCard
+              @click="addHistoryApp(app.name)"
+              v-for="app in favoriteApps"
+              :key="app.name"
+              :icon="app.icon"
+              :to="app.route ? app.route : `/unsupported/${app.link.replaceAll('?', '&query:')}`"
+            >
+              {{ app.name }}
+            </AppCard>
+          </AppCardList>
+          <div v-else class="no-favorites">
+            <i>Keine Favoriten eingespeichert</i>
+            <bl-button @click="favoritesModalOpen = true" variant="primary">
+              <i class="bi-suit-heart" /> Favoriten anlegen
+            </bl-button>
+          </div>
+        </div>
+
+        <div v-for="folder in getFolders" :key="folder">
+          <div class="section-header">
+            <h2>
+              <i :class="folder.icon" /> {{ folder.name }}
+            </h2>
+          </div>
+          <AppCardList>
+            <AppCard
+              @click="addHistoryApp(app.name)"
+              v-for="app in folder.apps"
+              :key="app.name"
+              :icon="app.icon"
+              :to="app.route ? app.route : `/unsupported/${app.link.replaceAll('?', '&query:')}`"
+            >
+              {{ app.name }}
+            </AppCard>
+          </AppCardList>
+        </div>
       </div>
 
-      <!-- RECENT APPS -->
-      <div v-if="recentApps.length" class="section-header">
-        <h2><i class="bi-clock-history" /> Zuletzt verwendete Apps</h2>
-      </div>
-      <div v-if="recentApps.length" class="recent-apps app-card-list scroll x auto">
-        <transition-group
-          name="app"
-          tag="div"
-        >
-          <AppCard
+      <div v-if="recentApps.length" class="sidebar">
+        <!-- RECENT APPS -->
+        <AppButtonList class="recent-apps">
+          <template #header>
+            <i class="bi-clock-history" /> Zuletzt verwendete Apps
+          </template>
+          <AppButton
             @click="addHistoryApp(app.name)"
             v-for="app in recentApps"
             :key="app.name"
@@ -58,10 +73,11 @@
             :to="app.route ? app.route : `/unsupported/${app.link.replaceAll('?', '&query:')}`"
           >
             {{ app.name }}
-          </AppCard>
-        </transition-group>
+          </AppButton>
+        </AppButtonList>
       </div>
     </div>
+
     <Modal
       @closemodal="favoritesModalOpen = false"
       :active="favoritesModalOpen"
@@ -102,12 +118,18 @@
 import { mapActions, mapState } from 'vuex'
 
 import AppCard from '@/components/AppCard'
+import AppCardList from '@/components/AppCardList'
+import AppButton from '@/components/AppButton'
+import AppButtonList from '@/components/AppButtonList'
 import Modal from '@/components/Modal'
 
 export default {
   name: 'Home',
   components: {
     AppCard,
+    AppCardList,
+    AppButtonList,
+    AppButton,
     Modal
   },
   computed: {
@@ -170,6 +192,21 @@ export default {
         ...supported,
         ...this.apps.unsupported
       ]
+    },
+    getFolders () {
+      var folders = this.apps.folders.map(x => ({
+        name: x.name,
+        icon: x.icon,
+        apps: []
+      }))
+
+      this.allApps.forEach(app => {
+        folders.filter(x => app.folders.includes(x.name)).forEach(x => {
+          x.apps.push(app)
+        })
+      })
+
+      return folders
     }
   },
   data: () => ({
