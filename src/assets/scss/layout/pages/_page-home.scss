@@ -8,12 +8,15 @@
   }
 
   .main {
-    padding: 0 0 100px;
+    float: left;
+    width: calc(100% - 300px);
+    padding-right: 10px;
+    padding-bottom: 100px;
 
-    &:not(.no-sidebar) {
-      float: left;
-      width: calc(100% - 300px);
-      padding-right: 10px;
+    &.no-sidebar {
+      float: unset;
+      width: unset;
+      padding-right: 0;
     }
   }
 
@@ -21,6 +24,8 @@
     float: right;
     width: 300px;
   }
+
+
 
   .section-header {
     display: flex;
@@ -104,6 +109,21 @@
           color: $accent;
         }
       }
+    }
+  }
+
+  @media screen and (max-width: 1200px) {
+    .main {
+      float: unset;
+      width: unset;
+      padding-right: 0;
+      padding-bottom: 0;
+    }
+
+    .sidebar {
+      float: unset;
+      width: unset;
+      padding-bottom: 100px;
     }
   }
 }

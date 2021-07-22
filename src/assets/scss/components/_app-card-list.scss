@@ -1,13 +1,51 @@
 .app-card-list-component {
-  padding: 5px 10px;
+  position: relative;
+  overflow: hidden;
 
-  & > div {
-    display: flex;
-    width: min-content;
+  .scroll {
+    width: 100%;
+    padding: 5px 0;
+
+    .app-card-container {
+      width: fit-content;
+      padding: 0 10px;
+      display: flex;
+      flex-flow: row nowrap;
+      gap: 10px;
+    }
   }
 
-  .app-card-component {
-    margin-right: 10px;
+  .scroll-btn {
+    position: absolute;
+    z-index: 1;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    top: 50%;
+    transition: 0.1s ease-in-out, transform 0.2s;
+
+    &.scroll-btn-left {
+      left: 0;
+      transform: translateY(-50%)translateX(-100%);
+    }
+    &.scroll-btn-right {
+      right: 0;
+      transform: translateY(-50%)translateX(100%);
+    }
+  }
+
+  &:hover {
+    .scroll-btn {
+      &.scroll-btn-left {
+        left: 5px;
+        transform: translateY(-50%);
+      }
+      &.scroll-btn-right {
+        right: 5px;
+        transform: translateY(-50%);
+      }
+    }
   }
 
   .app {

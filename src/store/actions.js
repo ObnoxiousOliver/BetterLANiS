@@ -135,7 +135,11 @@ export default {
       var compiledApps = {
         supported: mappedSupported,
         unsupported: mappedUnsupported,
-        folders: apps.folders.map(x => ({ name: x.name, icon: icons.mapIcon(x.logo) })),
+        folders: apps.folders.map(x => ({
+          name: x.name,
+          icon: icons.mapIcon(x.logo),
+          color: x.Farbe
+        })),
         favorites,
         history
       }

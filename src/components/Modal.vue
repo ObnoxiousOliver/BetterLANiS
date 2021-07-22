@@ -44,7 +44,7 @@ export default {
     focusElements () {
       // get all focusable Elements
       return [...document.querySelectorAll('a, button, input, textarea, select, details,[tabindex]:not([tabindex="-1"])')]
-        .filter(el => !el.hasAttribute('disabled'))
+        .filter(el => !el.hasAttribute('disabled') && el.hasAttribute('tabindex') ? el.getAttribute('tabindex') !== '-1' : true)
     }
   },
   watch: {
