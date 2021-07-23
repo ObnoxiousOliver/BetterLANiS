@@ -1,0 +1,43 @@
+// Table
+
+.table {
+  & > thead > tr > th {
+    border-bottom: 2px solid $muted-foreground;
+  }
+
+  & > tbody > tr,
+  & > tfoot > tr,
+  & > thead > tr {
+    & > td, & > th {
+      border-top: $muted-foreground solid 1px;
+    }
+  }
+}
+
+.table-striped {
+  & > tbody > tr:nth-of-type(odd) {
+    background: $background-modifier-selected;
+  }
+}
+
+.table-hover {
+  & > tbody > tr {
+    transition: background-color 0.15s;
+
+    &:hover {
+      background: $background-modifier-hover;
+    }
+  }
+}
+
+.table-bordered {
+  border-color: $muted-foreground;
+
+  & > tbody > tr,
+  & > tfoot > tr,
+  & > thead > tr {
+    & > td, & > th {
+      border-color: $muted-foreground;
+    }
+  }
+}

@@ -1,0 +1,76 @@
+// Button
+
+.btn {
+  background: transparent;
+  color: inherit;
+  border: transparent solid 2px;
+  border-radius: 3px;
+  transition-property: background-color, color, transform;
+  transition-duration: 0.2s;
+
+  &.active, &:active, &:hover, .open > &.dropdown-toggle {
+    background: $button-highlight;
+    color: $button-highlight-foreground;
+  }
+
+  &.active, &:active {
+    transform: scale(0.98);
+    box-shadow: none;
+  }
+
+  &.focus, &:focus-visible {
+    outline: none;
+    border-color: currentColor;
+  }
+
+  &.active, &:active {
+    &:focus, &.focus {
+      outline: none;
+    }
+  }
+
+  &.btn-default {
+    background: $button;
+    color: $button-foreground;
+  }
+
+  &.btn-primary, &.btn-info {
+    background: $accent;
+    color: $accent-foreground;
+
+    &.active, &:active, &:hover {
+      background: $accent-foreground;
+      color: $accent;
+    }
+  }
+
+  &.btn-warning {
+    background: $warning-background;
+    color: $warning;
+
+    &.active, &:active, &:hover {
+      background: $warning;
+      color: $warning-foreground;
+    }
+  }
+
+  &.btn-danger {
+    background: $error-background;
+    color: $error;
+
+    &.active, &:active, &:hover {
+      background: $error;
+      color: $error-foreground;
+    }
+  }
+
+  &.btn-success {
+    background: $success-background;
+    color: $success;
+
+    &.active, &:active, &:hover {
+      background: $success;
+      color: $success-foreground;
+    }
+  }
+}

@@ -1,0 +1,62 @@
+// Input
+
+.form-control {
+  display: block;
+  height: 40px;
+  border-radius: 0;
+  box-shadow: none;
+
+  background: $button;
+  color: $primary-foreground;
+  position: relative;
+  border: 0;
+  border-bottom: $button solid 3px;
+  padding: 10px 20px 7px;
+  font-family: inherit;
+  transition: all 0.2s ease-in-out;
+
+  &:focus {
+    outline: none;
+    background: $button-highlight;
+    color: $button-highlight-foreground;
+    border-bottom-color: $accent;
+    transition: all 0.1s ease-in-out;
+  }
+
+  &::placeholder {
+    color: $muted-foreground;
+  }
+}
+
+.input-group {
+  .input-group-addon {
+    color: $button-foreground;
+    background: $button;
+    text-align: center;
+    border: none;
+    border-left: 1px solid $muted-foreground;
+    border-radius: 3px;
+  }
+
+  & .form-control:first-child,
+  &-addon:first-child,
+  &-btn:first-child > .btn,
+  &-btn:first-child > .btn-group > .btn,
+  &-btn:first-child > .dropdown-toggle,
+  &-btn:last-child > .btn-group:not(:last-child) > .btn,
+  &-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  & .form-control:last-child,
+  &-addon:last-child,
+  &-btn:first-child > .btn-group:not(:first-child) > .btn,
+  &-btn:first-child > .btn:not(:first-child),
+  &-btn:last-child > .btn,
+  &-btn:last-child > .btn-group > .btn,
+  &-btn:last-child > .dropdown-toggle {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}

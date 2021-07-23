@@ -1,0 +1,57 @@
+// Dropdown
+
+.open > .dropdown-toggle {
+  box-shadow: none;
+  border-color: currentColor;
+
+  &.btn-primary, &.btn-info {
+    background: $accent-foreground;
+    color: $accent;
+  }
+
+  &.btn-warning {
+    background: $warning;
+    color: $warning-foreground;
+  }
+
+  &.btn-danger {
+    background: $error;
+    color: $error-foreground;
+  }
+
+  &.btn-success {
+    background: $success;
+    color: $success-foreground;
+  }
+}
+
+.dropdown-menu {
+  background: $popup-background;
+  color: $popup-foreground;
+  box-shadow: $elevation-low;
+
+  & > li > a {
+    color: inherit;
+    background: none;
+    border: transparent solid 2px;
+    padding: 0.2em 1em;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+
+    &:focus {
+      background: unset;
+    }
+
+    &:hover, &.hover {
+      background: $button-highlight;
+      color: $button-highlight-foreground;
+    }
+  }
+
+  .divider {
+    color: $muted-foreground;
+    border-bottom: currentColor solid 1px;
+    padding: 0 5px;
+    margin: 3px 10px;
+  }
+}

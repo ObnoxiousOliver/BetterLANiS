@@ -1,0 +1,499 @@
+:root {
+  --success: #5cb85c;
+  --success-background: #0a140a;
+  --success-foreground: #fff;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--header-font);
+}
+
+body {
+  font-family: var(--font);
+}
+
+[frame-host='start.schulportal.hessen.de'] {
+  /* Label */
+}
+
+[frame-host='start.schulportal.hessen.de'] .navbar-custom, [frame-host='start.schulportal.hessen.de'] .header-top, [frame-host='start.schulportal.hessen.de'] .ccm-page #header .header-top.header-top-colored, [frame-host='start.schulportal.hessen.de'] .sticky-wrapper, [frame-host='start.schulportal.hessen.de'] .footer, [frame-host='start.schulportal.hessen.de'] #headlogo {
+  display: none !important;
+}
+
+[frame-host='start.schulportal.hessen.de'] body {
+  overflow: auto;
+  background: var(--tertiary-background);
+  color: var(--primary-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] img {
+  border-radius: 3px;
+}
+
+[frame-host='start.schulportal.hessen.de'] h1 .small, [frame-host='start.schulportal.hessen.de'] h1 small, [frame-host='start.schulportal.hessen.de'] h2 .small, [frame-host='start.schulportal.hessen.de'] h2 small, [frame-host='start.schulportal.hessen.de'] h3 .small, [frame-host='start.schulportal.hessen.de'] h3 small, [frame-host='start.schulportal.hessen.de'] h4 .small, [frame-host='start.schulportal.hessen.de'] h4 small, [frame-host='start.schulportal.hessen.de'] h5 .small, [frame-host='start.schulportal.hessen.de'] h5 small, [frame-host='start.schulportal.hessen.de'] h6 .small, [frame-host='start.schulportal.hessen.de'] h6 small {
+  color: var(--secondary-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] :focus {
+  outline: none;
+}
+
+[frame-host='start.schulportal.hessen.de'] :focus-visible {
+  outline: var(--accent) solid 2px;
+  outline-offset: -2px;
+}
+
+[frame-host='start.schulportal.hessen.de'] ::-moz-selection {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] ::selection {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] a {
+  color: var(--accent);
+}
+
+[frame-host='start.schulportal.hessen.de'] .datepicker {
+  color: #000;
+}
+
+[frame-host='start.schulportal.hessen.de'] .btn {
+  background: transparent;
+  color: inherit;
+  border: transparent solid 2px;
+  border-radius: 3px;
+  -webkit-transition-property: background-color, color, -webkit-transform;
+  transition-property: background-color, color, -webkit-transform;
+  transition-property: background-color, color, transform;
+  transition-property: background-color, color, transform, -webkit-transform;
+  -webkit-transition-duration: 0.2s;
+          transition-duration: 0.2s;
+}
+
+[frame-host='start.schulportal.hessen.de'] .btn.active, [frame-host='start.schulportal.hessen.de'] .btn:active, [frame-host='start.schulportal.hessen.de'] .btn:hover, .open > [frame-host='start.schulportal.hessen.de'] .btn.dropdown-toggle {
+  background: var(--button-highlight);
+  color: var(--button-highlight-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .btn.active, [frame-host='start.schulportal.hessen.de'] .btn:active {
+  -webkit-transform: scale(0.98);
+          transform: scale(0.98);
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+[frame-host='start.schulportal.hessen.de'] .btn.focus, [frame-host='start.schulportal.hessen.de'] .btn:focus-visible {
+  outline: none;
+  border-color: currentColor;
+}
+
+[frame-host='start.schulportal.hessen.de'] .btn.active:focus, [frame-host='start.schulportal.hessen.de'] .btn.active.focus, [frame-host='start.schulportal.hessen.de'] .btn:active:focus, [frame-host='start.schulportal.hessen.de'] .btn:active.focus {
+  outline: none;
+}
+
+[frame-host='start.schulportal.hessen.de'] .btn.btn-default {
+  background: var(--button);
+  color: var(--button-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .btn.btn-primary, [frame-host='start.schulportal.hessen.de'] .btn.btn-info {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .btn.btn-primary.active, [frame-host='start.schulportal.hessen.de'] .btn.btn-primary:active, [frame-host='start.schulportal.hessen.de'] .btn.btn-primary:hover, [frame-host='start.schulportal.hessen.de'] .btn.btn-info.active, [frame-host='start.schulportal.hessen.de'] .btn.btn-info:active, [frame-host='start.schulportal.hessen.de'] .btn.btn-info:hover {
+  background: var(--accent-foreground);
+  color: var(--accent);
+}
+
+[frame-host='start.schulportal.hessen.de'] .btn.btn-warning {
+  background: var(--warning-background);
+  color: var(--warning);
+}
+
+[frame-host='start.schulportal.hessen.de'] .btn.btn-warning.active, [frame-host='start.schulportal.hessen.de'] .btn.btn-warning:active, [frame-host='start.schulportal.hessen.de'] .btn.btn-warning:hover {
+  background: var(--warning);
+  color: var(--warning-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .btn.btn-danger {
+  background: var(--error-background);
+  color: var(--error);
+}
+
+[frame-host='start.schulportal.hessen.de'] .btn.btn-danger.active, [frame-host='start.schulportal.hessen.de'] .btn.btn-danger:active, [frame-host='start.schulportal.hessen.de'] .btn.btn-danger:hover {
+  background: var(--error);
+  color: var(--error-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .btn.btn-success {
+  background: var(--success-background);
+  color: var(--success);
+}
+
+[frame-host='start.schulportal.hessen.de'] .btn.btn-success.active, [frame-host='start.schulportal.hessen.de'] .btn.btn-success:active, [frame-host='start.schulportal.hessen.de'] .btn.btn-success:hover {
+  background: var(--success);
+  color: var(--success-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .thumbnail {
+  background-color: var(--secondary-background);
+  border: none;
+  border-radius: 5px;
+  -webkit-transition: none;
+  transition: none;
+  -webkit-box-shadow: var(--elevation-medium);
+          box-shadow: var(--elevation-medium);
+}
+
+[frame-host='start.schulportal.hessen.de'] .thumbnail .caption {
+  color: inherit;
+}
+
+[frame-host='start.schulportal.hessen.de'] .panel {
+  background: var(--secondary-background);
+  -webkit-box-shadow: var(--elevation-high);
+          box-shadow: var(--elevation-high);
+  border: none;
+  overflow: hidden;
+}
+
+[frame-host='start.schulportal.hessen.de'] .panel .panel-heading {
+  font-family: var(--header-font);
+  font-size: 1.2em;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  background: var(--tertiary-background);
+  -webkit-box-shadow: var(--elevation-low);
+          box-shadow: var(--elevation-low);
+  border: none;
+}
+
+[frame-host='start.schulportal.hessen.de'] .panel .panel-body {
+  padding: 0 20px 15px;
+  overflow: hidden;
+}
+
+[frame-host='start.schulportal.hessen.de'] .panel .panel-footer {
+  padding: 10px 15px;
+  background: none;
+  border-top: 1px solid var(--muted-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .panel.panel-info .panel-heading {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .panel.panel-warning .panel-heading {
+  border-bottom: currentColor solid 2px;
+  background: var(--warning-background);
+  color: var(--warning);
+}
+
+[frame-host='start.schulportal.hessen.de'] .panel.panel-danger .panel-heading {
+  border-bottom: currentColor solid 2px;
+  background: var(--error-background);
+  color: var(--error);
+}
+
+[frame-host='start.schulportal.hessen.de'] .panel.panel-success .panel-heading {
+  background: var(--success);
+  color: var(--success-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .open > .dropdown-toggle {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  border-color: currentColor;
+}
+
+[frame-host='start.schulportal.hessen.de'] .open > .dropdown-toggle.btn-primary, [frame-host='start.schulportal.hessen.de'] .open > .dropdown-toggle.btn-info {
+  background: var(--accent-foreground);
+  color: var(--accent);
+}
+
+[frame-host='start.schulportal.hessen.de'] .open > .dropdown-toggle.btn-warning {
+  background: var(--warning);
+  color: var(--warning-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .open > .dropdown-toggle.btn-danger {
+  background: var(--error);
+  color: var(--error-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .open > .dropdown-toggle.btn-success {
+  background: var(--success);
+  color: var(--success-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .dropdown-menu {
+  background: var(--popup-background);
+  color: var(--popup-foreground);
+  -webkit-box-shadow: var(--elevation-low);
+          box-shadow: var(--elevation-low);
+}
+
+[frame-host='start.schulportal.hessen.de'] .dropdown-menu > li > a {
+  color: inherit;
+  background: none;
+  border: transparent solid 2px;
+  padding: 0.2em 1em;
+  cursor: pointer;
+  -webkit-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+[frame-host='start.schulportal.hessen.de'] .dropdown-menu > li > a:focus {
+  background: unset;
+}
+
+[frame-host='start.schulportal.hessen.de'] .dropdown-menu > li > a:hover, [frame-host='start.schulportal.hessen.de'] .dropdown-menu > li > a.hover {
+  background: var(--button-highlight);
+  color: var(--button-highlight-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .dropdown-menu .divider {
+  color: var(--muted-foreground);
+  border-bottom: currentColor solid 1px;
+  padding: 0 5px;
+  margin: 3px 10px;
+}
+
+[frame-host='start.schulportal.hessen.de'] .alert {
+  border: none;
+}
+
+[frame-host='start.schulportal.hessen.de'] .alert.alert-primary, [frame-host='start.schulportal.hessen.de'] .alert.alert-info {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .alert.alert-warning {
+  border: currentColor solid 2px;
+  background: var(--warning-background);
+  color: var(--warning);
+}
+
+[frame-host='start.schulportal.hessen.de'] .alert.alert-danger {
+  border: currentColor solid 2px;
+  background: var(--error-background);
+  color: var(--error);
+}
+
+[frame-host='start.schulportal.hessen.de'] .alert.alert-success {
+  background: var(--success);
+  color: var(--success-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .table > thead > tr > th {
+  border-bottom: 2px solid var(--muted-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .table > tbody > tr > td, [frame-host='start.schulportal.hessen.de'] .table > tbody > tr > th,
+[frame-host='start.schulportal.hessen.de'] .table > tfoot > tr > td,
+[frame-host='start.schulportal.hessen.de'] .table > tfoot > tr > th,
+[frame-host='start.schulportal.hessen.de'] .table > thead > tr > td,
+[frame-host='start.schulportal.hessen.de'] .table > thead > tr > th {
+  border-top: var(--muted-foreground) solid 1px;
+}
+
+[frame-host='start.schulportal.hessen.de'] .table-striped > tbody > tr:nth-of-type(odd) {
+  background: var(--background-modifier-selected);
+}
+
+[frame-host='start.schulportal.hessen.de'] .table-hover > tbody > tr {
+  -webkit-transition: background-color 0.15s;
+  transition: background-color 0.15s;
+}
+
+[frame-host='start.schulportal.hessen.de'] .table-hover > tbody > tr:hover {
+  background: var(--background-modifier-hover);
+}
+
+[frame-host='start.schulportal.hessen.de'] .table-bordered {
+  border-color: var(--muted-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .table-bordered > tbody > tr > td, [frame-host='start.schulportal.hessen.de'] .table-bordered > tbody > tr > th,
+[frame-host='start.schulportal.hessen.de'] .table-bordered > tfoot > tr > td,
+[frame-host='start.schulportal.hessen.de'] .table-bordered > tfoot > tr > th,
+[frame-host='start.schulportal.hessen.de'] .table-bordered > thead > tr > td,
+[frame-host='start.schulportal.hessen.de'] .table-bordered > thead > tr > th {
+  border-color: var(--muted-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .nav {
+  border-color: var(--muted-foreground);
+  padding: 0 10px;
+}
+
+[frame-host='start.schulportal.hessen.de'] .nav > li {
+  margin-bottom: 0;
+}
+
+[frame-host='start.schulportal.hessen.de'] .nav > li > a {
+  color: inherit;
+  border: none;
+  margin: 0;
+  background: var(--button);
+  color: var(--button-foreground);
+  -webkit-transition: background-color 0.2s, color 0.2s;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+[frame-host='start.schulportal.hessen.de'] .nav > li > a:hover, [frame-host='start.schulportal.hessen.de'] .nav > li > a:focus-visible {
+  outline: none;
+  background: var(--button-highlight);
+  color: var(--button-highlight-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .nav > li.active > a {
+  border: none;
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .nav > li.active > a:hover, [frame-host='start.schulportal.hessen.de'] .nav > li.active > a:focus-visible {
+  background: var(--accent-foreground);
+  color: var(--accent);
+}
+
+[frame-host='start.schulportal.hessen.de'] .form-control {
+  display: block;
+  height: 40px;
+  border-radius: 0;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  background: var(--button);
+  color: var(--primary-foreground);
+  position: relative;
+  border: 0;
+  border-bottom: var(--button) solid 3px;
+  padding: 10px 20px 7px;
+  font-family: inherit;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+[frame-host='start.schulportal.hessen.de'] .form-control:focus {
+  outline: none;
+  background: var(--button-highlight);
+  color: var(--button-highlight-foreground);
+  border-bottom-color: var(--accent);
+  -webkit-transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
+}
+
+[frame-host='start.schulportal.hessen.de'] .form-control::-webkit-input-placeholder {
+  color: var(--muted-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .form-control:-ms-input-placeholder {
+  color: var(--muted-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .form-control::-ms-input-placeholder {
+  color: var(--muted-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .form-control::placeholder {
+  color: var(--muted-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .input-group .input-group-addon {
+  color: var(--button-foreground);
+  background: var(--button);
+  text-align: center;
+  border: none;
+  border-left: 1px solid var(--muted-foreground);
+  border-radius: 3px;
+}
+
+[frame-host='start.schulportal.hessen.de'] .input-group .form-control:first-child, [frame-host='start.schulportal.hessen.de'] .input-group-addon:first-child,
+[frame-host='start.schulportal.hessen.de'] .input-group-btn:first-child > .btn,
+[frame-host='start.schulportal.hessen.de'] .input-group-btn:first-child > .btn-group > .btn,
+[frame-host='start.schulportal.hessen.de'] .input-group-btn:first-child > .dropdown-toggle,
+[frame-host='start.schulportal.hessen.de'] .input-group-btn:last-child > .btn-group:not(:last-child) > .btn,
+[frame-host='start.schulportal.hessen.de'] .input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+[frame-host='start.schulportal.hessen.de'] .input-group .form-control:last-child, [frame-host='start.schulportal.hessen.de'] .input-group-addon:last-child,
+[frame-host='start.schulportal.hessen.de'] .input-group-btn:first-child > .btn-group:not(:first-child) > .btn,
+[frame-host='start.schulportal.hessen.de'] .input-group-btn:first-child > .btn:not(:first-child),
+[frame-host='start.schulportal.hessen.de'] .input-group-btn:last-child > .btn,
+[frame-host='start.schulportal.hessen.de'] .input-group-btn:last-child > .btn-group > .btn,
+[frame-host='start.schulportal.hessen.de'] .input-group-btn:last-child > .dropdown-toggle {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+[frame-host='start.schulportal.hessen.de'] .list-group-item {
+  background: none;
+  border-color: var(--muted-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] ::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+[frame-host='start.schulportal.hessen.de'] ::-webkit-scrollbar-track {
+  background-color: var(--scrollbar-track);
+  background-clip: padding-box;
+  border: 3px solid transparent;
+  border-radius: 7px;
+}
+
+[frame-host='start.schulportal.hessen.de'] ::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+  background-clip: padding-box;
+  border: 3px solid transparent;
+  border-radius: 7px;
+  min-height: 30px;
+}
+
+[frame-host='start.schulportal.hessen.de'] ::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+[frame-host='start.schulportal.hessen.de'] .label {
+  color: inherit;
+}
+
+[frame-host='start.schulportal.hessen.de'] .label.label-default {
+  background: var(--button);
+  color: var(--button-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .label.label-primary, [frame-host='start.schulportal.hessen.de'] .label.label-info {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .label.label-warning {
+  background: var(--warning);
+  color: var(--warning-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .label.label-danger {
+  background: var(--error);
+  color: var(--error-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .label.label-success {
+  background: var(--success);
+  color: var(--success-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .help-block {
+  color: var(--muted-foreground);
+}
+/*# sourceMappingURL=browser_inject.css.map */
