@@ -9,8 +9,8 @@ export default {
 
     return this.RGBToHex(this.hsvToRGB({
       h: hsv.h,
-      s: this.clamp(hsv.s, 0, 0.7),
-      v: this.clamp(hsv.v * 1.5, 0.05, 1)
+      s: hsv.v ? this.clamp(hsv.s, 0, 0.7) : 0,
+      v: hsv.v > 0.05 ? hsv.v * 1.5 : 0.05
     }))
   },
   hexToRGB (h) {

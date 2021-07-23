@@ -29,8 +29,8 @@
     .app-card-icon {
       position: relative;
       z-index: 1;
-      background: $accent;
-      color: $accent-foreground;
+      background: var(--background, $accent);
+      color: var(--color, $accent-foreground);
       width: 100px;
       height: 100px;
       margin-bottom: 20px;

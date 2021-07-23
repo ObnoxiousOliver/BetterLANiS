@@ -27,6 +27,10 @@
               :key="app.name"
               :icon="app.icon"
               :to="app.route ? app.route : `/unsupported/${app.link.replaceAll('?', '&query:')}`"
+              :style="{
+                '--background': app.color,
+                '--color': color.getContrastYIQ(app.color)
+              }"
             >
               {{ app.name }}
             </AppCard>
@@ -52,6 +56,10 @@
               :key="app.name"
               :icon="app.icon"
               :to="app.route ? app.route : `/unsupported/${app.link.replaceAll('?', '&query:')}`"
+              :style="{
+                '--background': app.color,
+                '--color': color.getContrastYIQ(app.color)
+              }"
             >
               {{ app.name }}
             </AppCard>
@@ -71,6 +79,10 @@
             :key="app.name"
             :icon="app.icon"
             :to="app.route ? app.route : `/unsupported/${app.link.replaceAll('?', '&query:')}`"
+            :style="{
+              '--background': app.color,
+              '--color': color.getContrastYIQ(app.color)
+            }"
           >
             {{ app.name }}
           </AppButton>
@@ -116,6 +128,8 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
+
+import color from '@/color'
 
 import AppCard from '@/components/AppCard'
 import AppCardList from '@/components/AppCardList'
@@ -194,9 +208,10 @@ export default {
       ]
     },
     getFolders () {
+      console.log(this.apps.folders)
+
       var folders = this.apps.folders.map(x => ({
-        name: x.name,
-        icon: x.icon,
+        ...x,
         apps: []
       }))
 
@@ -207,6 +222,9 @@ export default {
       })
 
       return folders
+    },
+    color () {
+      return color
     }
   },
   data: () => ({
