@@ -13,14 +13,14 @@
   border-bottom: $button solid 3px;
   padding: 10px 20px 7px;
   font-family: inherit;
-  transition: all 0.2s ease-in-out;
+  transition: 0.2s ease-in-out;
 
   &:focus {
     outline: none;
     background: $button-highlight;
     color: $button-highlight-foreground;
     border-bottom-color: $accent;
-    transition: all 0.1s ease-in-out;
+    transition: 0.1s ease-in-out;
   }
 
   &::placeholder {
@@ -34,8 +34,8 @@
     background: $button;
     text-align: center;
     border: none;
-    border-left: 1px solid $muted-foreground;
     border-radius: 3px;
+    border-left: $muted-foreground solid 1px;
   }
 
   & .form-control:first-child,
@@ -47,6 +47,7 @@
   &-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle) {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+    border-left: none;
   }
 
   & .form-control:last-child,

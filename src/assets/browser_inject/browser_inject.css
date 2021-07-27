@@ -1,7 +1,7 @@
 :root {
-  --success: #5cb85c;
-  --success-background: #0a140a;
-  --success-foreground: #fff;
+  --bl-success: #5cb85c;
+  --bl-success-background: #0a140a;
+  --bl-success-foreground: #fff;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -13,15 +13,35 @@ body {
 }
 
 [frame-host='start.schulportal.hessen.de'] {
-  /* Label */
+  scroll-behavior: smooth;
 }
 
-[frame-host='start.schulportal.hessen.de'] .navbar-custom, [frame-host='start.schulportal.hessen.de'] .header-top, [frame-host='start.schulportal.hessen.de'] .ccm-page #header .header-top.header-top-colored, [frame-host='start.schulportal.hessen.de'] .sticky-wrapper, [frame-host='start.schulportal.hessen.de'] .footer, [frame-host='start.schulportal.hessen.de'] #headlogo {
-  display: none !important;
+[frame-host='start.schulportal.hessen.de']::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+[frame-host='start.schulportal.hessen.de']::-webkit-scrollbar-track {
+  background-color: var(--scrollbar-track);
+  background-clip: padding-box;
+  border: 3px solid transparent;
+  border-radius: 7px;
+}
+
+[frame-host='start.schulportal.hessen.de']::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+  background-clip: padding-box;
+  border: 3px solid transparent;
+  border-radius: 7px;
+  min-height: 30px;
+}
+
+[frame-host='start.schulportal.hessen.de']::-webkit-scrollbar-corner {
+  background-color: transparent;
 }
 
 [frame-host='start.schulportal.hessen.de'] body {
-  overflow: auto;
+  overflow: hidden scroll;
   background: var(--tertiary-background);
   color: var(--primary-foreground);
 }
@@ -74,6 +94,11 @@ body {
           transition-duration: 0.2s;
 }
 
+[frame-host='start.schulportal.hessen.de'] .btn.btn-default {
+  background: var(--button);
+  color: var(--button-foreground);
+}
+
 [frame-host='start.schulportal.hessen.de'] .btn.active, [frame-host='start.schulportal.hessen.de'] .btn:active, [frame-host='start.schulportal.hessen.de'] .btn:hover, .open > [frame-host='start.schulportal.hessen.de'] .btn.dropdown-toggle {
   background: var(--button-highlight);
   color: var(--button-highlight-foreground);
@@ -93,11 +118,6 @@ body {
 
 [frame-host='start.schulportal.hessen.de'] .btn.active:focus, [frame-host='start.schulportal.hessen.de'] .btn.active.focus, [frame-host='start.schulportal.hessen.de'] .btn:active:focus, [frame-host='start.schulportal.hessen.de'] .btn:active.focus {
   outline: none;
-}
-
-[frame-host='start.schulportal.hessen.de'] .btn.btn-default {
-  background: var(--button);
-  color: var(--button-foreground);
 }
 
 [frame-host='start.schulportal.hessen.de'] .btn.btn-primary, [frame-host='start.schulportal.hessen.de'] .btn.btn-info {
@@ -131,13 +151,13 @@ body {
 }
 
 [frame-host='start.schulportal.hessen.de'] .btn.btn-success {
-  background: var(--success-background);
-  color: var(--success);
+  background: var(--bl-success-background);
+  color: var(--bl-success);
 }
 
 [frame-host='start.schulportal.hessen.de'] .btn.btn-success.active, [frame-host='start.schulportal.hessen.de'] .btn.btn-success:active, [frame-host='start.schulportal.hessen.de'] .btn.btn-success:hover {
-  background: var(--success);
-  color: var(--success-foreground);
+  background: var(--bl-success);
+  color: var(--bl-success-foreground);
 }
 
 [frame-host='start.schulportal.hessen.de'] .thumbnail {
@@ -165,6 +185,7 @@ body {
 [frame-host='start.schulportal.hessen.de'] .panel .panel-heading {
   font-family: var(--header-font);
   font-size: 1.2em;
+  color: var(--primary-foreground);
   padding: 15px 20px;
   margin-bottom: 15px;
   background: var(--tertiary-background);
@@ -202,8 +223,8 @@ body {
 }
 
 [frame-host='start.schulportal.hessen.de'] .panel.panel-success .panel-heading {
-  background: var(--success);
-  color: var(--success-foreground);
+  background: var(--bl-success);
+  color: var(--bl-success-foreground);
 }
 
 [frame-host='start.schulportal.hessen.de'] .open > .dropdown-toggle {
@@ -228,8 +249,8 @@ body {
 }
 
 [frame-host='start.schulportal.hessen.de'] .open > .dropdown-toggle.btn-success {
-  background: var(--success);
-  color: var(--success-foreground);
+  background: var(--bl-success);
+  color: var(--bl-success-foreground);
 }
 
 [frame-host='start.schulportal.hessen.de'] .dropdown-menu {
@@ -237,6 +258,9 @@ body {
   color: var(--popup-foreground);
   -webkit-box-shadow: var(--elevation-low);
           box-shadow: var(--elevation-low);
+  border: none;
+  -webkit-animation: dropdownOpen 0.15s cubic-bezier(0.19, 1, 0.22, 1);
+          animation: dropdownOpen 0.15s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 [frame-host='start.schulportal.hessen.de'] .dropdown-menu > li > a {
@@ -265,6 +289,38 @@ body {
   margin: 3px 10px;
 }
 
+@-webkit-keyframes dropdownOpen {
+  from {
+    opacity: 0;
+    -webkit-transform: translateY(-10px);
+            transform: translateY(-10px);
+    -webkit-clip-path: polygon(0 10px, 0 90%, 100% 90%, 100% 10px);
+            clip-path: polygon(0 10px, 0 90%, 100% 90%, 100% 10px);
+  }
+  to {
+    -webkit-clip-path: polygon(0 0, 0 100%, 100% 100%, 100% 0);
+            clip-path: polygon(0 0, 0 100%, 100% 100%, 100% 0);
+    -webkit-transform: none;
+            transform: none;
+  }
+}
+
+@keyframes dropdownOpen {
+  from {
+    opacity: 0;
+    -webkit-transform: translateY(-10px);
+            transform: translateY(-10px);
+    -webkit-clip-path: polygon(0 10px, 0 90%, 100% 90%, 100% 10px);
+            clip-path: polygon(0 10px, 0 90%, 100% 90%, 100% 10px);
+  }
+  to {
+    -webkit-clip-path: polygon(0 0, 0 100%, 100% 100%, 100% 0);
+            clip-path: polygon(0 0, 0 100%, 100% 100%, 100% 0);
+    -webkit-transform: none;
+            transform: none;
+  }
+}
+
 [frame-host='start.schulportal.hessen.de'] .alert {
   border: none;
 }
@@ -287,8 +343,8 @@ body {
 }
 
 [frame-host='start.schulportal.hessen.de'] .alert.alert-success {
-  background: var(--success);
-  color: var(--success-foreground);
+  background: var(--bl-success);
+  color: var(--bl-success-foreground);
 }
 
 [frame-host='start.schulportal.hessen.de'] .table > thead > tr > th {
@@ -301,6 +357,86 @@ body {
 [frame-host='start.schulportal.hessen.de'] .table > thead > tr > td,
 [frame-host='start.schulportal.hessen.de'] .table > thead > tr > th {
   border-top: var(--muted-foreground) solid 1px;
+}
+
+[frame-host='start.schulportal.hessen.de'] .table > tbody > tr > td.info, [frame-host='start.schulportal.hessen.de'] .table > tbody > tr > th.info,
+[frame-host='start.schulportal.hessen.de'] .table > tfoot > tr > td.info,
+[frame-host='start.schulportal.hessen.de'] .table > tfoot > tr > th.info,
+[frame-host='start.schulportal.hessen.de'] .table > thead > tr > td.info,
+[frame-host='start.schulportal.hessen.de'] .table > thead > tr > th.info {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .table > tbody > tr > td.warning, [frame-host='start.schulportal.hessen.de'] .table > tbody > tr > th.warning,
+[frame-host='start.schulportal.hessen.de'] .table > tfoot > tr > td.warning,
+[frame-host='start.schulportal.hessen.de'] .table > tfoot > tr > th.warning,
+[frame-host='start.schulportal.hessen.de'] .table > thead > tr > td.warning,
+[frame-host='start.schulportal.hessen.de'] .table > thead > tr > th.warning {
+  background: var(--warning);
+  color: var(--warning-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .table > tbody > tr > td.danger, [frame-host='start.schulportal.hessen.de'] .table > tbody > tr > th.danger,
+[frame-host='start.schulportal.hessen.de'] .table > tfoot > tr > td.danger,
+[frame-host='start.schulportal.hessen.de'] .table > tfoot > tr > th.danger,
+[frame-host='start.schulportal.hessen.de'] .table > thead > tr > td.danger,
+[frame-host='start.schulportal.hessen.de'] .table > thead > tr > th.danger {
+  background: var(--error);
+  color: var(--error-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .table > tbody > tr > td.success, [frame-host='start.schulportal.hessen.de'] .table > tbody > tr > th.success,
+[frame-host='start.schulportal.hessen.de'] .table > tfoot > tr > td.success,
+[frame-host='start.schulportal.hessen.de'] .table > tfoot > tr > th.success,
+[frame-host='start.schulportal.hessen.de'] .table > thead > tr > td.success,
+[frame-host='start.schulportal.hessen.de'] .table > thead > tr > th.success {
+  background: var(--bl-success);
+  color: var(--bl-success-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .table > tbody > tr.active > td, [frame-host='start.schulportal.hessen.de'] .table > tbody > tr.active > th,
+[frame-host='start.schulportal.hessen.de'] .table > tfoot > tr.active > td,
+[frame-host='start.schulportal.hessen.de'] .table > tfoot > tr.active > th,
+[frame-host='start.schulportal.hessen.de'] .table > thead > tr.active > td,
+[frame-host='start.schulportal.hessen.de'] .table > thead > tr.active > th {
+  background: var(--background-modifier-active);
+}
+
+[frame-host='start.schulportal.hessen.de'] .table > tbody > tr.info > td, [frame-host='start.schulportal.hessen.de'] .table > tbody > tr.info > th,
+[frame-host='start.schulportal.hessen.de'] .table > tfoot > tr.info > td,
+[frame-host='start.schulportal.hessen.de'] .table > tfoot > tr.info > th,
+[frame-host='start.schulportal.hessen.de'] .table > thead > tr.info > td,
+[frame-host='start.schulportal.hessen.de'] .table > thead > tr.info > th {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .table > tbody > tr.warning > td, [frame-host='start.schulportal.hessen.de'] .table > tbody > tr.warning > th,
+[frame-host='start.schulportal.hessen.de'] .table > tfoot > tr.warning > td,
+[frame-host='start.schulportal.hessen.de'] .table > tfoot > tr.warning > th,
+[frame-host='start.schulportal.hessen.de'] .table > thead > tr.warning > td,
+[frame-host='start.schulportal.hessen.de'] .table > thead > tr.warning > th {
+  background: var(--warning-background);
+  color: var(--warning);
+}
+
+[frame-host='start.schulportal.hessen.de'] .table > tbody > tr.danger > td, [frame-host='start.schulportal.hessen.de'] .table > tbody > tr.danger > th,
+[frame-host='start.schulportal.hessen.de'] .table > tfoot > tr.danger > td,
+[frame-host='start.schulportal.hessen.de'] .table > tfoot > tr.danger > th,
+[frame-host='start.schulportal.hessen.de'] .table > thead > tr.danger > td,
+[frame-host='start.schulportal.hessen.de'] .table > thead > tr.danger > th {
+  background: var(--error-background);
+  color: var(--error);
+}
+
+[frame-host='start.schulportal.hessen.de'] .table > tbody > tr.success > td, [frame-host='start.schulportal.hessen.de'] .table > tbody > tr.success > th,
+[frame-host='start.schulportal.hessen.de'] .table > tfoot > tr.success > td,
+[frame-host='start.schulportal.hessen.de'] .table > tfoot > tr.success > th,
+[frame-host='start.schulportal.hessen.de'] .table > thead > tr.success > td,
+[frame-host='start.schulportal.hessen.de'] .table > thead > tr.success > th {
+  background: var(--bl-success);
+  color: var(--bl-success-foreground);
 }
 
 [frame-host='start.schulportal.hessen.de'] .table-striped > tbody > tr:nth-of-type(odd) {
@@ -377,8 +513,8 @@ body {
   border-bottom: var(--button) solid 3px;
   padding: 10px 20px 7px;
   font-family: inherit;
-  -webkit-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;
+  -webkit-transition: 0.2s ease-in-out;
+  transition: 0.2s ease-in-out;
 }
 
 [frame-host='start.schulportal.hessen.de'] .form-control:focus {
@@ -386,8 +522,8 @@ body {
   background: var(--button-highlight);
   color: var(--button-highlight-foreground);
   border-bottom-color: var(--accent);
-  -webkit-transition: all 0.1s ease-in-out;
-  transition: all 0.1s ease-in-out;
+  -webkit-transition: 0.1s ease-in-out;
+  transition: 0.1s ease-in-out;
 }
 
 [frame-host='start.schulportal.hessen.de'] .form-control::-webkit-input-placeholder {
@@ -411,8 +547,8 @@ body {
   background: var(--button);
   text-align: center;
   border: none;
-  border-left: 1px solid var(--muted-foreground);
   border-radius: 3px;
+  border-left: var(--muted-foreground) solid 1px;
 }
 
 [frame-host='start.schulportal.hessen.de'] .input-group .form-control:first-child, [frame-host='start.schulportal.hessen.de'] .input-group-addon:first-child,
@@ -423,6 +559,7 @@ body {
 [frame-host='start.schulportal.hessen.de'] .input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle) {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
+  border-left: none;
 }
 
 [frame-host='start.schulportal.hessen.de'] .input-group .form-control:last-child, [frame-host='start.schulportal.hessen.de'] .input-group-addon:last-child,
@@ -438,30 +575,6 @@ body {
 [frame-host='start.schulportal.hessen.de'] .list-group-item {
   background: none;
   border-color: var(--muted-foreground);
-}
-
-[frame-host='start.schulportal.hessen.de'] ::-webkit-scrollbar {
-  width: 14px;
-  height: 14px;
-}
-
-[frame-host='start.schulportal.hessen.de'] ::-webkit-scrollbar-track {
-  background-color: var(--scrollbar-track);
-  background-clip: padding-box;
-  border: 3px solid transparent;
-  border-radius: 7px;
-}
-
-[frame-host='start.schulportal.hessen.de'] ::-webkit-scrollbar-thumb {
-  background-color: var(--scrollbar-thumb);
-  background-clip: padding-box;
-  border: 3px solid transparent;
-  border-radius: 7px;
-  min-height: 30px;
-}
-
-[frame-host='start.schulportal.hessen.de'] ::-webkit-scrollbar-corner {
-  background-color: transparent;
 }
 
 [frame-host='start.schulportal.hessen.de'] .label {
@@ -489,11 +602,625 @@ body {
 }
 
 [frame-host='start.schulportal.hessen.de'] .label.label-success {
-  background: var(--success);
-  color: var(--success-foreground);
+  background: var(--bl-success);
+  color: var(--bl-success-foreground);
 }
 
 [frame-host='start.schulportal.hessen.de'] .help-block {
   color: var(--muted-foreground);
+}
+
+[frame-host='start.schulportal.hessen.de'] .select2-container {
+  color: #000;
+}
+
+[frame-host='start.schulportal.hessen.de'] .breadcrumb {
+  background: var(--secondary-background);
+}
+
+[frame-host='start.schulportal.hessen.de'] .datepicker {
+  background: #fff;
+  color: #000;
+}
+
+[frame-host='start.schulportal.hessen.de'][frame-path^='/kalender.php'] #calender {
+  padding: 10px;
+  -webkit-box-shadow: var(--elevation-high);
+          box-shadow: var(--elevation-high);
+  border-radius: 5px;
+  background: #fff;
+  color: #000;
+}
+
+[frame-host='start.schulportal.hessen.de'][frame-path^='/kalender.php'] #calender .fc-event, [frame-host='start.schulportal.hessen.de'][frame-path^='/kalender.php'] #calender .fc-event:hover, [frame-host='start.schulportal.hessen.de'][frame-path^='/kalender.php'] #calender .ui-widget .fc-event {
+  color: #fff;
+}
+
+[frame-host='start.schulportal.hessen.de'][frame-path^='/kalender.php'] .label[style*='background'] {
+  color: #fff;
+}
+
+[frame-host='start.schulportal.hessen.de'][frame-path^='/stundenplan.php'] .hover-warning {
+  background: var(--background-modifier-hover);
+}
+
+[frame-host='start.schulportal.hessen.de'][frame-path^='/stundenplan.php'] .table > tbody > tr,
+[frame-host='start.schulportal.hessen.de'][frame-path^='/stundenplan.php'] .table > tfoot > tr,
+[frame-host='start.schulportal.hessen.de'][frame-path^='/stundenplan.php'] .table > thead > tr {
+  -webkit-transition: background-color 0.2s;
+  transition: background-color 0.2s;
+}
+
+[frame-host='start.schulportal.hessen.de'][frame-path^='/stundenplan.php'] .table > tbody > tr > td, [frame-host='start.schulportal.hessen.de'][frame-path^='/stundenplan.php'] .table > tbody > tr > th,
+[frame-host='start.schulportal.hessen.de'][frame-path^='/stundenplan.php'] .table > tfoot > tr > td,
+[frame-host='start.schulportal.hessen.de'][frame-path^='/stundenplan.php'] .table > tfoot > tr > th,
+[frame-host='start.schulportal.hessen.de'][frame-path^='/stundenplan.php'] .table > thead > tr > td,
+[frame-host='start.schulportal.hessen.de'][frame-path^='/stundenplan.php'] .table > thead > tr > th {
+  -webkit-transition: background-color 0.2s;
+  transition: background-color 0.2s;
+}
+
+[frame-host='start.schulportal.hessen.de'][frame-path^='/stundenplan.php'] .stunde {
+  -webkit-transition: background-color 0.2s, border-color 0.2s;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+[frame-host='start.schulportal.hessen.de'][frame-path^='/stundenplan.php'] .stunde.active {
+  -webkit-transition: background-color 0.2s 0.2s, border-color 0.2s 0.2s;
+  transition: background-color 0.2s 0.2s, border-color 0.2s 0.2s;
+  background: var(--secondary-background);
+  color: var(--primary-foreground);
+  border-color: var(--accent);
+  border-radius: 5px;
+}
+
+[frame-host='start.schulportal.hessen.de'][frame-path^='/stundenplan.php'] .stunde:hover {
+  -webkit-transition: background-color 0.2s, border-color 0.2s;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+[frame-host='start.schulportal.hessen.de'][frame-path^='/dateispeicher.php'] .thumbnail[data-id][data-name] {
+  background: #fff;
+  color: #222;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] {
+  scroll-behavior: smooth;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de']::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de']::-webkit-scrollbar-track {
+  background-color: var(--scrollbar-track);
+  background-clip: padding-box;
+  border: 3px solid transparent;
+  border-radius: 7px;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de']::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+  background-clip: padding-box;
+  border: 3px solid transparent;
+  border-radius: 7px;
+  min-height: 30px;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de']::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] body {
+  --primary: var(--accent);
+  --secondary: var(--primary-background);
+  --dark: var(--secondary-foreground);
+  overflow: auto scroll;
+  background: var(--tertiary-background);
+  color: var(--primary-foreground);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] #region-main {
+  background: none;
+  border: none;
+}
+
+@media (min-width: 576px) {
+  [frame-host^='mo'][frame-host$='.schule.hessen.de'] .region_main_settings_menu_proxy {
+    background-color: var(--tertiary-background);
+  }
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] img {
+  border-radius: 5px;
+  background: #fff;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .userpicture {
+  border-radius: 50%;
+  -webkit-box-shadow: var(--elevation-low);
+          box-shadow: var(--elevation-low);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] footer#page-footer {
+  border-color: var(--accent);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .list-group .list-group-item {
+  background: none;
+  color: inherit;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .list-group .list-group-item:not([data-parent-key=mycourses]) {
+  border-left: none;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .list-group .list-group-item[data-key=mycourses] {
+  background: var(--secondary-background);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .list-group .list-group-item.active {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .list-group .list-group-item.active span.media-left i::before {
+  color: inherit;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .list-group .list-group-item .fa {
+  background: var(--accent-foreground);
+  border-radius: 9999rem;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .list-group .list-group-item .fa::before {
+  font-size: 0.8rem;
+  vertical-align: 0.1rem;
+  height: 100%;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .list-group .list-group-item-action {
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .list-group .list-group-item-action:hover {
+  background: var(--background-modifier-hover);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .list-group .list-group-item-action:active {
+  background: var(--background-modifier-active);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .list-group .list-group-item-action:focus-visible {
+  background: var(--background-modifier-hover);
+  border-left-width: 8px;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .card {
+  background: var(--secondary-background);
+  border: none;
+  -webkit-box-shadow: var(--elevation-medium);
+          box-shadow: var(--elevation-medium);
+  border-radius: 5px;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .course_category_tree .subcategories .card, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .course_category_tree .subcategories .card .card-img, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .course_category_tree .subcategories .card i {
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .course_category_tree .subcategories .card .card-footer {
+  background: var(--primary-background);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .btn:not(.btn-nav-drawer) {
+  background: transparent;
+  color: inherit;
+  border: transparent solid 2px;
+  border-radius: 3px;
+  -webkit-transition-property: background-color, color, -webkit-transform;
+  transition-property: background-color, color, -webkit-transform;
+  transition-property: background-color, color, transform;
+  transition-property: background-color, color, transform, -webkit-transform;
+  -webkit-transition-duration: 0.2s;
+          transition-duration: 0.2s;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .btn:not(.btn-nav-drawer):focus {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  outline: none;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .btn:not(.btn-nav-drawer).btn-default, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .btn:not(.btn-nav-drawer).btn-light {
+  background: var(--button);
+  color: var(--button-foreground);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .btn:not(.btn-nav-drawer).btn-outline-primary:not(:disabled):not(.disabled):active, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .btn:not(.btn-nav-drawer).btn-outline-primary:not(:disabled):not(.disabled).active {
+  border: none;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .btn:not(.btn-nav-drawer).active, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .btn:not(.btn-nav-drawer):active, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .btn:not(.btn-nav-drawer):hover, .open > [frame-host^='mo'][frame-host$='.schule.hessen.de'] .btn:not(.btn-nav-drawer).dropdown-toggle {
+  background: var(--button-highlight);
+  color: var(--button-highlight-foreground);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .btn:not(.btn-nav-drawer).active, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .btn:not(.btn-nav-drawer):active {
+  -webkit-transform: scale(0.98);
+          transform: scale(0.98);
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .btn:not(.btn-nav-drawer).focus, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .btn:not(.btn-nav-drawer):focus-visible {
+  outline: none;
+  border-color: currentColor;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .btn:not(.btn-nav-drawer).active:focus, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .btn:not(.btn-nav-drawer).active.focus, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .btn:not(.btn-nav-drawer):active:focus, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .btn:not(.btn-nav-drawer):active.focus {
+  outline: none;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .btn:not(.btn-nav-drawer).btn-primary {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .btn:not(.btn-nav-drawer).btn-primary.active, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .btn:not(.btn-nav-drawer).btn-primary:active, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .btn:not(.btn-nav-drawer).btn-primary:hover {
+  background: var(--accent-foreground);
+  color: var(--accent);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .dropdown-menu {
+  padding: 10px 0;
+  border-radius: 5px;
+  color: var(--popup-foreground);
+  background-color: var(--popup-background);
+  border: none;
+  -webkit-box-shadow: var(--elevation-low);
+          box-shadow: var(--elevation-low);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .dropdown-item {
+  color: inherit;
+  -webkit-transition: background-color 0.2s, color 0.2s;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .dropdown-item:active, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .dropdown-item.active, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .dropdown-item:hover, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .dropdown-item:focus, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .dropdown-item:focus-within {
+  background: var(--button-highlight);
+  color: var(--button-highlight-foreground);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .dropdown-item a {
+  color: inherit;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .dropdown-divider {
+  color: var(--muted-foreground);
+  border-top: currentColor solid 1px;
+  padding: 0 5px;
+  margin: 3px 10px;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .generaltable {
+  color: var(--secondary-foreground);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .generaltable tbody tr {
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .generaltable tbody tr:nth-of-type(odd) {
+  background: var(--background-modifier-selected);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .generaltable tbody tr:hover {
+  color: var(--primary-foreground);
+  background: var(--background-modifier-hover);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .generaltable th, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .generaltable td {
+  border-color: var(--muted-foreground);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .ThreeRowNav .top-row,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .ThreeRowNav .bottom-row {
+  border: none;
+  background: var(--accent) !important;
+  color: var(--accent-foreground);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .ThreeRowNav .top-row img,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .ThreeRowNav .bottom-row img {
+  background: none;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .ThreeRowNav .middle-row {
+  background: var(--primary-background);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .ThreeRowNav .middle-row * {
+  color: inherit;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .ThreeRowNav .bottom-row {
+  -webkit-box-shadow: var(--elevation-high);
+          box-shadow: var(--elevation-high);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .ThreeRowNav .bottom-row .navbar-custom .navbar-nav > li > a {
+  -webkit-transition: 0.15s;
+  transition: 0.15s;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .ThreeRowNav .bottom-row .navbar-custom .navbar-nav > li > a.moodle-icon {
+  background: unset;
+  padding-left: .5rem;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .ThreeRowNav .bottom-row .navbar-custom .navbar-nav > li > a:hover, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .ThreeRowNav .bottom-row .navbar-custom .navbar-nav > li > a:focus, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .ThreeRowNav .bottom-row .navbar-custom .navbar-nav > li > a:active {
+  color: var(--accent);
+  background: var(--accent-foreground);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .ThreeRowNav .btn-nav-drawer {
+  -webkit-transition: 0.15s;
+  transition: 0.15s;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .ThreeRowNav .btn-nav-drawer .ico-elem {
+  color: var(--accent);
+  background: var(--accent-foreground);
+  -webkit-transition: inherit;
+  transition: inherit;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .ThreeRowNav .btn-nav-drawer .ico-elem::before, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .ThreeRowNav .btn-nav-drawer .ico-elem i.bar {
+  background: currentColor;
+  -webkit-transition: inherit;
+  transition: inherit;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .ThreeRowNav .btn-nav-drawer .ico-elem::after {
+  border-color: currentColor;
+  -webkit-transition: inherit;
+  transition: inherit;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .ThreeRowNav .btn-nav-drawer:hover, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .ThreeRowNav .btn-nav-drawer:focus, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .ThreeRowNav .btn-nav-drawer.focus, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .ThreeRowNav .btn-nav-drawer:active {
+  background: var(--accent-foreground);
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  outline: none;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .ThreeRowNav .btn-nav-drawer:hover .ico-elem, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .ThreeRowNav .btn-nav-drawer:focus .ico-elem, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .ThreeRowNav .btn-nav-drawer.focus .ico-elem, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .ThreeRowNav .btn-nav-drawer:active .ico-elem {
+  color: var(--accent-foreground);
+  background: var(--accent);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .navbar-light .navbar-nav .nav-link,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .navbar-light .dropdown a.dropdown-toggle,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .simplesearchform .btn {
+  color: inherit;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] #nav-drawer {
+  -webkit-box-shadow: var(--elevation-high);
+          box-shadow: var(--elevation-high);
+  background: var(--tertiary-background);
+  overflow: hidden scroll;
+  scroll-behavior: smooth;
+  bottom: 0;
+  padding-right: 5px;
+  height: unset;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] #nav-drawer::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] #nav-drawer::-webkit-scrollbar-track {
+  background-color: var(--scrollbar-track);
+  background-clip: padding-box;
+  border: 3px solid transparent;
+  border-radius: 7px;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] #nav-drawer::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+  background-clip: padding-box;
+  border: 3px solid transparent;
+  border-radius: 7px;
+  min-height: 30px;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] #nav-drawer::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] #nav-drawer nav.list-group {
+  -webkit-transition: margin-top 0.2s;
+  transition: margin-top 0.2s;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] #page-course-index-category h2,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] #frontpage-available-course-list h2,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] #site-news-forum h2,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] #frontpage-course-list h2,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] #frontpage-category-names h2,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] #frontpage-category-combo h2 {
+  color: var(--secondary-foreground);
+  border-color: var(--muted-foreground);
+  background: var(--background-modifier-selected);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .aabtn:focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .btn-link:focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .nav-link:focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .atto_link_button:focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] [role='button']:focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .list-group-item-action:focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] input[type='checkbox']:focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] input[type='radio']:focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] input[type='file']:focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] input[type='image']:focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .sr-only-focusable:focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] a.dropdown-toggle:focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .modal-dialog[tabindex='0']:focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .moodle-dialogue-base .closebutton:focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] button.close:focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .form-autocomplete-selection:focus {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .aabtn.focus, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .aabtn:focus-visible,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .btn-link.focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .btn-link:focus-visible,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .nav-link.focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .nav-link:focus-visible,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .atto_link_button.focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .atto_link_button:focus-visible,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] [role='button'].focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] [role='button']:focus-visible,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .list-group-item-action.focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .list-group-item-action:focus-visible,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] input[type='checkbox'].focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] input[type='checkbox']:focus-visible,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] input[type='radio'].focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] input[type='radio']:focus-visible,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] input[type='file'].focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] input[type='file']:focus-visible,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] input[type='image'].focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] input[type='image']:focus-visible,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .sr-only-focusable.focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .sr-only-focusable:focus-visible,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] a.dropdown-toggle.focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] a.dropdown-toggle:focus-visible,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .modal-dialog[tabindex='0'].focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .modal-dialog[tabindex='0']:focus-visible,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .moodle-dialogue-base .closebutton.focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .moodle-dialogue-base .closebutton:focus-visible,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] button.close.focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] button.close:focus-visible,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .form-autocomplete-selection.focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .form-autocomplete-selection:focus-visible {
+  -webkit-box-shadow: var(--accent) 0 0 0 2px inset;
+          box-shadow: var(--accent) 0 0 0 2px inset;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] a {
+  color: var(--accent);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .aalink,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] #page-footer a:not([class]),
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .arrow_link,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] a:not([class]),
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .activityinstance > a {
+  color: var(--accent);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .aalink:focus, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .aalink.focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] #page-footer a:not([class]):focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] #page-footer a:not([class]).focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .arrow_link:focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .arrow_link.focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] a:not([class]):focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] a:not([class]).focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .activityinstance > a:focus,
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .activityinstance > a.focus {
+  color: var(--accent);
+  background-color: var(--background-modifier-selected);
+  -webkit-box-shadow: var(--background-modifier-selected) 0 0 0 3px;
+          box-shadow: var(--background-modifier-selected) 0 0 0 3px;
+  outline: var(--accent) solid 2px;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .badge-secondary {
+  color: var(--secondary-foreground);
+  background: var(--primary-background);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .badge-info {
+  color: var(--accent-foreground);
+  background: var(--accent);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] #page-navbar .breadcrumb {
+  border: none;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] #page-navbar .breadcrumb li::after {
+  border-left-color: var(--secondary-background);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .course-content ul.topics li.section:nth-child(2n),
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .course-content ul.weeks li.section:nth-child(2n) {
+  background: var(--background-modifier-selected);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .no-overflow::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .no-overflow::-webkit-scrollbar-track {
+  background-color: var(--scrollbar-track);
+  background-clip: padding-box;
+  border: 3px solid transparent;
+  border-radius: 7px;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .no-overflow::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+  background-clip: padding-box;
+  border: 3px solid transparent;
+  border-radius: 7px;
+  min-height: 30px;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .no-overflow::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .popover {
+  background: var(--popup-background);
+  color: var(--popup-foreground);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .popover * {
+  background: none;
+  color: inherit;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .modal .modal-content {
+  border-radius: 5px;
+  overflow: hidden;
+  background: var(--secondary-background);
+  -webkit-box-shadow: var(--elevation-high);
+          box-shadow: var(--elevation-high);
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] .modal .modal-header {
+  -webkit-box-shadow: var(--elevation-low);
+          box-shadow: var(--elevation-low);
+  color: #222;
+}
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] a.dimmed, [frame-host^='mo'][frame-host$='.schule.hessen.de'] a.dimmed:link, [frame-host^='mo'][frame-host$='.schule.hessen.de'] a.dimmed:visited, [frame-host^='mo'][frame-host$='.schule.hessen.de'] a.dimmed_text, [frame-host^='mo'][frame-host$='.schule.hessen.de'] a.dimmed_text:link, [frame-host^='mo'][frame-host$='.schule.hessen.de'] a.dimmed_text:visited, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .dimmed_text, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .dimmed_text a, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .dimmed_text a:link, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .dimmed_text a:visited, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .usersuspended, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .usersuspended a, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .usersuspended a:link, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .usersuspended a:visited, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .dimmed_category, [frame-host^='mo'][frame-host$='.schule.hessen.de'] .dimmed_category a {
+  color: var(--secondary-foreground);
 }
 /*# sourceMappingURL=browser_inject.css.map */

@@ -1,8 +1,12 @@
 /* Page Controls */
 
 .page-controls-component {
-  user-select: text;
+  display: flex;
   white-space: nowrap;
+
+  & > * {
+    flex: 0 0 auto;
+  }
 
   .page-control {
     background: none;
@@ -21,10 +25,64 @@
     &:active {
       background-color: $background-modifier-active;
     }
+
+    &.control-style {
+      position: relative;
+      width: 30px;
+
+      $box-shadow-pos: -0.75px -0.75px 0 1.5px;
+
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 50% auto auto 50%;
+        background: $error;
+        // border-radius: 1.5px;
+        width: 2px;
+        height: 80%;
+        transform: translate(-50%, -50%)rotate(-45deg)scaleY(0);
+        box-shadow:
+          transparent $box-shadow-pos,
+          $tertiary-background $box-shadow-pos;
+        transition: inherit;
+      }
+
+      &.style-disabled {
+
+        &::before {
+          transform: translate(-50%, -50%)rotate(-45deg);
+        }
+
+        &:hover::before {
+          box-shadow:
+            $background-modifier-hover $box-shadow-pos,
+            $tertiary-background $box-shadow-pos;
+        }
+    
+        &:active::before {
+          box-shadow:
+            $background-modifier-active $box-shadow-pos,
+            $tertiary-background $box-shadow-pos;
+        }
+      }
+    }
+
+    &.control-style-options {
+      width: 20px;
+      font-size: 0.7rem;
+    }
+  }
+
+  .divider {
+    margin: 3px 1px;
+    width: 1px;
+    height: calc(100% - 6px);
+    background: $muted-foreground;
   }
 
   .url {
-    display: inline;
+    flex: 1 1 auto;
+    user-select: text;
     padding: 0 5px;
     line-height: 30px;
 

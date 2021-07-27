@@ -1,6 +1,6 @@
 // Other
 
-/* Label */
+// Label
 .label {
   color: inherit;
 
@@ -31,7 +31,22 @@
 }
 
 // Help block
-
 .help-block {
   color: $muted-foreground;
+}
+
+// Select 2
+.select2-container {
+  color: #000;
+}
+
+// Breadcrumb
+.breadcrumb {
+  background: $secondary-background;
+}
+
+// Datepicker
+.datepicker {
+  background: #fff;
+  color: #000;
 }

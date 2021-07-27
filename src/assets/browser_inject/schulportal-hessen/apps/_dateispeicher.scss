@@ -1,0 +1,8 @@
+// Dateispeicher
+
+&[frame-path^='/dateispeicher.php'] {
+  .thumbnail[data-id][data-name] {
+    background: #fff;
+    color: #222;
+  }
+}

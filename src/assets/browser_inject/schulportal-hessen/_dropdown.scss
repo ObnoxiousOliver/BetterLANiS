@@ -29,6 +29,8 @@
   background: $popup-background;
   color: $popup-foreground;
   box-shadow: $elevation-low;
+  border: none;
+  animation: dropdownOpen 0.15s cubic-bezier(0.19, 1, 0.22, 1);
 
   & > li > a {
     color: inherit;
@@ -53,5 +55,24 @@
     border-bottom: currentColor solid 1px;
     padding: 0 5px;
     margin: 3px 10px;
+  }
+
+  @keyframes dropdownOpen {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+      clip-path: polygon(
+        0 10px,
+        0 90%,
+        100% 90%,
+        100% 10px);
+    }
+    to {
+      clip-path: polygon(0 0,
+      0 100%,
+      100% 100%,
+      100% 0);
+      transform: none;
+    }
   }
 }

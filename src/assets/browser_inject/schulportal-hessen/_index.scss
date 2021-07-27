@@ -1,13 +1,11 @@
 // start.schulportal.hessen.de
 
 [frame-host='start.schulportal.hessen.de'] {
-  // Hide Header
-  .navbar-custom, .header-top, .ccm-page #header .header-top.header-top-colored, .sticky-wrapper, .footer, #headlogo {
-    display: none !important;
-  }
+  @include bl-scrollbar;
+  scroll-behavior: smooth;
 
   body {
-    overflow: auto;
+    overflow: hidden scroll;
     background: $tertiary-background;
     color: $primary-foreground;
   }
@@ -53,6 +51,7 @@
   @import 'nav-tabs';
   @import 'input';
   @import 'list';
-  @import 'scrollbar';
   @import 'other';
+
+  @import 'apps/apps-index';
 }

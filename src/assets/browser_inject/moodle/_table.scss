@@ -1,0 +1,22 @@
+// Table
+
+.generaltable {
+  color: $secondary-foreground;
+
+  tbody tr{
+    transition: 0.2s;
+
+    &:nth-of-type(odd) {
+      background: $background-modifier-selected;
+    }
+
+    &:hover {
+      color:  $primary-foreground;
+      background: $background-modifier-hover;
+    }
+  }
+
+  th, td {
+    border-color: $muted-foreground;
+  }
+}

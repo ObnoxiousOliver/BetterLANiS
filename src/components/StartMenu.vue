@@ -26,9 +26,9 @@
     </div>
     <div class="app-list scroll y auto thin">
       <bl-button
-        id="home"
-        :class="['app-button', '/home' === $route.fullPath ? 'btn-primary btn-no-caps' : 'btn-transparent']"
-        to="/home"
+        id="start"
+        :class="['app-button', '/' === $route.fullPath ? 'btn-primary btn-no-caps' : 'btn-transparent']"
+        to="/"
       >
         <i class="fas fa-home" /> Start
       </bl-button>

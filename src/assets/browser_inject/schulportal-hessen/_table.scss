@@ -9,7 +9,58 @@
   & > tfoot > tr,
   & > thead > tr {
     & > td, & > th {
-      border-top: $muted-foreground solid 1px;
+      border-top: $muted-foreground solid 1px;  
+
+      &.info {
+        background: $accent;
+        color: $accent-foreground;
+      }
+      &.warning {
+        background: $warning;
+        color: $warning-foreground;
+      }
+      &.danger {
+        background: $error;
+        color: $error-foreground;
+      }
+      &.success {
+        background: $success;
+        color: $success-foreground;
+      }
+    }
+
+    &.active {
+      & > td, & > th {
+        background: $background-modifier-active;
+      }
+    }
+
+    &.info {
+      & > td, & > th {
+        background: $accent;
+        color: $accent-foreground;
+      }
+    }
+
+    &.warning {
+      & > td, & > th {
+        background: $warning-background;
+        color: $warning;
+      }
+    }
+
+    &.danger {
+      & > td, & > th {
+        background: $error-background;
+        color: $error;
+      }
+    }
+
+    &.success {
+      & > td, & > th {
+        background: $success;
+        color: $success-foreground;
+      }
     }
   }
 }

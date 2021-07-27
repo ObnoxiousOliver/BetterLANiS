@@ -31,9 +31,9 @@ $error: var(--error);
 $error-background: var(--error-background);
 $error-foreground: var(--error-foreground);
 
-$success: var(--success);
-$success-background: var(--success-background);
-$success-foreground: var(--success-foreground);
+$success: var(--bl-success);
+$success-background: var(--bl-success-background);
+$success-foreground: var(--bl-success-foreground);
 
 $button: var(--button);
 $button-foreground: var(--button-foreground);
@@ -51,7 +51,7 @@ $font: var(--font);
 $header-font: var(--header-font);
 
 :root {
-  --success: #5cb85c;
-  --success-background: #0a140a;
-  --success-foreground: #fff;
+  --bl-success: #5cb85c;
+  --bl-success-background: #0a140a;
+  --bl-success-foreground: #fff;
 }

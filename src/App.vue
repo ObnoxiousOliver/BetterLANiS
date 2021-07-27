@@ -133,10 +133,25 @@ export default {
       }
     }
   },
+  watch: {
+    $route (to, from) {
+      this.setTitle(this.$route.name)
+    },
+    page (page) {
+      if (page === 'Login' || page === 'Welcome') {
+        this.setTitle('Login')
+      } else {
+        this.setTitle(this.$route.name)
+      }
+    }
+  },
   methods: {
     ...mapActions([
       'appStart'
     ]),
+    setTitle (title) {
+      document.title = title + ' - ' + remote.app.name
+    },
     changePage (page) {
       this.page = page
     },
@@ -174,6 +189,8 @@ export default {
     }
   },
   mounted () {
+    document.title = remote.app.name + ' - Login'
+
     this.appStart()
 
     setTimeout(() => {

@@ -1,15 +1,38 @@
 <template>
   <div class="page-controls-component">
-    <button @click="$emit('back')" id="back" class="page-control">
+    <tooltip placement="bottom">
+      <template #activator>
+        <button
+          @click="$emit('style')"
+          :class="[
+            'page-control',
+            'control-style',
+            styleDisabled ? 'style-disabled' : '']"
+        >
+          <i class="fas fa-paint-brush" />
+        </button>
+      </template>
+      <span v-if="styleDisabled">Thema für diese Seite anschalten</span>
+      <span v-else>Thema für diese Seite ausschalten</span>
+    </tooltip>
+    <button
+      ref="styleOptions"
+      @click="$emit('styleOptions', $refs.styleOptions)"
+      class="page-control control-style-options"
+    >
+      <i class="bi-chevron-down" />
+    </button>
+    <div class="divider" />
+    <button @click="$emit('back')" class="page-control control-back">
       <i class="fas fa-arrow-left" />
     </button>
-    <button @click="$emit('refresh')" id="refresh" class="page-control">
+    <button @click="$emit('refresh')" class="page-control control-refresh">
       <div v-if="loading" class="loader" />
       <i v-else class="fas fa-sync" />
     </button>
     <div class="url">
       <span v-if="location" class="url-protocol">
-        <tooltip placement="bottom-start" :variant="location.protocol === 'https:' ? '' : 'warning'">
+        <tooltip placement="bottom" :variant="location.protocol === 'https:' ? '' : 'warning'">
           <template #activator>
             <i v-if="location.protocol === 'https:'" class="fas fa-lock" />
             <i v-else class="fas fa-exclamation-triangle warning" />
@@ -34,7 +57,8 @@ export default {
   name: 'PageControls',
   props: {
     location: Object,
-    loading: Boolean
+    loading: Boolean,
+    styleDisabled: Boolean
   }
 }
 </script>

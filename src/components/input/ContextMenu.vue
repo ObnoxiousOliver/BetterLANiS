@@ -18,6 +18,9 @@ import { createPopper } from '@popperjs/core'
 
 export default {
   name: 'ContextMenu',
+  props: {
+    stayActive: Boolean
+  },
   data: () => ({
     contextOpen: false,
     contextShow: false
@@ -49,16 +52,24 @@ export default {
       })
     },
     close (e) {
+      if (!e) {
+        this.contextOpen = false
+        this.contextShow = false
+        document.removeEventListener('mousedown', this.close)
+        document.removeEventListener('keydown', this.close)
+      }
       if (!e.path.includes(this.$refs.contextMenu)) {
         this.contextOpen = false
         this.contextShow = false
         document.removeEventListener('mousedown', this.close)
+        document.removeEventListener('keydown', this.close)
       }
     },
     menuClicked (e) {
+      if (this.stayActive) return
       var buttonClass = e.target.getAttribute('class')
       if (buttonClass ? !buttonClass.split(' ').includes('context-submenu-button') : true) {
-        this.close({ path: [] })
+        this.close()
       }
     }
   }

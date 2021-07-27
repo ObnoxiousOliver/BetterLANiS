@@ -1,6 +1,7 @@
 // Button
 
-.btn {
+
+.btn:not(.btn-nav-drawer) {
   background: transparent;
   color: inherit;
   border: transparent solid 2px;
@@ -8,9 +9,22 @@
   transition-property: background-color, color, transform;
   transition-duration: 0.2s;
 
-  &.btn-default {
+  &:focus {
+    box-shadow: none;
+    outline: none;
+  }
+
+  &.btn-default, &.btn-light {
     background: $button;
     color: $button-foreground;
+  }
+
+  &.btn-outline-primary {
+    &:not(:disabled):not(.disabled) {
+      &:active, &.active {
+        border: none;
+      }
+    }
   }
 
   &.active, &:active, &:hover, .open > &.dropdown-toggle {
@@ -31,46 +45,17 @@
   &.active, &:active {
     &:focus, &.focus {
       outline: none;
+      box-shadow: none;
     }
   }
 
-  &.btn-primary, &.btn-info {
+  &.btn-primary {
     background: $accent;
     color: $accent-foreground;
 
     &.active, &:active, &:hover {
       background: $accent-foreground;
       color: $accent;
-    }
-  }
-
-  &.btn-warning {
-    background: $warning-background;
-    color: $warning;
-
-    &.active, &:active, &:hover {
-      background: $warning;
-      color: $warning-foreground;
-    }
-  }
-
-  &.btn-danger {
-    background: $error-background;
-    color: $error;
-
-    &.active, &:active, &:hover {
-      background: $error;
-      color: $error-foreground;
-    }
-  }
-
-  &.btn-success {
-    background: $success-background;
-    color: $success;
-
-    &.active, &:active, &:hover {
-      background: $success;
-      color: $success-foreground;
     }
   }
 }

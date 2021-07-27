@@ -1,0 +1,35 @@
+// Stundenplan
+
+&[frame-path^='/stundenplan.php'] {
+  .hover-warning {
+    background: $background-modifier-hover;
+  }
+
+  .table {
+    & > tbody > tr,
+    & > tfoot > tr,
+    & > thead > tr {
+      transition: background-color 0.2s;
+
+      & > td, & > th {
+        transition: background-color 0.2s;
+      }
+    }
+  }
+
+  .stunde{
+    transition: background-color 0.2s, border-color 0.2s;
+
+    &.active {
+      transition: background-color 0.2s 0.2s, border-color 0.2s 0.2s;
+      background: $secondary-background;
+      color: $primary-foreground;
+      border-color: $accent;
+      border-radius: 5px;
+    }
+
+    &:hover {
+      transition: background-color 0.2s, border-color 0.2s;
+    }
+  }
+}
