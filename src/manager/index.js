@@ -130,6 +130,72 @@ export default {
             })
           // callback(link)
         },
+        getWeek (dateString, callback) {
+          var start = moment(dateString).weekday(1).format('YYYY-MM-DD')
+          var end = moment(dateString).weekday(7).format('YYYY-MM-DD')
+
+          fetch('https://start.schulportal.hessen.de/kalender.php', {
+            headers: {
+              accept: 'application/json, text/javascript, */*; q=0.01',
+              'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+              'cache-control': 'no-cache',
+              pragma: 'no-cache'
+            },
+            body: `f=getEvents&start=${start}&end=${end}`,
+            method: 'POST'
+          }).then(res => res.json())
+            .then(data => {
+              var week = []
+
+              data.forEach(event => {
+                var evStart = moment(event.start).diff(start, 'days') + 1
+                var evSpan = Math.ceil(moment.duration(moment(event.end).diff(event.start)).asDays())
+                var evStyle = []
+
+                if (evStart < 1) {
+                  evStart = 1
+                  evStyle.push('no-start')
+                }
+
+                if (evSpan + evStart - 1 > 7) {
+                  evSpan = 8 - evStart
+                  evStyle.push('no-end')
+                }
+
+                week.push({
+                  id: event.Id,
+                  name: event.title,
+                  start: evStart,
+                  span: evSpan,
+                  style: evStyle,
+                  raw: event
+                })
+              })
+
+              // Sort Events
+              // Get Nuber of iterations
+              const iterations = week.map(x => week.filter(y => y.start === x.start).length).sort()[0] + 1
+
+              const sortedEvents = []
+              const days = []
+
+              var uniqueEvents = week.map(x => x.start).filter((item, pos, self) => self.indexOf(item) === pos)
+
+              for (let i = 0; i < uniqueEvents.length; i++) {
+                days.push(week.filter(x => x.start === uniqueEvents[i]))
+              }
+              for (let i = 0; i < iterations; i++) {
+                days.forEach(x => {
+                  sortedEvents.push(...x.filter((y, pos) => pos === i))
+                })
+              }
+
+              week = sortedEvents
+
+              var weekData = { start, end, week }
+              callback(weekData)
+            })
+        },
         getMonth (dateString, callback) {
           var startEndD = moment(dateString)
           startEndD.date(1)

@@ -58,7 +58,7 @@
             </tooltip>
           </div>
 
-          <bl-button class="next-month" @click.="nextYear" @click.ctrl="nextDecade">
+          <bl-button class="next-month" @click="nextYear" @click.ctrl="nextDecade">
             <i class="bi-chevron-right" />
           </bl-button>
         </div>
@@ -120,11 +120,103 @@
             </div>
           </div>
         </div>
-
       </div>
 
       <div v-else-if="calendarView === 'week'" class="calendar-container view-week">
-        Week
+        <div class="calendar-controls">
+          <bl-button class="last-month" @click="lastWeek" @click.ctrl="lastWeek">
+            <i class="bi-chevron-left" />
+          </bl-button>
+
+          <div class="date-info">
+            <h2 class="date-current">
+              KW {{ currentDate.isoWeek() }}
+              <span class="small secondary">({{ moment(currentDate).weekday(1).format('DD.MM') }} -
+              {{ moment(currentDate).weekday(7).format('DD.MM.YYYY') }})</span>
+            </h2>
+            <tooltip class="date-today" placement="bottom">
+              <template #activator>
+                <button class="inline-btn" @click="goToToday">
+                  Heute: {{ today.format('DD.MM.YYYY') }}
+                </button>
+              </template>
+              Gehe zum
+              {{ today.format('DD.MM.YYYY') }}
+            </tooltip>
+          </div>
+
+          <bl-button class="next-month" @click="nextWeek" @click.ctrl="nextWeek">
+            <i class="bi-chevron-right" />
+          </bl-button>
+        </div>
+
+        <div v-if="weekData" class="calendar-table">
+          <div class="calendar-header">
+            <div class="cell">Montag</div>
+            <div class="cell">Dienstag</div>
+            <div class="cell">Mittwoch</div>
+            <div class="cell">Donnerstag</div>
+            <div class="cell">Freitag</div>
+            <div class="cell">Samstag</div>
+            <div class="cell">Sonntag</div>
+          </div>
+          <div class="calendar-row">
+            <div class="row-skeleton">
+              <div
+                v-for="(_, dayIndex) in 7"
+                :key="dayIndex"
+                :class="[
+                  'cell',
+                  moment(currentDate).weekday(dayIndex + 1).format('YYYY-MM-DD') === today.format('YYYY-MM-DD')
+                    ? 'is-today' : ''
+                ]"
+              >
+                <div />
+              </div>
+            </div>
+
+            <div class="row-header">
+              <div
+                v-for="(_, dayIndex) in 7"
+                :key="dayIndex"
+                :class="[
+                  'cell',
+                  moment(currentDate).weekday(dayIndex + 1).format('YYYY-MM-DD') === today.format('YYYY-MM-DD')
+                    ? 'is-today' : ''
+                ]"
+              >
+                {{ moment(currentDate).weekday(dayIndex + 1).date() }}
+              </div>
+            </div>
+
+            <div class="events">
+              <button
+                v-for="event in weekData.week"
+                :key="`${event.id}:${currentDate.isoWeek()}`"
+                :class="['event inline-btn', event.style, event.id === hoveringEvent ? 'active' : '']"
+                :style="{
+                  'grid-column': event.start + ' / span ' + event.span,
+                  opacity: matchesSearch(event) ? '' : '0.1',
+                  ...categories[event.raw.category] ? {
+                    '--background': color.pastelify(categories[event.raw.category].color),
+                    '--color': color.getContrastYIQ(color.pastelify(categories[event.raw.category].color))
+                  } : {}
+                }"
+                @mouseenter="hoveringEvent = event.id"
+                @mouseleave="hoveringEvent = undefined"
+                @click="selectedEvent = event"
+                :tabindex="selectedEvent ? -1 : 0"
+              >
+                <div>
+                  <i
+                    v-if="categories[event.raw.category]"
+                    :class="mapIcon(categories[event.raw.category].logo)"
+                  /> {{ event.name }}
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div v-else class="calendar-container view-month">
@@ -163,7 +255,7 @@
         <!-- Calendar View -->
         <div
           v-if="monthData"
-          class="calendar"
+          class="calendar-table"
         >
           <div class="calendar-header">
             <div class="cell">KW</div>
@@ -327,14 +419,15 @@ export default {
     hoveringEvent: undefined,
     selectedEvent: undefined,
     monthData: undefined,
-    date: moment().format('YYYY-MM-01'),
+    weekData: undefined,
+    date: moment().format('YYYY-MM-DD'),
     yearData: undefined,
     calendarView: undefined,
     searchString: '',
     filterCategory: 0
   }),
   mounted () {
-    this.$refs.calendarViewDropdown.setIndex(0)
+    this.$refs.calendarViewDropdown.setIndex(1)
   },
   watch: {
     calendarView (val) {
@@ -349,6 +442,14 @@ export default {
       var target = moment(this.monthData.start)
       target.date(target.date() + week * 7 + day)
       return this.today.format('YYYY-MM-DD') === target.format('YYYY-MM-DD')
+    },
+    nextWeek () {
+      this.date = moment(this.date).isoWeek(moment(this.date).isoWeek() + 1).format('YYYY-MM-DD')
+      this.updateCalendar()
+    },
+    lastWeek () {
+      this.date = moment(this.date).isoWeek(moment(this.date).isoWeek() - 1).format('YYYY-MM-DD')
+      this.updateCalendar()
     },
     nextMonth () {
       this.date = moment(this.date).month(moment(this.date).month() + 1).format('YYYY-MM-DD')
@@ -377,7 +478,7 @@ export default {
       this.updateCalendar()
     },
     goToToday () {
-      this.date = this.today.format('YYYY-MM-01')
+      this.date = this.today.format('YYYY-MM-DD')
       this.updateCalendar()
     },
     updateCalendar () {
@@ -386,12 +487,18 @@ export default {
           this.updateYearCalendar()
           break
         case 'week':
-          this.updateMonthCalendar()
+          this.updateWeekCalendar()
           break
         default:
           this.updateMonthCalendar()
           break
       }
+    },
+    updateWeekCalendar () {
+      manager.apps.supported.kalender.getWeek(this.date, data => {
+        this.weekData = data
+        console.log(data)
+      })
     },
     updateMonthCalendar () {
       manager.apps.supported.kalender.getMonth(this.date, data => {
@@ -414,7 +521,7 @@ export default {
         'April',
         'Mai',
         'Juni',
-        'July',
+        'Juli',
         'August',
         'September',
         'Oktober',
@@ -434,16 +541,16 @@ export default {
     },
     yearToIcon (year) {
       var yearArray = [
-        /* 0 */ undefined,
-        /* 1 */ { c: '#555', i: 'fas fa-smog' },
-        /* 2 */ { c: '#fff791', i: 'fas fa-charging-station' },
-        /* 3 */ { c: '#aaa', i: 'fas fa-space-shuttle' },
-        /* 4 */ { c: '#000', i: 'fas fa-fist-raised' },
-        /* 5 */ { c: '#4ec0f7', i: 'fas fa-atom' },
-        /* 6 */ { c: '#ff0', i: 'fas fa-radiation' },
-        /* 7 */ { c: '#7dda17', i: 'fas fa-biohazard' },
-        /* 8 */ { c: '#f11', i: 'fas fa-skull-crossbones' },
-        /* 9 */ { c: '#5fcc44', i: 'fas fa-seedling' },
+        /* 00 */ undefined,
+        /* 01 */ { c: '#555', i: 'fas fa-smog' },
+        /* 02 */ { c: '#fff791', i: 'fas fa-charging-station' },
+        /* 03 */ { c: '#aaa', i: 'fas fa-space-shuttle' },
+        /* 04 */ { c: '#000', i: 'fas fa-fist-raised' },
+        /* 05 */ { c: '#4ec0f7', i: 'fas fa-atom' },
+        /* 06 */ { c: '#ff0', i: 'fas fa-radiation' },
+        /* 07 */ { c: '#7dda17', i: 'fas fa-biohazard' },
+        /* 08 */ { c: '#f11', i: 'fas fa-skull-crossbones' },
+        /* 09 */ { c: '#5fcc44', i: 'fas fa-seedling' },
         /* 10 */ { c: '#b71752', i: 'fas fa-virus' },
         /* 11 */ { c: '#999', i: 'fas fa-mobile' },
         /* 12 */ { c: '#ff6ba8', i: 'fas fa-peace' },
