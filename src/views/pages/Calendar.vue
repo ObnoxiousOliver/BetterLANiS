@@ -31,7 +31,7 @@
 
       <div v-if="calendarView === 'year'" class="calendar-container view-year">
         <div class="calendar-controls">
-          <bl-button class="last-month" @click="lastYear" @click.ctrl="lastDecade">
+          <bl-button class="last" @click="lastYear" @click.ctrl="lastDecade">
             <i class="bi-chevron-left" />
           </bl-button>
 
@@ -58,7 +58,7 @@
             </tooltip>
           </div>
 
-          <bl-button class="next-month" @click="nextYear" @click.ctrl="nextDecade">
+          <bl-button class="next" @click="nextYear" @click.ctrl="nextDecade">
             <i class="bi-chevron-right" />
           </bl-button>
         </div>
@@ -124,7 +124,7 @@
 
       <div v-else-if="calendarView === 'week'" class="calendar-container view-week">
         <div class="calendar-controls">
-          <bl-button class="last-month" @click="lastWeek" @click.ctrl="lastWeek">
+          <bl-button class="last" @click="lastWeek" @click.ctrl="lastWeek">
             <i class="bi-chevron-left" />
           </bl-button>
 
@@ -145,7 +145,7 @@
             </tooltip>
           </div>
 
-          <bl-button class="next-month" @click="nextWeek" @click.ctrl="nextWeek">
+          <bl-button class="next" @click="nextWeek" @click.ctrl="nextWeek">
             <i class="bi-chevron-right" />
           </bl-button>
         </div>
@@ -192,7 +192,7 @@
             <div class="events">
               <button
                 v-for="event in weekData.week"
-                :key="`${event.id}:${currentDate.isoWeek()}`"
+                :key="`${event.id}:${weekData.start}`"
                 :class="['event inline-btn', event.style, event.id === hoveringEvent ? 'active' : '']"
                 :style="{
                   'grid-column': event.start + ' / span ' + event.span,
@@ -221,7 +221,7 @@
 
       <div v-else class="calendar-container view-month">
         <div class="calendar-controls">
-          <bl-button class="last-month" @click="lastMonth">
+          <bl-button class="last" @click="lastMonth">
             <i class="bi-chevron-left" />
           </bl-button>
 
@@ -242,12 +242,11 @@
                 </button>
               </template>
               Gehe zum
-              {{ monthToString(today.month()) }}
-              {{ today.year() }}
+              {{ today.format('DD.MM.YYYY') }}
             </tooltip>
           </div>
 
-          <bl-button class="next-month" @click="nextMonth">
+          <bl-button class="next" @click="nextMonth">
             <i class="bi-chevron-right" />
           </bl-button>
         </div>
@@ -497,7 +496,6 @@ export default {
     updateWeekCalendar () {
       manager.apps.supported.kalender.getWeek(this.date, data => {
         this.weekData = data
-        console.log(data)
       })
     },
     updateMonthCalendar () {

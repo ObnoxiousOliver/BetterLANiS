@@ -148,16 +148,17 @@ export default {
               var week = []
 
               data.forEach(event => {
-                var evStart = moment(event.start).diff(start, 'days') + 1
-                var evSpan = Math.ceil(moment.duration(moment(event.end).diff(event.start)).asDays())
                 var evStyle = []
+                var evStart = moment(event.start).diff(start, 'days') + 1
 
                 if (evStart < 1) {
                   evStart = 1
                   evStyle.push('no-start')
                 }
 
-                if (evSpan + evStart - 1 > 7) {
+                var evSpan = Math.ceil(moment.duration(moment(event.end).diff(moment(start).add(evStart - 1, 'days'))).asDays())
+
+                if (evSpan + evStart - 2 > 7) {
                   evSpan = 8 - evStart
                   evStyle.push('no-end')
                 }
