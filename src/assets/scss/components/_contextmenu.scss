@@ -5,6 +5,7 @@
 
   .menu-content {
     background: $popup-background;
+    color: $popup-foreground;
     border-radius: 5px;
     box-shadow: $elevation-low;
     padding: 10px 0;
@@ -15,7 +16,7 @@
       appearance: none;
       display: block;
       background: none;
-      color: $primary-foreground;
+      color: inherit;
       text-decoration: none;
       min-width: 150px;
       width: 100%;
@@ -91,6 +92,7 @@
   }
 
   &-enter-active {
+    pointer-events: none;
     transition: none 0.15s;
 
     .menu-content {
@@ -110,6 +112,7 @@
     }
   }
   &-leave-active {
+    pointer-events: none;
     transition: opacity 0.1s;
   }
   &-leave-to {

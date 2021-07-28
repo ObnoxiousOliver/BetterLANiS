@@ -1,5 +1,6 @@
 import manager from '@/manager'
 import color from '@/color'
+import icons from '@/icons'
 
 const { remote } = require('electron')
 const fs = require('fs')
@@ -112,7 +113,7 @@ export default {
             mappedUnsupported.push({
               name: app.Name,
               link: app.link,
-              icon: app.Logo,
+              icon: icons.mapIcon(app.Logo),
               folder: app.Ordner
             })
           }

@@ -300,3 +300,26 @@ label[for] {
     }
   }
 }
+
+@mixin buttonReset {
+  appearance: none;
+  border: none;
+  background: unset;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  align-items: unset;
+  text-align: inherit;
+  text-shadow: inherit;
+  letter-spacing: inherit;
+  word-spacing: inherit;
+  text-transform: inherit;
+  text-indent: inherit;
+  writing-mode: inherit;
+  text-rendering: inherit;
+}
+
+.inline-btn {
+  display: inline;
+  @include buttonReset
+}
