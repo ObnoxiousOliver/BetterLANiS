@@ -57,13 +57,43 @@
   }
 
   .timetable-container {
-    border-radius: 5px;
-    overflow: hidden;
-    border: $muted-foreground solid 1px;
+    position: relative;
     margin-bottom: 10px;
+
+    .timetable-border {
+      border-radius: 5px;
+      overflow: hidden;
+      border: $muted-foreground solid 1px;
+    }
+
+    &:hover {
+      .timetable-timeline-cursor {
+        opacity: 0.3;
+      }
+    }
+  }
+
+  .timetable-timeline-cursor {
+    z-index: 1;
+    position: absolute;
+    inset: 0 0 0 percentage(1 / 6);
+    border-top: $error dashed 2px;
+    pointer-events: none;
+    transition: opacity 0.2s;
+
+    .timeline-cursor-arrow {
+      position: absolute;
+      inset: -1px auto auto -1px;
+      transform: translate(-100%, -50%);
+      font-size: 0.6rem;
+      border-radius: 3px;
+      padding: 0 3px;
+      background: $error;
+    }
   }
 
   .timetable {
+    position: relative;
     width: calc(100% + 2px);
     margin: -1px;
     border-spacing: 0;
