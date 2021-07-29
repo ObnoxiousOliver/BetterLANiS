@@ -4,6 +4,11 @@
       @toggle-settings="showSettingsPanel = !showSettingsPanel; showSettings = false; showNews = false"
       :is-settings-open="showSettingsPanel"
     />
+    <transition name="offline-message">
+      <div v-if="!onlineStatus" class="offline-message">
+        Better LANiS ist gerade Offline :/
+      </div>
+    </transition>
     <div class="app-container" ref="appContainer">
       <transition name="viewer-settings-transition">
         <div
@@ -112,7 +117,9 @@ export default {
     settingsPage: '',
     page: 'Login',
     showNews: false,
-    'secret-9aj2': false
+    'secret-9aj2': false,
+    onlineStatus: true,
+    updateOnlineStatusInterval: undefined
   }),
   computed: {
     ...mapState([
@@ -130,6 +137,20 @@ export default {
         gitUser: remote.process.env.BL_REPO_USERNAME,
         gitRepo: remote.process.env.BL_REPO_NAME,
         token: remote.process.env.GITHUB_AUTH
+      }
+    }
+  },
+  watch: {
+    page () {
+      this.updateOnlineStatus()
+    },
+    onlineStatus () {
+      if (!this.onlineStatus) {
+        this.updateOnlineStatusInterval = setInterval(() => { this.updateOnlineStatus() }, 1000)
+      } else if (this.updateOnlineStatusInterval) {
+        clearInterval(this.updateOnlineStatusInterval)
+        this.page = ''
+        setTimeout(() => { this.page = 'Login' })
       }
     }
   },
@@ -171,10 +192,14 @@ export default {
         padding: 0.5rem 1rem;
         `
       )
+    },
+    updateOnlineStatus () {
+      this.onlineStatus = navigator.onLine
     }
   },
   mounted () {
     this.appStart()
+    this.updateOnlineStatus()
 
     setTimeout(() => {
       config.get(data => {

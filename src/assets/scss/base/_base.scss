@@ -207,6 +207,27 @@ fieldset {
   }
 }
 
+.offline-message {
+  background: $error;
+  color: $error-foreground;
+  text-align: center;
+  line-height: 30px;
+  height: 30px;
+  font-weight: 900;
+  padding: 0 10px;
+  overflow: hidden;
+
+  &-enter-active,
+  &-leave-active {
+    transition: 0.2s;
+  }
+
+  &-enter-from,
+  &-leave-to {
+    height: 0;
+  }
+}
+
 .secret-9aj2 {
   pointer-events: none;
   z-index: 9999;
