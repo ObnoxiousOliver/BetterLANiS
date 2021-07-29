@@ -1,5 +1,7 @@
 /* Page Timetable */
 
+@use 'sass:math';
+
 .timetable-view-component {
   height: 100%;
   width: 100%;
@@ -56,8 +58,46 @@
     }
   }
 
+  .timetable-container {
+    position: relative;
+    margin-bottom: 10px;
+
+    .timetable-border {
+      border-radius: 5px;
+      overflow: hidden;
+      border: $muted-foreground solid 1px;
+    }
+
+    &:hover {
+      .timetable-timeline-cursor {
+        opacity: 0.3;
+      }
+    }
+  }
+
+  .timetable-timeline-cursor {
+    z-index: 1;
+    position: absolute;
+    inset: 0 0 0 percentage(1 / 6);
+    border-top: $error dashed 2px;
+    pointer-events: none;
+    transition: opacity 0.2s;
+
+    .timeline-cursor-arrow {
+      position: absolute;
+      inset: -1px auto auto -1px;
+      transform: translate(-100%, -50%);
+      font-size: 0.6rem;
+      border-radius: 3px;
+      padding: 0 3px;
+      background: $error;
+    }
+  }
+
   .timetable {
-    width: 100%;
+    position: relative;
+    width: calc(100% + 2px);
+    margin: -1px;
     border-spacing: 0;
     border-collapse: collapse;
     cursor: default;
@@ -109,15 +149,15 @@
         margin: 2px;
         transition: all 0.15s;
 
-        .subject-layout {
-          width: fit-content;
-          margin: 0 auto;
-          display: grid;
-          padding: 0 5px;
-          grid-template-areas:
-            "name room week"
-            "teacher teacher week";
-        }
+        // .subject-layout {
+        //   width: fit-content;
+        //   margin: 0 auto;
+        //   display: grid;
+        //   padding: 0 5px;
+        //   grid-template-areas:
+        //     "name room week"
+        //     "teacher teacher week";
+        // }
 
         &.active {
           border-color: $accent;
@@ -132,7 +172,6 @@
           grid-area: name;
           font-weight: 700;
           font-size: 1.1em;
-          margin-right: 5px;
         }
 
         .subject-room {
@@ -149,8 +188,7 @@
         .subject-week {
           grid-area: week;
           background: $secondary-background;
-          margin: auto 0 auto 5px;
-          padding: 0 4px;
+          padding: 0 0.3em;
           border-radius: 3px;
           font-family: $header-font;
           font-weight: 700;
@@ -163,8 +201,12 @@
       }
 
       &.multiple-entrys {
-        .timetable-subject .subject-teacher {
-          display: none;
+        .timetable-subject {
+          white-space: nowrap;
+
+          .subject-teacher {
+            display: none;
+          }
         }
       }
 
@@ -181,33 +223,27 @@
       }
 
       &.empty-row {
-        background: repeating-linear-gradient(
-          -45deg,
-          $muted-foreground,
-          $muted-foreground 3px,
-          #0000 3px,
-          #0000 10px
-        );
+        position: relative;
 
-        .timetable-time {
-          transition: box-shadow 0.1s;
-          background: $tertiary-background;
-          box-shadow: transparent 0 0 0 100px inset;
+        .timetable-lession {
+          background: repeating-linear-gradient(
+            -45deg,
+            $muted-foreground,
+            $muted-foreground 2px * math.sqrt(2),
+            transparent 2px * math.sqrt(2),
+            transparent 6px * math.sqrt(2)
+            ) fixed;
         }
 
         &.hover {
-          &.empty-row {
+          &.empty-row .timetable-lession {
             background: repeating-linear-gradient(
               -45deg,
               $error,
-              $error 3px,
-              $background-modifier-selected 3px,
-              $background-modifier-selected 10px
-            );
-          }
-
-          .timetable-time {
-            box-shadow: $background-modifier-selected 0 0 0 100px inset;
+              $error 2px * math.sqrt(2),
+              $background-modifier-selected 2px * math.sqrt(2),
+              $background-modifier-selected 6px * math.sqrt(2)
+            ) fixed;
           }
         }
       }

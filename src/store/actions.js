@@ -106,7 +106,7 @@ export default {
               folder: app.Ordner
             }
             manager.apps.supported[appName].getData(app.link, data => {
-              // console.log(data)
+              console.log(data)
               mappedSupported[manager.apps.supported[appName].name].data = data
             })
           } else {
