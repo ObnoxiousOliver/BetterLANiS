@@ -23,6 +23,7 @@
           <AppCardList v-if="favoriteApps.length">
             <AppCard
               @click="addHistoryApp(app.name)"
+              @contextmenu="openAppMenu(app)"
               v-for="app in favoriteApps"
               :key="app.name"
               :icon="app.icon"
@@ -52,6 +53,7 @@
           <AppCardList>
             <AppCard
               @click="addHistoryApp(app.name)"
+              @contextmenu="openAppMenu(app)"
               v-for="app in folder.apps"
               :key="app.name"
               :icon="app.icon"
@@ -75,6 +77,7 @@
           </template>
           <AppButton
             @click="addHistoryApp(app.name)"
+            @contextmenu="openAppMenu(app)"
             v-for="app in recentApps"
             :key="app.name"
             :icon="app.icon"
@@ -89,6 +92,20 @@
         </AppButtonList>
       </div>
     </div>
+
+    <context-menu ref="appMenu">
+      <div class="header">{{currentApp.name}}</div>
+      <button v-if="!favoriteAppsRaw.includes(currentApp.name)" @click="addFavoriteAppClick(currentApp)">
+        <i class="bi-star" /> Zu Favoriten hinzufügen
+      </button>
+      <button v-else @click="removeFavoriteAppClick(currentApp)">
+        <i class="bi-star-fill" /> Aus Favoriten entfernen
+      </button>
+      <div v-if="currentApp.route" class="divider" />
+      <router-link :to="`/unsupported/${currentApp.link.replaceAll('?', '&query:')}`" v-if="currentApp.route">
+        <i class="fas fa-globe-europe" /> Im internen Browser öffnen
+      </router-link>
+    </context-menu>
 
     <Modal
       @closemodal="favoritesModalOpen = false"
@@ -173,6 +190,9 @@ export default {
 
       return favoriteApps.reverse()
     },
+    favoriteAppsRaw () {
+      return this.apps.favorites
+    },
     recentApps () {
       var supported = []
 
@@ -228,7 +248,8 @@ export default {
     }
   },
   data: () => ({
-    favoritesModalOpen: false
+    favoritesModalOpen: false,
+    currentApp: undefined
   }),
   methods: {
     ...mapActions([
@@ -243,6 +264,16 @@ export default {
       } else {
         this.addFavoriteApp(app)
       }
+    },
+    openAppMenu (app) {
+      this.currentApp = app
+      this.$refs.appMenu.open()
+    },
+    addFavoriteAppClick (app) {
+      this.addFavoriteApp(app.name)
+    },
+    removeFavoriteAppClick (app) {
+      this.removeFavoriteApp(app.name)
     }
   }
 }

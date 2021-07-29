@@ -1,7 +1,9 @@
 <template>
   <router-link :to="to" class="app-button-component">
-    <div class="app-button-icon">
-      <i :class="icon" />
+    <div class="app-button-icon-container">
+      <div class="app-button-icon">
+        <i :class="icon" />
+      </div>
     </div>
     <div class="app-button-name">
       <slot/>
