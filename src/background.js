@@ -178,6 +178,7 @@ function createWindow () {
   win.webContents.session.webRequest.onHeadersReceived({ urls: [] }, (details, callback) => {
     if (details.responseHeaders['x-frame-options']) {
       delete details.responseHeaders['x-frame-options']
+      delete details.responseHeaders['frame-ancestors']
     }
 
     var cbValue = { cancel: false, responseHeaders: details.responseHeaders }

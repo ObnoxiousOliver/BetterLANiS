@@ -108,12 +108,13 @@ export default {
       handler () {
         if (!this.styleActiveGlobal) {
           this.styleDisabled = true
-          return
+        } else {
+          this.styleDisabled = this.styleDisabledSites.includes(this.location.host + this.location.pathname)
         }
-        this.styleDisabled = this.styleDisabledSites.includes(this.location.host + this.location.pathname)
 
         var savedUserData = this.savedUser.data
         savedUserData.styleDisabledSites = this.styleDisabledSites
+        savedUserData.styleDisabledGlobal = !this.styleActiveGlobal
 
         this.setSavedUserData(savedUserData)
       }
@@ -124,15 +125,21 @@ export default {
       } else {
         this.styleDisabled = this.styleDisabledSites.includes(this.location.host + this.location.pathname)
       }
+
+      var savedUserData = this.savedUser.data
+      savedUserData.styleDisabledSites = this.styleDisabledSites
+      savedUserData.styleDisabledGlobal = !this.styleActiveGlobal
+
+      this.setSavedUserData(savedUserData)
     }
   },
   mounted () {
     this.setUrl = true
     try {
       this.styleDisabledSites = this.savedUser.data.styleDisabledSites
-      if (!this.styleDisabledSites) {
-        this.styleDisabledSites = []
-      }
+      this.styleActiveGlobal = !this.savedUser.data.styleDisabledGlobal
+      if (!this.styleDisabledSites) this.styleDisabledSites = []
+      if (this.styleActiveGlobal === undefined) this.styleActiveGlobal = true
     } catch {}
   },
   updated () {
