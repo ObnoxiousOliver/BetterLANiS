@@ -103,7 +103,8 @@ export default {
               data: undefined,
               link: app.link,
               icon: manager.apps.supported[appName].icon,
-              folder: app.Ordner
+              folders: app.Ordner,
+              color: /* color.pastelify( */(app.Farbe.startsWith('#') ? '' : '#') + app.Farbe/* ) */
             }
             manager.apps.supported[appName].getData(app.link, data => {
               console.log(data)
@@ -114,7 +115,8 @@ export default {
               name: app.Name,
               link: app.link,
               icon: icons.mapIcon(app.Logo),
-              folder: app.Ordner
+              folders: app.Ordner,
+              color: /* color.pastelify( */(app.Farbe.startsWith('#') ? '' : '#') + app.Farbe/* ) */
             })
           }
         }
@@ -135,7 +137,11 @@ export default {
       var compiledApps = {
         supported: mappedSupported,
         unsupported: mappedUnsupported,
-        folders: apps.folders.map(x => ({ name: x.name, icon: x.logo })),
+        folders: apps.folders.map(x => ({
+          name: x.name,
+          icon: icons.mapIcon(x.logo),
+          color: /*  color.pastelify( */(x.farbe.startsWith('#') ? '' : '#') + x.farbe/* ) */
+        })),
         favorites,
         history
       }

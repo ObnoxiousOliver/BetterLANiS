@@ -2,6 +2,8 @@
 
 .scroll {
   overflow: scroll;
+  scroll-behavior: smooth;
+
   &.x {
     overflow: scroll hidden;
   }

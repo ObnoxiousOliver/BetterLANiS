@@ -1,0 +1,66 @@
+.app-card-list-component {
+  position: relative;
+  overflow: hidden;
+
+  .scroll {
+    width: 100%;
+    padding: 5px 0;
+
+    .app-card-container {
+      width: fit-content;
+      padding: 0 10px;
+      display: flex;
+      flex-flow: row nowrap;
+      gap: 10px;
+    }
+  }
+
+  .scroll-btn {
+    position: absolute;
+    z-index: 1;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    top: 50%;
+    transition: 0.1s ease-in-out, transform 0.2s;
+
+    &.scroll-btn-left {
+      left: 0;
+      transform: translateY(-50%)translateX(-100%);
+    }
+    &.scroll-btn-right {
+      right: 0;
+      transform: translateY(-50%)translateX(100%);
+    }
+  }
+
+  &:hover {
+    .scroll-btn {
+      &.scroll-btn-left {
+        left: 5px;
+        transform: translateY(-50%);
+      }
+      &.scroll-btn-right {
+        right: 5px;
+        transform: translateY(-50%);
+      }
+    }
+  }
+
+  .app {
+    &-enter-active,
+    &-leave-active {
+      transition: 0.2s, margin 0.3s, transform 0.3s ;
+    }
+    &-enter-from,
+    &-leave-to {
+      opacity: 0;
+      margin: 0 -160px 0 0;
+      transform: scale(0.5);
+    }
+    &-move {
+      transition: transform 0.2s;
+    }
+  }
+}

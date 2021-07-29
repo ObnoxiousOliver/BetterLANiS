@@ -61,8 +61,10 @@ export default {
 
           if (fs.existsSync(path.join(USERS_PATH, userPath))) {
             var userData = JSON.parse(atob(fs.readFileSync(path.join(USERS_PATH, userPath))))
-            this.login(userData.user.username, userData.user.password, userData.user.schoolId, true)
-            return
+            if (userData.user) {
+              this.login(userData.user.username, userData.user.password, userData.user.schoolId, true)
+              return
+            }
           }
         }
 

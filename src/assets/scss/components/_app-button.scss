@@ -1,0 +1,46 @@
+.app-button-component {
+  display: flex;
+  position: relative;
+  flex: 0 0 auto;
+  color: inherit;
+  font-family: $font;
+  border: none;
+  border-radius: 3px;
+  overflow: hidden;
+  cursor: pointer;
+  text-decoration: none;
+  transition: 0.15s;
+
+  .app-button-icon-container {
+    flex: 0 0 auto;
+    padding: 0.5rem 0;
+    width: 2.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    color: var(--color, $accent-foreground);
+    background: var(--background, $accent);
+  }
+
+  .app-button-icon {
+    transition: 0.15s;
+  }
+
+  .app-button-name {
+    padding: 0.5rem 1rem 0.5rem 10px;
+    flex: 1 1 auto;
+    z-index: 1;
+  }
+  
+  &:hover {
+    background: $background-modifier-hover;
+
+    .app-button-icon {
+      transform: scale(1.2);
+    }
+  }
+  &:active {
+    background: $background-modifier-active;
+  }
+}

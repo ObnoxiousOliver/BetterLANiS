@@ -7,12 +7,32 @@
     margin: 20px 5px;
   }
 
+  .main {
+    float: left;
+    width: calc(100% - 300px);
+    padding-right: 10px;
+    padding-bottom: 100px;
+
+    &.no-sidebar {
+      float: unset;
+      width: unset;
+      padding-right: 0;
+    }
+  }
+
+  .sidebar {
+    float: right;
+    width: 300px;
+  }
+
+
+
   .section-header {
     display: flex;
     padding: 10px 10px 5px;
     margin-bottom: 10px;
-    color: $muted-foreground;
-    border-bottom: currentColor solid 1px;
+    color: $secondary-foreground;
+    border-bottom: $muted-foreground solid 1px;
 
     * {
       flex: 1 0 auto;
@@ -21,35 +41,6 @@
     .btn {
       flex: 0 0 auto;
       justify-self: end;
-    }
-  }
-
-  .app-card-list {
-    padding: 5px 10px;
-
-    & > div {
-      display: flex;
-      width: min-content;
-    }
-
-    .app-card-component {
-      margin-right: 10px;
-    }
-
-    .app {
-      &-enter-active,
-      &-leave-active {
-        transition: 0.2s, margin 0.3s, transform 0.3s ;
-      }
-      &-enter-from,
-      &-leave-to {
-        opacity: 0;
-        margin: 0 -160px 0 0;
-        transform: scale(0.5);
-      }
-      &-move {
-        transition: transform 0.2s;
-      }
     }
   }
 
@@ -65,16 +56,18 @@
     }
   }
 
-  .no-favorites {
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    align-items: center;
-    color: $secondary-foreground;
-    text-align: center;
-    width: 100%;
-    height: 208px;
-    line-height: 2.5rem;
+  .favorite-apps {
+    .no-favorites {
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: center;
+      align-items: center;
+      color: $secondary-foreground;
+      text-align: center;
+      width: 100%;
+      height: 208px;
+      line-height: 2.5rem;
+    }
   }
 
   .favorite-app-modal {
@@ -116,6 +109,21 @@
           color: $accent;
         }
       }
+    }
+  }
+
+  @media screen and (max-width: 1200px) {
+    .main {
+      float: unset;
+      width: unset;
+      padding-right: 0;
+      padding-bottom: 0;
+    }
+
+    .sidebar {
+      float: unset;
+      width: unset;
+      padding-bottom: 100px;
     }
   }
 }
