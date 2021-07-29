@@ -1,5 +1,7 @@
 /* Page Timetable */
 
+@use 'sass:math';
+
 .timetable-view-component {
   height: 100%;
   width: 100%;
@@ -221,33 +223,27 @@
       }
 
       &.empty-row {
-        background: repeating-linear-gradient(
-          -45deg,
-          $muted-foreground,
-          $muted-foreground 3px,
-          #0000 3px,
-          #0000 10px
-        );
+        position: relative;
 
-        .timetable-time {
-          transition: box-shadow 0.1s;
-          background: $tertiary-background;
-          box-shadow: transparent 0 0 0 100px inset;
+        .timetable-lession {
+          background: repeating-linear-gradient(
+            -45deg,
+            $muted-foreground,
+            $muted-foreground 2px * math.sqrt(2),
+            transparent 2px * math.sqrt(2),
+            transparent 6px * math.sqrt(2)
+            ) fixed;
         }
 
         &.hover {
-          &.empty-row {
+          &.empty-row .timetable-lession {
             background: repeating-linear-gradient(
               -45deg,
               $error,
-              $error 3px,
-              $background-modifier-selected 3px,
-              $background-modifier-selected 10px
-            );
-          }
-
-          .timetable-time {
-            box-shadow: $background-modifier-selected 0 0 0 100px inset;
+              $error 2px * math.sqrt(2),
+              $background-modifier-selected 2px * math.sqrt(2),
+              $background-modifier-selected 6px * math.sqrt(2)
+            ) fixed;
           }
         }
       }
