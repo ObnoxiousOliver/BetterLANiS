@@ -64,6 +64,9 @@ import PageControls from '@/components/PageControls'
 import manager from '@/manager'
 import { mapActions, mapState } from 'vuex'
 
+/* eslint import/no-webpack-loader-syntax: off */
+const injectCss = require('!!raw-loader!@/assets/browser_inject/browser_inject.css').default
+
 export default {
   name: 'Unsupported',
   components: {
@@ -185,9 +188,6 @@ export default {
       try {
         const frame = this.$refs.viewer.contentWindow
 
-        /* eslint import/no-webpack-loader-syntax: off */
-        const injectCss = require('!!raw-loader!@/assets/browser_inject/browser_inject.css').default
-
         var rootVars = Array.from(document.styleSheets)
           .filter(sheet => sheet.href === null || sheet.href.startsWith(window.location.origin))
           .reduce((acc, sheet) => (
@@ -205,7 +205,8 @@ export default {
         var style = frame.document.createElement('style')
         style.id = 'bl-injected-styles'
 
-        style.innerHTML = `[frame-host='start.schulportal.hessen.de'] .navbar-custom,
+        var styleText = `
+          [frame-host='start.schulportal.hessen.de'] .navbar-custom,
           [frame-host='start.schulportal.hessen.de'] .header-top,
           [frame-host='start.schulportal.hessen.de'] .ccm-page #header .header-top.header-top-colored,
           [frame-host='start.schulportal.hessen.de'] .sticky-wrapper,
@@ -215,12 +216,20 @@ export default {
           }\n`
 
         if (inject) {
-          style.innerHTML += ':root {\n' +
+          // Place imports at the top
+          const IMPORT_REGEX = /@import url\(.*\);/g
+          var imports = injectCss.match(IMPORT_REGEX)
+          styleText = `${imports.join('\n')}\n ${styleText}`
+
+          // Include all css variables
+          styleText += ':root {\n' +
             rootVars
               .map(x => `${x}: ${getComputedStyle(document.documentElement).getPropertyValue(x)};`)
               .join('\n') +
-          '}\n\n' + injectCss
+          '}\n\n' + injectCss.replace(IMPORT_REGEX, '')
         }
+
+        style.innerHTML = styleText
 
         frame.document.documentElement.append(style)
       } catch {}
