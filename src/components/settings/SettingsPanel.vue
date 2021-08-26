@@ -61,9 +61,6 @@
           ]"
         >
           <i class="icon fas fa-swatchbook" /> Themen Bibliothek
-          <template #badge>
-            <div class="btn-badge">Neu</div>
-          </template>
         </bl-button>
 
         <div class="divider" />
