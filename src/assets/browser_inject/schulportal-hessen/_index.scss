@@ -1,0 +1,57 @@
+// start.schulportal.hessen.de
+
+[frame-host='start.schulportal.hessen.de'] {
+  @include bl-scrollbar;
+  scroll-behavior: smooth;
+
+  body {
+    overflow: hidden scroll;
+    background: $tertiary-background;
+    color: $primary-foreground;
+  }
+
+  img {
+    border-radius: 3px;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    .small, small {
+      color: $secondary-foreground;
+    }
+  }
+
+  :focus {
+    outline: none;
+  }
+  
+  :focus-visible {
+    outline: $accent solid 2px;
+    outline-offset: -2px;
+  }
+
+  ::selection {
+    background: $accent;
+    color: $accent-foreground;
+  }
+
+  a {
+    color: $accent;
+  }
+
+  .datepicker {
+    color: #000;
+  }
+
+  @import 'button';
+  @import 'thumbnail';
+  @import 'panel';
+  @import 'dropdown';
+  @import 'alert';
+  @import 'table';
+  @import 'nav-tabs';
+  @import 'input';
+  @import 'list';
+  @import 'other';
+
+  @import 'apps/apps-index';
+}

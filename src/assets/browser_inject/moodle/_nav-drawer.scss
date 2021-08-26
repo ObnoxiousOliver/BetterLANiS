@@ -1,0 +1,18 @@
+// Nav Drawer
+
+#nav-drawer {
+  box-shadow: $elevation-high;
+  background: $tertiary-background;
+
+  overflow: hidden scroll;
+  scroll-behavior: smooth;
+  bottom: 0;
+  padding-right: 5px;
+  height: unset;
+
+  @include bl-scrollbar;
+
+  nav.list-group {
+    transition: margin-top 0.2s;
+  }
+}

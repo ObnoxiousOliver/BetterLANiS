@@ -1,0 +1,77 @@
+// Navbar
+
+.ThreeRowNav {
+  .top-row,
+  .bottom-row {
+    img {
+      background: none;
+    }
+
+    border: none;
+    background: $accent !important;
+    color: $accent-foreground;
+  }
+
+  .middle-row {
+    background: $primary-background;
+
+    * {
+      color: inherit;
+    }
+  }
+
+  .bottom-row {
+    box-shadow: $elevation-high;
+
+    .navbar-custom .navbar-nav > li > a {
+      transition: 0.15s;
+
+      &.moodle-icon {
+        background: unset;
+        padding-left: .5rem;
+      }
+  
+      &:hover, &:focus, &:active {
+        color: $accent;
+        background: $accent-foreground;
+      }
+    }
+  }
+
+  .btn-nav-drawer {
+    transition: 0.15s;
+
+    .ico-elem {
+      color: $accent;
+      background: $accent-foreground;
+      transition: inherit;
+
+      &::before, i.bar {
+        background: currentColor;
+        transition: inherit;
+      }
+
+      &::after {
+        border-color: currentColor;
+        transition: inherit;
+      }
+    }
+
+    &:hover, &:focus, &.focus, &:active {
+      background: $accent-foreground;
+      box-shadow: none;
+      outline: none;
+
+      .ico-elem {
+        color: $accent-foreground;
+        background: $accent;
+      }
+    }
+  }
+}
+
+.navbar-light .navbar-nav .nav-link,
+.navbar-light .dropdown a.dropdown-toggle,
+.simplesearchform .btn {
+  color: inherit;
+}

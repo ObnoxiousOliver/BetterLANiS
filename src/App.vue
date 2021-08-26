@@ -141,8 +141,16 @@ export default {
     }
   },
   watch: {
-    page () {
+    $route (to, from) {
+      this.setTitle(this.$route.name)
+    },
+    page (page) {
       this.updateOnlineStatus()
+      if (page === 'Login' || page === 'Welcome') {
+        this.setTitle('Login')
+      } else {
+        this.setTitle(this.$route.name)
+      }
     },
     onlineStatus () {
       if (!this.onlineStatus) {
@@ -158,6 +166,9 @@ export default {
     ...mapActions([
       'appStart'
     ]),
+    setTitle (title) {
+      document.title = title + ' - ' + remote.app.name
+    },
     changePage (page) {
       this.page = page
     },
@@ -198,6 +209,8 @@ export default {
     }
   },
   mounted () {
+    document.title = remote.app.name + ' - Login'
+
     this.appStart()
     this.updateOnlineStatus()
 

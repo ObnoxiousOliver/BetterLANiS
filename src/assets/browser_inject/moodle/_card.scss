@@ -1,0 +1,25 @@
+// Card
+
+.card {
+  background: $secondary-background;
+  border: none;
+  box-shadow: $elevation-medium;
+  border-radius: 5px;
+}
+
+.course_category_tree .subcategories .card {
+  &, .card-img, i {
+    transition: 0.2s;
+  }
+
+  .card-footer {
+    background: $primary-background;
+  }
+}
+// &:focus-within,
+// &:hover,
+// &:focus,
+// &:active,
+// &:focus-visible {
+  
+// }

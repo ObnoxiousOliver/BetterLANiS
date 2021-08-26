@@ -1,0 +1,31 @@
+// Dropdown
+
+.dropdown-menu {
+  padding: 10px 0;
+  border-radius: 5px;
+  color: $popup-foreground;
+  background-color: $popup-background;
+  border: none;
+  box-shadow: $elevation-low;
+}
+
+.dropdown-item {
+  color: inherit;
+  transition: background-color 0.2s, color 0.2s;
+
+  &:active, &.active, &:hover, &:focus, &:focus-within {
+    background: $button-highlight;
+    color: $button-highlight-foreground;
+  }
+
+  a {
+    color: inherit;
+  }
+}
+
+.dropdown-divider {
+  color: $muted-foreground;
+  border-top: currentColor solid 1px;
+  padding: 0 5px;
+  margin: 3px 10px;
+}

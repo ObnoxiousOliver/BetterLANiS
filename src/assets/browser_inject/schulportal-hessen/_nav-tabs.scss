@@ -1,0 +1,36 @@
+// Nav Tabs
+
+.nav {
+  border-color: $muted-foreground;
+  padding: 0 10px;
+
+  & > li {
+    margin-bottom: 0;
+
+    & > a {
+      color: inherit;
+      border: none;
+      margin: 0;
+      background: $button;
+      color: $button-foreground;
+      transition: background-color 0.2s, color 0.2s;
+
+      &:hover, &:focus-visible {
+        outline: none;
+        background: $button-highlight;
+        color: $button-highlight-foreground;
+      }
+    }
+
+    &.active > a {
+      border: none;
+      background: $accent;
+      color: $accent-foreground;
+
+      &:hover, &:focus-visible {
+        background: $accent-foreground;
+        color: $accent;
+      }
+    }
+  }
+}

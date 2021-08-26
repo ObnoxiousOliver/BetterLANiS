@@ -1,0 +1,27 @@
+// Alert
+
+.alert {
+  border: none;
+
+  &.alert-primary, &.alert-info {
+    background: $accent;
+    color: $accent-foreground;
+  }
+
+  &.alert-warning {
+    border: currentColor solid 2px;
+    background: $warning-background;
+    color: $warning;
+  }
+
+  &.alert-danger {
+    border: currentColor solid 2px;
+    background: $error-background;
+    color: $error;
+  }
+
+  &.alert-success {
+    background: $success;
+    color: $success-foreground;
+  }
+}

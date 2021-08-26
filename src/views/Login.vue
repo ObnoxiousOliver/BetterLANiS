@@ -95,7 +95,6 @@ export default {
             callback: () => {
               this.$emit('changePage', 'Welcome')
               this.disableForm = false
-              this.$router.push('/home')
 
               // Encrypt and save Logindata if remember me is checked
               if (rememberMe) {

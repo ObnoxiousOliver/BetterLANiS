@@ -9,26 +9,22 @@ import Calendar from '@/views/pages/Calendar'
 const routes = [
   {
     path: '/',
-    redirect: '/home'
-  },
-  {
-    path: '/home',
-    name: 'Home',
+    name: 'Start',
     component: Home
   },
   {
     path: '/unsupported/:link',
-    name: 'Unsupported',
+    name: 'Interner Browser',
     component: Unsupported
   },
   {
     path: '/timetable',
-    name: 'Timetable',
+    name: 'Stundenplan',
     component: Timetable
   },
   {
     path: '/calendar',
-    name: 'Calendar',
+    name: 'Kalender',
     component: Calendar
   }
 ]

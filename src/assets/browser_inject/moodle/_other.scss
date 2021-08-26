@@ -1,0 +1,113 @@
+// Other
+
+#page-course-index-category,
+#frontpage-available-course-list,
+#site-news-forum,
+#frontpage-course-list,
+#frontpage-category-names,
+#frontpage-category-combo {
+  h2 {
+    color: $secondary-foreground;
+    border-color: $muted-foreground;
+    background: $background-modifier-selected;
+  }
+}
+
+.aabtn,
+.btn-link,
+.nav-link,
+.atto_link_button,
+[role='button'],
+.list-group-item-action,
+input[type='checkbox'],
+input[type='radio'],
+input[type='file'],
+input[type='image'],
+.sr-only-focusable,
+a.dropdown-toggle,
+.modal-dialog[tabindex='0'],
+.moodle-dialogue-base .closebutton,
+button.close,
+.form-autocomplete-selection {
+  &:focus {
+    box-shadow: none;
+  }
+
+  &.focus, &:focus-visible {
+    box-shadow: $accent 0 0 0 2px inset;
+  }
+}
+
+a {
+  color: $accent;
+}
+
+.aalink,
+#page-footer a:not([class]),
+.arrow_link,
+a:not([class]),
+.activityinstance > a {
+  color: $accent;
+
+  &:focus, &.focus {
+    color: $accent;
+    background-color: $background-modifier-selected;
+    box-shadow: $background-modifier-selected 0 0 0 3px;
+    outline: $accent solid 2px;
+  }
+}
+
+.badge-secondary {
+  color: $secondary-foreground;
+  background: $primary-background;
+}
+
+.badge-info {
+  color: $accent-foreground;
+  background: $accent;
+}
+
+#page-navbar .breadcrumb {
+  border: none;
+
+  li::after {
+    border-left-color: $secondary-background;
+  }
+}
+
+.course-content ul.topics li.section:nth-child(2n),
+.course-content ul.weeks li.section:nth-child(2n) {
+  background: $background-modifier-selected;
+}
+
+.no-overflow {
+  @include bl-scrollbar;
+}
+
+.popover {
+  background: $popup-background;
+  color: $popup-foreground;
+
+  * {
+    background: none;
+    color: inherit;
+  }
+}
+
+.modal {
+  .modal-content {
+    border-radius: 5px;
+    overflow: hidden;
+    background: $secondary-background;
+    box-shadow: $elevation-high;
+  }
+
+  .modal-header {
+    box-shadow: $elevation-low;
+    color: #222;
+  }
+}
+
+a.dimmed, a.dimmed:link, a.dimmed:visited, a.dimmed_text, a.dimmed_text:link, a.dimmed_text:visited, .dimmed_text, .dimmed_text a, .dimmed_text a:link, .dimmed_text a:visited, .usersuspended, .usersuspended a, .usersuspended a:link, .usersuspended a:visited, .dimmed_category, .dimmed_category a {
+  color: $secondary-foreground;
+}

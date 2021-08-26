@@ -1,0 +1,60 @@
+// Panel
+
+.panel {
+  background: $secondary-background;
+  box-shadow: $elevation-high;
+  border: none;
+  overflow: hidden;
+
+  .panel-heading {
+    font-family: $header-font;
+    font-size: 1.2em;
+    color: $primary-foreground;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    background: $tertiary-background;
+    box-shadow: $elevation-low;
+    border: none;
+  }
+
+  .panel-body {
+    padding: 0 20px 15px;
+    overflow: hidden;
+  }
+
+  .panel-footer {
+    padding: 10px 15px;
+    background: none;
+    border-top: 1px solid $muted-foreground;
+  }
+
+  &.panel-info {
+    .panel-heading {
+      background: $accent;
+      color: $accent-foreground;
+    }
+  }
+
+  &.panel-warning {
+    .panel-heading {
+      border-bottom: currentColor solid 2px;
+      background: $warning-background;
+      color: $warning;
+    }
+  }
+
+  &.panel-danger {
+    .panel-heading {
+      border-bottom: currentColor solid 2px;
+      background: $error-background;
+      color: $error;
+    }
+  }
+
+  &.panel-success {
+    .panel-heading {
+      background: $success;
+      color: $success-foreground;
+    }
+  }
+}

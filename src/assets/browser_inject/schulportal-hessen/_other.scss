@@ -1,0 +1,52 @@
+// Other
+
+// Label
+.label {
+  color: inherit;
+
+  &.label-default {
+    background: $button;
+    color: $button-foreground;
+  }
+
+  &.label-primary, &.label-info {
+    background: $accent;
+    color: $accent-foreground;
+  }
+
+  &.label-warning {
+    background: $warning;
+    color: $warning-foreground;
+  }
+  
+  &.label-danger {
+    background: $error;
+    color: $error-foreground;
+  }
+
+  &.label-success {
+    background: $success;
+    color: $success-foreground;
+  }
+}
+
+// Help block
+.help-block {
+  color: $muted-foreground;
+}
+
+// Select 2
+.select2-container {
+  color: #000;
+}
+
+// Breadcrumb
+.breadcrumb {
+  background: $secondary-background;
+}
+
+// Datepicker
+.datepicker {
+  background: #fff;
+  color: #000;
+}

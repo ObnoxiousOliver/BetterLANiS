@@ -1,0 +1,57 @@
+$accent: var(--accent);
+$accent-foreground: var(--accent-foreground);
+
+$red: var(--red);
+$green: var(--green);
+$blue: var(--blue);
+$yellow: var(--yellow);
+$diamond: var(--diamond);
+
+$primary-background: var(--primary-background);
+$secondary-background: var(--secondary-background);
+$tertiary-background: var(--tertiary-background);
+
+$background-modifier-unfocused: var(--background-modifier-unfocused);
+$background-modifier-selected: var(--background-modifier-selected);
+$background-modifier-hover: var(--background-modifier-hover);
+$background-modifier-active: var(--background-modifier-active);
+
+$popup-background: var(--popup-background);
+$popup-foreground: var(--popup-foreground);
+
+$primary-foreground: var(--primary-foreground);
+$secondary-foreground: var(--secondary-foreground);
+$muted-foreground: var(--muted-foreground);
+
+$warning: var(--warning);
+$warning-background: var(--warning-background);
+$warning-foreground: var(--warning-foreground);
+
+$error: var(--error);
+$error-background: var(--error-background);
+$error-foreground: var(--error-foreground);
+
+$success: var(--bl-success);
+$success-background: var(--bl-success-background);
+$success-foreground: var(--bl-success-foreground);
+
+$button: var(--button);
+$button-foreground: var(--button-foreground);
+$button-highlight: var(--button-highlight);
+$button-highlight-foreground: var(--button-highlight-foreground);
+
+$scrollbar-track: var(--scrollbar-track);
+$scrollbar-thumb: var(--scrollbar-thumb);
+
+$elevation-high: var(--elevation-high);
+$elevation-medium: var(--elevation-medium);
+$elevation-low: var(--elevation-low);
+
+$font: var(--font);
+$header-font: var(--header-font);
+
+:root {
+  --bl-success: #5cb85c;
+  --bl-success-background: #0a140a;
+  --bl-success-foreground: #fff;
+}

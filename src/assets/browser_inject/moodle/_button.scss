@@ -1,0 +1,61 @@
+// Button
+
+
+.btn:not(.btn-nav-drawer) {
+  background: transparent;
+  color: inherit;
+  border: transparent solid 2px;
+  border-radius: 3px;
+  transition-property: background-color, color, transform;
+  transition-duration: 0.2s;
+
+  &:focus {
+    box-shadow: none;
+    outline: none;
+  }
+
+  &.btn-default, &.btn-light {
+    background: $button;
+    color: $button-foreground;
+  }
+
+  &.btn-outline-primary {
+    &:not(:disabled):not(.disabled) {
+      &:active, &.active {
+        border: none;
+      }
+    }
+  }
+
+  &.active, &:active, &:hover, .open > &.dropdown-toggle {
+    background: $button-highlight;
+    color: $button-highlight-foreground;
+  }
+
+  &.active, &:active {
+    transform: scale(0.98);
+    box-shadow: none;
+  }
+
+  &.focus, &:focus-visible {
+    outline: none;
+    border-color: currentColor;
+  }
+
+  &.active, &:active {
+    &:focus, &.focus {
+      outline: none;
+      box-shadow: none;
+    }
+  }
+
+  &.btn-primary {
+    background: $accent;
+    color: $accent-foreground;
+
+    &.active, &:active, &:hover {
+      background: $accent-foreground;
+      color: $accent;
+    }
+  }
+}

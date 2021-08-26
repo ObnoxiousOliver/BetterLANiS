@@ -1,0 +1,50 @@
+// mo0000.schule.hessen.de
+
+[frame-host^='mo'][frame-host$='.schule.hessen.de'] {
+  @include bl-scrollbar;
+  scroll-behavior: smooth;
+
+  body {
+    --primary: var(--accent);
+    --secondary: var(--primary-background);
+    --dark: var(--secondary-foreground);
+
+    overflow: auto scroll;
+    background: $tertiary-background;
+    color: $primary-foreground;
+  }
+
+  #region-main {
+    background: none;
+    border: none;
+  }
+
+  .region_main_settings_menu_proxy {
+    @media (min-width: 576px) {
+      background-color: $tertiary-background;
+    }
+  }
+
+  img {
+    border-radius: 5px;
+    background: #fff;
+  }
+
+  .userpicture {
+    border-radius: 50%;
+    box-shadow: $elevation-low;
+  }
+
+  footer#page-footer {
+    border-color: $accent;
+  }
+
+  @import 'list-group';
+  @import 'card';
+  @import 'button';
+  @import 'dropdown';
+  @import 'table';
+  @import 'navbar';
+  @import 'nav-drawer';
+  @import 'other';
+}

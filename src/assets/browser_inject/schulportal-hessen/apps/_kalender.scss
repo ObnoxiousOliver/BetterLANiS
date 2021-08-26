@@ -1,0 +1,19 @@
+// Kalender
+
+&[frame-path^='/kalender.php'] {
+  #calender {
+    padding: 10px;
+    box-shadow: $elevation-high;
+    border-radius: 5px;
+    background: #fff;
+    color: #000;
+
+    .fc-event, .fc-event:hover, .ui-widget .fc-event {
+      color: #fff;
+    }
+  }
+
+  .label[style*='background'] {
+    color: #fff;
+  }
+}

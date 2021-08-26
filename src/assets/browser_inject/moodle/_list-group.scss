@@ -1,0 +1,54 @@
+// List group
+
+.list-group {
+  .list-group-item {
+    background: none;
+    color: inherit;
+    border-top: none;
+    border-right: none;
+    border-bottom: none;
+
+    &:not([data-parent-key=mycourses]) {
+      border-left: none;
+    }
+
+    &[data-key=mycourses] {
+      background: $secondary-background;
+    }
+
+    &.active {
+      background: $accent;
+      color: $accent-foreground;
+
+      span.media-left i::before {
+        color: inherit;
+      }
+    }
+
+    .fa {
+      background: $accent-foreground;
+      border-radius: 9999rem;
+
+      &::before {
+        font-size: 0.8rem;
+        vertical-align: 0.1rem;
+        height: 100%;
+      }
+    }
+
+    &-action {
+      transition: 0.2s;
+
+      &:hover {
+        background: $background-modifier-hover;
+      }
+      &:active {
+        background: $background-modifier-active;
+      }
+      &:focus-visible {
+        background: $background-modifier-hover;
+        border-left-width: 8px;
+      }
+    }
+  }
+}
