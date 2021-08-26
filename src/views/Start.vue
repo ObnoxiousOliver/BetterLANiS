@@ -19,7 +19,7 @@
       :active="userinfoOpen"
       :nofocus="[$refs.routerView, $refs.startMenu]"
     >
-      <template #header><i class="bi bi-person-fill"/> Benuterinfo</template>
+      <template #header><i class="bi bi-person-fill"/> Benutzerinfo</template>
       <div class="user-info-panel">
         <table>
           <tr>
