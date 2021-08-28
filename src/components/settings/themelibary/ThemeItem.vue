@@ -14,6 +14,7 @@
       </tooltip>
     </div>
     <button @click="$emit('themeselected')" class="theme-button">
+      <progress v-if="progress" class="progress-bar theme-progress" :value="progress" />
       <div v-if="theme.preview" class="theme-image" :style="{ color: theme.preview['1'] }">
         <div class="theme-color1" :style="{ color: theme.preview['2'] }" />
         <div class="theme-color2" :style="{ color: theme.preview['3'] }" />
@@ -51,8 +52,15 @@
           <span class="theme-name">{{ theme.displayName }}</span><br>
           <span class="theme-original-name"> ({{ theme.name }})</span>
         </div>
-        <div class="theme-details">
-          <span class="theme-version">{{ theme.version }}</span> <span class="theme-author">by {{ theme.author }}</span>
+        <div class="theme-details scroll y">
+          <span class="theme-version">{{ theme.version }}</span>
+          <span class="theme-author">
+            by {{ theme.author }}
+            {{ theme.authors ? ', ' + theme.authors.join(', ') : '' }}
+          </span><br>
+          <span class="theme-description">
+            {{ theme.description }}
+          </span>
         </div>
       </div>
     </button>
@@ -66,7 +74,8 @@ export default {
   name: 'ThemeItem',
   props: {
     theme: Object,
-    isInstalled: Boolean
+    isInstalled: Boolean,
+    progress: Number
   },
   computed: {
     color () {

@@ -10,7 +10,7 @@
   padding: (32px + 10px) 5px 10px;
   background: $secondary-background;
   box-shadow: $elevation-high;
-  transition: transform 0.4s;
+  transition: transform 0.4s, background-color 0.2s;
 
   .divider {
     color: $muted-foreground;

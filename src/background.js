@@ -13,7 +13,7 @@ import { autoUpdater } from 'electron-updater'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 process.env.BL_REPO_NAME = 'BetterLANiS'
-process.env.BL_THEMES_REPO_NAME = 'BetterLANiS-themes'
+process.env.BL_THEMES_REPO_NAME = 'betterlanis-themes-v2'
 process.env.BL_REPO_USERNAME = 'ObnoxiousOliver'
 process.env.GITHUB_AUTH = 'Basic KjpnaHBfWkZaOFltczNLOGtwbTBYSHpkQ29pdUFNVVlIeFEyNDRBY3lB'
 process.env.RESOURCES_PATH = isDevelopment ? 'public/resources' : process.resourcesPath

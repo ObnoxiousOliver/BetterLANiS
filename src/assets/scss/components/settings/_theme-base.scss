@@ -53,10 +53,6 @@
   }
 
   .theme-details {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-
     .theme-version {
       color: $muted-foreground;
     }

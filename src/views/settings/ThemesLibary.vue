@@ -16,6 +16,7 @@
           :key="theme.name"
           :theme="theme"
           :isInstalled="isInstalled(theme.name)"
+          :progress="downloadingTheme ? (downloadingTheme.name === theme.name ? downloadingTheme.progress : null) : null"
         />
       </div>
       <div v-else>
@@ -85,29 +86,21 @@
               class="download-btn"
               :variant="isInstalled(selectedTheme.name) ? 'small' : 'primary' + ' no-caps'"
             >
-            <i class="bi-download" />
-            <span> Herunterladen</span>
+              <i class="bi-download" />
+              <span> Herunterladen</span>
             </bl-button>
             <bl-button
-              @click="useThemeClick"
+              @click="$emit('openSettings', 'Appearance')"
               v-if="isInstalled(selectedTheme.name)"
               variant="primary no-caps"
             >
               Anwenden
             </bl-button>
           </div>
+          <progress v-if="downloadingTheme" class="progress-bar theme-progress" :value="downloadingTheme.progress" />
         </div>
       </template>
     </Modal>
-
-    <transition name="info-box">
-      <div v-if="downloadingTheme" class="info-box-component">
-          <div class="info-box">
-            <h2>Downloading - {{ downloadingTheme.name }}</h2>
-            <progress class="progress-bar" :value="downloadingTheme.progress" />
-          </div>
-      </div>
-    </transition>
   </div>
 </template>
 
@@ -122,15 +115,6 @@ const { remote, ipcRenderer } = require('electron')
 const fs = require('fs')
 const path = require('path')
 const extract = require('extract-zip')
-const chokidar = require('chokidar')
-
-const githubAuthHeaders = {
-  headers: {
-    Authorization: remote.process.env.GITHUB_AUTH
-  }
-}
-
-var watcher
 
 export default {
   name: 'ThemeLibary',
@@ -161,33 +145,18 @@ export default {
     themes: [],
     searchString: '',
     selectedTheme: undefined,
-    downloadingTheme: undefined,
-    installedThemes: undefined
+    downloadingTheme: undefined
   }),
   mounted () {
-    this.installedThemes = fs.readdirSync(this.theme.path).filter(x => x.endsWith('.bl-theme'))
+    // this.installedThemes =
 
     if (!this.theme.themeLibary.length) {
       this.fetchThemeLibary()
     } else {
       this.themes = this.theme.themeLibary
     }
-
-    watcher = chokidar.watch(this.theme.path, {
-      ignored: /^\./,
-      persistent: true
-    })
-
-    watcher.on('add', (e) => {
-      this.installedThemes = fs.readdirSync(this.theme.path).filter(x => x.endsWith('.bl-theme'))
-    })
-    watcher.on('unlink', (e) => {
-      this.installedThemes = fs.readdirSync(this.theme.path).filter(x => x.endsWith('.bl-theme'))
-    })
   },
   unmounted () {
-    watcher.unwatch(this.theme.path)
-    watcher.close()
   },
   watch: {
     themes: {
@@ -207,41 +176,68 @@ export default {
       'removeTheme'
     ]),
     fetchThemeLibary () {
-      fetch(`https://api.github.com/repos/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/releases`, githubAuthHeaders)
+      fetch(`https://raw.githubusercontent.com/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/master/releases.json`)
         .then(res => res.json())
         .then(releases => {
-          fetch(`https://api.github.com/repos/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/branches`,
-            githubAuthHeaders)
-            .then(res => res.json())
-            .then(branches => {
-              branches.filter(x => x.name !== 'master').forEach(branch => {
-                // Get Manifest
-                fetch(`https://raw.githubusercontent.com/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/${branch.name}/manifest.json`)
-                  .then(res => res.json())
-                  .then(manifest => {
-                    if (!manifest.hidden) {
-                      var downloadUrl
-                      try {
-                        downloadUrl = releases.filter(x => x.target_commitish === branch.name)[0].assets.filter(x => x.name.endsWith('.bl-theme.zip'))[0].url
+          Object.entries(releases).forEach(x => {
+            var key = x[0]
+            var value = x[1]
 
-                        this.themes.push({
-                          name: branch.name,
-                          displayName: manifest.name,
-                          version: manifest.version,
-                          author: manifest.author,
-                          description: manifest.description,
-                          icon: manifest.icon,
-                          iconHref: manifest.icon
-                            ? `https://raw.githubusercontent.com/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/${branch.name}/${manifest.icon}`
-                            : undefined,
-                          preview: manifest.preview,
-                          downloadUrl
-                        })
-                      } catch {}
-                    }
+            fetch(`https://raw.githubusercontent.com/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/master/themes/${key}/manifest.json`)
+              .then(res => res.json())
+              .then(manifest => {
+                console.log(manifest)
+                if (!manifest.hidden) {
+                  this.themes.push({
+                    name: key,
+                    displayName: manifest.name,
+                    version: manifest.version,
+                    author: manifest.author,
+                    authors: manifest.authors,
+                    description: manifest.description,
+                    icon: manifest.icon,
+                    iconHref: manifest.icon
+                      ? path.join(`https://raw.githubusercontent.com/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/master/themes/${key}/`, manifest.icon)
+                      : undefined,
+                    preview: manifest.preview,
+                    downloadUrl: `https://raw.githubusercontent.com/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/master/releases/${value}`
                   })
+                }
               })
-            })
+          })
+
+          // fetch(`https://api.github.com/repos/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/branches`,
+          //   githubAuthHeaders)
+          //   .then(res => res.json())
+          //   .then(branches => {
+          //     branches.filter(x => x.name !== 'master').forEach(branch => {
+          //       // Get Manifest
+          //       fetch(`https://raw.githubusercontent.com/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/${branch.name}/manifest.json`)
+          //         .then(res => res.json())
+          //         .then(manifest => {
+          //           if (!manifest.hidden) {
+          //             var downloadUrl
+          //             try {
+          //               downloadUrl = releases.filter(x => x.target_commitish === branch.name)[0].assets.filter(x => x.name.endsWith('.bl-theme.zip'))[0].url
+
+          //               this.themes.push({
+          //                 name: branch.name,
+          //                 displayName: manifest.name,
+          //                 version: manifest.version,
+          //                 author: manifest.author,
+          //                 description: manifest.description,
+          //                 icon: manifest.icon,
+          //                 iconHref: manifest.icon
+          //                   ? `https://raw.githubusercontent.com/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/${branch.name}/${manifest.icon}`
+          //                   : undefined,
+          //                 preview: manifest.preview,
+          //                 downloadUrl
+          //               })
+          //             } catch {}
+          //           }
+          //         })
+          //     })
+          //   })
         })
     },
     downloadThemeClick (themeToDownload) {
@@ -275,7 +271,7 @@ export default {
       function downloadFileStatus (e, downloadStatus) {
         status({
           state: 'loading',
-          progress: downloadStatus.progress
+          progress: downloadStatus.progress * 0.5
         }, theme)
       }
 
@@ -292,7 +288,7 @@ export default {
             sizeUnzipped += entry.compressedSize
             status({
               state: 'loading',
-              progress: sizeUnzipped / file.fileSize
+              progress: (sizeUnzipped / file.fileSize) * 0.5 + 0.5
             }, theme)
           }
         })
@@ -311,7 +307,7 @@ export default {
       })
     },
     isInstalled (theme) {
-      return this.installedThemes.includes(theme + '.bl-theme')
+      return this.theme.available.map(x => x.path).includes(theme + '.bl-theme')
     },
     useThemeClick () {
       if (!this.theme.using.includes(this.selectedTheme.name + '.bl-theme')) {

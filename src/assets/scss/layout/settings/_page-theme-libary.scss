@@ -101,41 +101,10 @@
         margin-top: 10px;
       }
     }
-  }
 
-  .info-box-component {
-    pointer-events: none;
-
-    .info-box {
-      pointer-events: all;
-      z-index: 1;
+    .theme-progress {
       position: absolute;
-      inset: 10px 0 auto 0;
-      width: 50%;
-      margin: auto;
-      padding: 20px;
-      background: $primary-background;
-      border-radius: 5px;
-      box-shadow: $elevation-high;
-
-    }
-    &.info-box {
-      &-enter-active,
-      &-leave-active {
-        transition: 0.1s;
-
-        .info-box {
-          transition: opacity 0.1s, transform 0.1s;
-        }
-      }
-
-      &-enter-from,
-      &-leave-to {
-        .info-box {
-          opacity: 0;
-          transform: translateY(-100%);
-        }
-      }
+      inset: auto 0 0;
     }
   }
 }

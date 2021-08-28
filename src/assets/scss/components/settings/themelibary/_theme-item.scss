@@ -35,16 +35,13 @@
     }
 
     &-button {
-      display: block;
-      appearance: none;
+      @include buttonReset;
+
+      display: flex;
+      flex-flow: column nowrap;
       width: 100%;
-      background: none;
-      color: inherit;
-      text-align: left;
-      font: inherit;
-      border: none;
+      height: 100%;
       border-radius: 5px;
-      cursor: pointer;
 
       transition: 0.2s background-color;
 
@@ -58,6 +55,11 @@
             $secondary-background 0 0 0 5px;
         }
       }
+    }
+
+    &-progress {
+      position: absolute;
+      inset: auto 0 0;
     }
 
     &-image {
@@ -127,8 +129,9 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-
+        
         .theme-name {
+
           font-family: $header-font;
           font-size: 1.2rem;
         }
@@ -139,12 +142,19 @@
       }
 
       .theme-details {
+        height: 80px;
+
         .theme-version {
           color: $muted-foreground;
         }
 
         .theme-author {
           color: $muted-foreground;
+        }
+
+        .theme-description {
+          margin: 5px 0;
+          color: $secondary-foreground;
         }
       }
     }

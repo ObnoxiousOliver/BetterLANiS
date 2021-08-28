@@ -224,6 +224,7 @@
       flex-basis: 50%;
       width: calc(50% - 3px);
       padding: 5px;
+      transition: background-color 0.2s;
     }
 
     .available-themes {
