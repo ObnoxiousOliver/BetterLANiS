@@ -236,11 +236,6 @@ export default {
           }
           themes.push(manifest)
         } else {
-          store.dispatch('notify', {
-            title: 'Themes - ' + theme,
-            message: 'Keine "manifest.json" Datei gefunden',
-            style: 'error'
-          })
           themes.push({
             name: theme.replace(/\.bl-theme/g, ''),
             path: theme,

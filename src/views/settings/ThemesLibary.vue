@@ -89,7 +89,7 @@
             <span> Herunterladen</span>
             </bl-button>
             <bl-button
-              @click="$emit('openSettings', 'Appearance')"
+              @click="useThemeClick"
               v-if="isInstalled(selectedTheme.name)"
               variant="primary no-caps"
             >
@@ -202,7 +202,9 @@ export default {
       'setThemeLibary'
     ]),
     ...mapActions([
-      'notify'
+      'notify',
+      'addTheme',
+      'removeTheme'
     ]),
     fetchThemeLibary () {
       fetch(`https://api.github.com/repos/${remote.process.env.BL_REPO_USERNAME}/${remote.process.env.BL_THEMES_REPO_NAME}/releases`, githubAuthHeaders)
@@ -310,6 +312,11 @@ export default {
     },
     isInstalled (theme) {
       return this.installedThemes.includes(theme + '.bl-theme')
+    },
+    useThemeClick () {
+      if (!this.theme.using.includes(this.selectedTheme.name + '.bl-theme')) {
+        this.addTheme(this.selectedTheme.name + '.bl-theme')
+      }
     }
   }
 }

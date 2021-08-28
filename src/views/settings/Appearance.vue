@@ -74,6 +74,8 @@
                 <ThemeItem
                   v-for="theme in availableThemes"
                   @click="addThemeClick(theme)"
+                  @keydown.enter="addThemeClick(theme)"
+                  @keydown.right="addThemeClick(theme)"
                   @contextmenu="selectedAvailableTheme = theme; $refs.availableThemeContextMenu.open()"
                   :key="theme.path"
                   :theme="theme"
@@ -96,27 +98,36 @@
               >
                 <ThemeItem
                   v-for="theme in currentThemes"
-                  @click="removeThemeClick(theme)"
+                  @click="removeThemeClick(theme.path)"
+                  @keydown.enter="removeThemeClick(theme.path)"
+                  @keydown.left="removeThemeClick(theme.path)"
+                  @keydown.up="moveThemeUp_key(theme)"
+                  @keydown.down="moveThemeDown_key(theme)"
                   @contextmenu="selectedCurrentTheme = theme; $refs.currentThemeContextMenu.open()"
+                  @mousedown="e => moveTheme_mousedown(e, theme.path)"
+                  @mouseenter="e => moveTheme_mouseenter(e, theme.path)"
+                  @mouseleave="e => moveTheme_mouseleave(e, theme.path)"
+                  @mouseup="e => moveTheme_mouseup(e, theme.path)"
                   :key="theme.path"
+                  :ref="theme.path"
                   :theme="theme"
                   :original="theme.author === 'ObnoxiousOliver'"
-                  :draggable="currentThemes.length > 1"
                   tabindex="0"
+                  :class="[draggedTheme === theme.path ? 'dragged' : '', draggedTheme !== theme.path && dragoverTheme === theme.path ? 'dragover' : '']"
                 />
               </transition-group>
               <context-menu ref="currentThemeContextMenu">
                 <button
                   v-if="selectedCurrentTheme"
                   @click="moveThemeUp(selectedCurrentTheme)"
-                  :disabled="theme.using.indexOf(selectedCurrentTheme) >= theme.using.length - 1"
+                  :disabled="theme.using.indexOf(selectedCurrentTheme.path) >= theme.using.length - 1"
                 >
                   <i class="bi-chevron-up" /> Nach Oben
                 </button>
                 <button
                   v-if="selectedCurrentTheme"
                   @click="moveThemeDown(selectedCurrentTheme)"
-                  :disabled="theme.using.indexOf(selectedCurrentTheme) <= 0"
+                  :disabled="theme.using.indexOf(selectedCurrentTheme.path) <= 0"
                 >
                   <i class="bi-chevron-down" /> Nach Unten
                 </button>
@@ -289,7 +300,9 @@ export default {
     accentColorsOpen: false,
     customColorOpen: false,
     defaultThemeClickCount: 0,
-    defaultThemeClickTimeout: undefined
+    defaultThemeClickTimeout: undefined,
+    draggedTheme: undefined,
+    dragoverTheme: undefined
   }),
   computed: {
     ...mapState([
@@ -357,19 +370,108 @@ export default {
       }
     },
     removeThemeClick (theme) {
-      this.removeTheme({ index: this.theme.using.indexOf(theme) })
+      if (!this.draggedTheme) {
+        this.removeTheme({ index: this.theme.using.indexOf(theme) })
+      }
     },
     moveThemeUp (theme) {
+      if (this.draggedTheme) return
       this.moveTheme({
-        index: this.theme.using.indexOf(theme),
-        to: this.theme.using.indexOf(theme) + 1
+        index: this.theme.using.indexOf(theme.path),
+        to: this.theme.using.indexOf(theme.path) + 1
       })
     },
     moveThemeDown (theme) {
+      if (this.draggedTheme) return
       this.moveTheme({
-        index: this.theme.using.indexOf(theme),
-        to: this.theme.using.indexOf(theme) - 1
+        index: this.theme.using.indexOf(theme.path),
+        to: this.theme.using.indexOf(theme.path) - 1
       })
+    },
+    moveThemeUp_key (theme) {
+      this.moveThemeUp(theme)
+      setTimeout(() => {
+        this.$refs[theme.path].$el.focus()
+      })
+    },
+    moveThemeDown_key (theme) {
+      this.moveThemeDown(theme)
+      setTimeout(() => {
+        this.$refs[theme.path].$el.focus()
+      })
+    },
+    moveTheme_mousedown (e, theme) {
+      if (this.currentThemes.length <= 1) return
+
+      const START_POS = { x: e.clientX, y: e.clientY }
+      const _this = this
+      var outOfRadius = false
+
+      var parentRect = _this.$refs[theme].$el.parentNode.parentNode.getBoundingClientRect()
+      var startRect = _this.$refs[theme].$el.getBoundingClientRect()
+
+      document.addEventListener('mousemove', doc_mousemove)
+
+      // eslint-disable-next-line camelcase
+      function doc_mousemove (de) {
+        if (!outOfRadius) {
+          var d = Math.sqrt((START_POS.x - de.clientX) ** 2 + (START_POS.y - de.clientY) ** 2)
+          if (d > 10) {
+            _this.draggedTheme = theme
+            outOfRadius = true
+          }
+          return
+        }
+
+        const clamp = (val, min, max) => Math.min(Math.max(val, min), max)
+
+        _this.$refs[theme].$el.style.transform = ''
+        var rect = _this.$refs[theme].$el.getBoundingClientRect()
+
+        var min = -(rect.y - parentRect.y)
+        var max = (parentRect.y + parentRect.height) - (rect.y + rect.height)
+
+        console.log(min, max)
+
+        var y = de.clientY - rect.y + startRect.y - START_POS.y
+
+        _this.$refs[theme].$el.style.transform = `translate(0, ${clamp(y, min, max)}px)`
+
+        _this.$refs[theme].$el.style.filter = `drop-shadow(var(--accent) 0 ${-clamp(y, min, max)}px)`
+      }
+
+      document.addEventListener('mouseup', doc_mouseup)
+
+      // eslint-disable-next-line camelcase
+      function doc_mouseup (e) {
+        document.removeEventListener('mousemove', doc_mousemove)
+        document.removeEventListener('mouseup', doc_mouseup)
+
+        _this.$refs[theme].$el.setAttribute('style', '')
+
+        setTimeout(() => {
+          _this.dragoverTheme = undefined
+          _this.draggedTheme = undefined
+        })
+      }
+    },
+    moveTheme_mouseenter (e, theme) {
+      if (this.draggedTheme) {
+        this.dragoverTheme = theme
+      }
+    },
+    moveTheme_mouseleave (e, theme) {
+      if (this.draggedTheme) {
+        this.dragoverTheme = undefined
+      }
+    },
+    moveTheme_mouseup (e, theme) {
+      if (this.draggedTheme) {
+        this.moveTheme({
+          index: this.theme.using.indexOf(this.draggedTheme),
+          to: this.theme.using.indexOf(theme)
+        })
+      }
     },
     openInFolder (theme) {
       var pathToOpen = path.join(this.theme.path, theme.path)

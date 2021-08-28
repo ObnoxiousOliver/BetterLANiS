@@ -38,8 +38,8 @@
           <i class="fas fa-swatchbook" />
         </div>
       </div>
-      <div v-if="theme.author === 'ObnoxiousOliver'" class="theme-tags">
-        <span class="theme-original">
+      <div class="theme-tags">
+        <span class="theme-original" v-if="theme.author === 'ObnoxiousOliver'">
           <i class="fas fa-gem" /> Originales Thema<br>
         </span>
         <span class="theme-installed" v-if="isInstalled">

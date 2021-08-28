@@ -57,8 +57,7 @@ export default {
         this.contextShow = false
         document.removeEventListener('mousedown', this.close)
         document.removeEventListener('keydown', this.close)
-      }
-      if (!e.path.includes(this.$refs.contextMenu)) {
+      } else if (!e.path.includes(this.$refs.contextMenu)) {
         this.contextOpen = false
         this.contextShow = false
         document.removeEventListener('mousedown', this.close)
