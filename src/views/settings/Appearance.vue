@@ -273,11 +273,7 @@ import Modal from '../../components/Modal.vue'
 import ColorPicker from '../../components/input/colorpickers/ColorPicker.vue'
 import ThemeItem from '../../components/settings/ThemeItem.vue'
 
-const fs = require('fs')
 const path = require('path')
-const chokidar = require('chokidar')
-
-var watcher
 
 export default {
   name: 'Appearance',
@@ -287,7 +283,6 @@ export default {
     ColorPicker
   },
   data: () => ({
-    themes: [],
     selectedCurrentTheme: undefined,
     selectedAvailableTheme: undefined,
     selectedAccentColor: undefined,
@@ -302,11 +297,13 @@ export default {
       'secret'
     ]),
     currentThemes () {
-      var using = [...this.theme.using]
+      var using = [...this.theme.using].map(x => this.theme.available.find(y => y.path === x) || {
+        path: x
+      })
       return using.reverse()
     },
     availableThemes () {
-      return this.themes.filter(x => !this.theme.using.map(y => y.path).includes(x.path))
+      return this.theme.available.filter(x => !this.theme.using.includes(x.path))
     },
     accentColorTemplates () {
       return [
@@ -329,19 +326,6 @@ export default {
     defaultThemeSecretActive () {
       return this.secret.includes('4b34')
     }
-  },
-  mounted () {
-    watcher = chokidar.watch(this.theme.path, {
-      ignored: /^\./,
-      persistent: true
-    })
-
-    watcher.on('add', (e) => { this.getThemes() })
-    watcher.on('unlink', (e) => { this.getThemes() })
-  },
-  unmounted () {
-    watcher.unwatch(this.theme.path)
-    watcher.close()
   },
   methods: {
     ...mapActions([
@@ -367,40 +351,9 @@ export default {
         this.saveAccentColor(hex)
       }
     },
-    getThemes () {
-      this.themes = []
-      var themesInDir = fs.readdirSync(this.theme.path).filter(x => x.endsWith('.bl-theme'))
-      themesInDir.forEach(theme => {
-        var manifestPath = path.join(this.theme.path, theme, 'manifest.json')
-        if (fs.existsSync(manifestPath)) {
-          var manifest = {
-            ...JSON.parse(fs.readFileSync(manifestPath)),
-            path: theme
-          }
-
-          if (manifest.icon) {
-            manifest.icon64 = 'data:image/png;base64,' +
-            fs.readFileSync(path.join(this.theme.path, theme, manifest.icon)).toString('base64')
-          }
-          this.themes.push(manifest)
-        } else {
-          this.notify({
-            title: 'Themes - ' + theme,
-            message: 'Keine "manifest.json" Datei gefunden',
-            style: 'error'
-          })
-          this.themes.push({
-            name: theme,
-            path: theme,
-            description: 'Keine "manifest.json" Datei gefunden',
-            notUsable: true
-          })
-        }
-      })
-    },
     addThemeClick (theme) {
       if (!theme.notUsable) {
-        this.addTheme(theme)
+        this.addTheme(theme.path)
       }
     },
     removeThemeClick (theme) {

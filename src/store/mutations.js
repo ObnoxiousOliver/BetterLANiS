@@ -38,6 +38,9 @@ export default {
       path: undefined
     }
   },
+  setAvailableThemes (state, payload) {
+    state.theme.available = payload
+  },
   addTheme (state, payload) {
     state.theme.using.push(payload)
   },

@@ -20,6 +20,7 @@ export default {
     accent: '#3399ff',
     saved: [],
     using: [],
+    available: [],
     path: '',
     themeLibary: []
   },

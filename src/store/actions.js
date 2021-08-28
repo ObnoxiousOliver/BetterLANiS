@@ -5,6 +5,7 @@ import icons from '@/icons'
 const { remote } = require('electron')
 const fs = require('fs')
 const path = require('path')
+const chokidar = require('chokidar')
 
 const CONFIG_PATH = path.join(remote.app.getPath('userData'), 'Config')
 const USERS_PATH = path.join(remote.app.getPath('userData'), 'Users')
@@ -16,6 +17,7 @@ export default {
   appStart (store) {
     store.commit('setThemesPath', THEMES_PATH)
     fs.mkdirSync(THEMES_PATH, { recursive: true })
+    store.dispatch('getThemes')
     store.dispatch('loadStyles')
 
     fetch('https://start.schulportal.hessen.de/exporteur.php?a=schoollist')
@@ -195,9 +197,67 @@ export default {
     fs.unlinkSync(ACTIVE_USER_PATH, { recursive: true })
     store.commit('resetAll')
   },
+  getThemes (store, payload) {
+    // Add File Watcher
+    var watcher = chokidar.watch(THEMES_PATH)
+    watcher.on('all', () => {
+      getThemes()
+      store.dispatch('setStyles')
+    })
+
+    function getThemes () {
+      var themes = []
+
+      var themesInDir = fs.readdirSync(THEMES_PATH).filter(x => x.endsWith('.bl-theme'))
+      themesInDir.forEach(theme => {
+        var manifestPath = path.join(THEMES_PATH, theme, 'manifest.json')
+        if (fs.existsSync(manifestPath)) {
+          var parsedJson = {}
+
+          try {
+            parsedJson = JSON.parse(fs.readFileSync(manifestPath))
+          } catch (e) {
+            parsedJson = {
+              description: e.toString(),
+              notUsable: true
+            }
+          }
+
+          var manifest = {
+            ...parsedJson,
+            path: theme
+          }
+
+          if (!manifest.name) manifest.name = theme.replace(/\.bl-theme/g, '')
+
+          if (manifest.icon) {
+            manifest.icon64 = 'data:image/' + path.extname(manifest.icon).replace('.', '') + ';base64,' +
+            fs.readFileSync(path.join(THEMES_PATH, theme, manifest.icon)).toString('base64')
+          }
+          themes.push(manifest)
+        } else {
+          store.dispatch('notify', {
+            title: 'Themes - ' + theme,
+            message: 'Keine "manifest.json" Datei gefunden',
+            style: 'error'
+          })
+          themes.push({
+            name: theme.replace(/\.bl-theme/g, ''),
+            path: theme,
+            description: 'Keine "manifest.json" Datei gefunden',
+            notUsable: true
+          })
+        }
+      })
+
+      store.commit('setAvailableThemes', themes)
+    }
+
+    getThemes()
+  },
   addTheme (store, payload) {
     var using = [...store.state.theme.using]
-    if (!using.map(x => x.path).includes(payload.path)) {
+    if (!using.includes(payload)) {
       store.commit('addTheme', payload)
     }
     store.dispatch('setStyles')
@@ -223,34 +283,54 @@ export default {
     store.dispatch('saveStyles')
   },
   setStyles (store) {
-    var el = document.querySelector('#themes')
-    if (!el) {
-      el = document.createElement('style')
-      el.setAttribute('id', 'themes')
-      document.head.append(el)
+    var themesEl = document.querySelector('#themes')
+    if (!themesEl) {
+      themesEl = document.createElement('bl-themes')
+      themesEl.id = 'themes'
+      document.head.append(themesEl)
     }
 
-    el.innerHTML = ''
-    store.state.theme.using.forEach(theme => {
+    themesEl.innerHTML = ''
+    // Themes
+    store.state.theme.using.forEach(themePath => {
+      const theme = store.state.theme.available.find(x => x.path === themePath) || {}
+
       if (theme.css) {
+        var el = document.getElementById(theme.path)
+
+        if (!el) {
+          el = document.createElement('style')
+          el.id = theme.path
+          themesEl.append(el)
+        }
+
         var css = fs.readFileSync(path.join(store.state.theme.path, theme.path, theme.css), 'utf-8').toString()
         el.innerHTML += `/* ${theme.name} */\n${css}\n`
       }
     })
 
+    // Base Style
     var contrast = color.getContrastYIQ(store.state.theme.accent)
 
-    el.innerHTML += `:root { --accent: ${store.state.theme.accent}; --accent-foreground: ${contrast}; }`
-    if (store.state.secret.includes('4b34')) {
-      el.innerHTML += 'body { transform: scaleX(-1); transition: transform 0.2s 3s; }'
+    var baseEl = document.getElementById('base')
+    if (!baseEl) {
+      baseEl = document.createElement('style')
+      baseEl.id = 'base'
+      themesEl.append(baseEl)
     }
+
+    baseEl.innerHTML = `:root { --accent: ${store.state.theme.accent}; --accent-foreground: ${contrast}; }`
+    if (store.state.secret.includes('4b34')) {
+      baseEl.innerHTML += 'body { transform: scaleX(-1); transition: transform 0.2s 3s; }'
+    }
+
     store.dispatch('saveStyles')
   },
   saveStyles (store) {
     var save = {
       accent: store.state.theme.accent,
       saved: store.state.theme.saved,
-      themes: store.state.theme.using.map(x => x.path)
+      themes: store.state.theme.using
     }
 
     // console.log(save)
@@ -273,24 +353,8 @@ export default {
 
       if (data.themes) {
         data.themes.forEach(theme => {
-          var manifestPath = path.join(store.state.theme.path, theme, 'manifest.json')
-          if (fs.existsSync(manifestPath)) {
-            var manifest = {
-              ...JSON.parse(fs.readFileSync(manifestPath)),
-              path: theme
-            }
-
-            if (manifest.icon) {
-              manifest.icon64 = 'data:image/png;base64,' +
-              fs.readFileSync(path.join(store.state.theme.path, theme, manifest.icon)).toString('base64')
-            }
-            store.dispatch('addTheme', manifest)
-          } else {
-            store.dispatch('notify', {
-              title: 'Themes - ' + theme,
-              message: 'Keine "manifest.json" Datei gefunden',
-              style: 'error'
-            })
+          if (store.state.theme.available.map(x => x.path).includes(theme)) {
+            store.dispatch('addTheme', theme)
           }
         })
       }
